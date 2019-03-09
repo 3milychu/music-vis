@@ -2,8 +2,15 @@
 <html>
 <head>
 	<title></title>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <style>
+body, html {
+	top:0;
+	left:0;
+	margin:0;
+	padding:0;
+}
 .page {
 	display:block;
 	width:100%;
@@ -20,10 +27,6 @@
 	height:100%;
 	width:auto;
 }
-.page img:hover {
-	background-color:#CCCCCC;
-	background-blend-mode: darken;
-}
 .overlay {
 	position:absolute;
 	top: 0;
@@ -35,53 +38,123 @@
 	opacity: 0;
 	transition: .5s ease;
 	background-color: #008CBA;
+	z-index:2;
 }
-.page-holder:hover .overlay {
+/*.page-holder:hover .overlay {
 	opacity:0.5;
+}*/
+header {
+	position:fixed;
+	bottom:0;
+	width:100%;
+	box-shadow: 0.05em 0.05em 1em #666666;
+	z-index:100;
+	background-color:white;
+	padding:2%;
 }
 </style>
 <body>
 
-<!-- score pagee -->
+<header>
+	<audio controls>
+	  <source src="assets/music.wav" type="audio/wav">
+	</audio>
+</header>
+
+<!-- score page-->
 <div class="page" id="page1">
 </div>
 
 </body>
 <script>
+
+formatTime = d3.format(",.1f");
+
+//mobile view
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
     page=document.querySelectorAll('.page');
     for(i=0;i<page.length;i++){
     	page[i].style.height="120vh";
     }
 };
-//calculate which measure each beat falls under
-measures=[1];
-measure_start=1
-for(i=1;i<=16;i++){
-	measure_start=measure_start+4;
-	measures.push(measure_start);
-}
-console.log(measures);
-for(i=1;i<65;i++){
-	target=document.querySelector('#page1');
-	div = document.createElement('div');
-	div.setAttribute("class","page-holder");
-	overlay=document.createElement('div');
-	overlay.setAttribute("class","overlay");
-	img = document.createElement('img');
-	img.src="assets/page1/"+i+".png";
-	if(i<14){
-		div.style.height="24%";
-	}else if (i>47){
-		div.style.height="15%";
-	} else {
-		div.style.height="11.2%";
-	}
-	div.appendChild(img);
-	div.appendChild(overlay);
-	target.appendChild(div);
+
+// run functions
+getScore();
+d3.csv('data/timestamps.csv')
+  .then(function(data) {
+  	getMusic(data);
+  })
+  .catch(function(error){
+  })
+
+// load music
+function getMusic(data) {
+	hover(1);
+	music = document.querySelector('audio')
+	setInterval(function () {
+	    time = formatTime(music.currentTime);
+		console.log(time);
+		var filter = data.filter(function(d){
+	    	return (formatTime(d.timestamp).indexOf(time) === 0);
+		 })
+		console.log(filter);
+		if(filter.length==1){
+			reset();
+			label = filter[0]['img'];
+			hover(label);
+			scrollTo(label);
+		} 
+	}, 30);
 }
 
+function reset() {
+	overlays = document.querySelectorAll('.overlay');
+	for(i=0;i<overlays.length;i++){
+		overlays[i].style.opacity="0"
+	}
+}
+
+function hover(img){
+	target = document.querySelector('#page-holder'+img)
+	overlay = target.querySelector('.overlay');
+	overlay.style.opacity="0.5"
+}
+
+function scrollTo(img){
+	target = document.querySelector('#page-holder'+img);
+	target.scrollIntoViewIfNeeded();
+}
+
+//calculate which measure each beat falls under
+function getScore() {
+	measures=[1];
+	measure_start=1
+	for(i=1;i<=16;i++){
+		measure_start=measure_start+4;
+		measures.push(measure_start);
+	}
+	console.log(measures);
+	for(i=1;i<65;i++){
+		target=document.querySelector('#page1');
+		div = document.createElement('div');
+		div.setAttribute("class","page-holder");
+		div.setAttribute("id","page-holder"+i);
+		overlay=document.createElement('div');
+		overlay.setAttribute("class","overlay");
+		img = document.createElement('img');
+		img.src="assets/page1/"+i+".png";
+		if(i<14){
+			div.style.height="24%";
+		}else if (i>47){
+			div.style.height="15%";
+		} else {
+			div.style.height="11.2%";
+		}
+		div.appendChild(img);
+		div.appendChild(overlay);
+		target.appendChild(div);
+	}
+}
 
 </script>
 </html>
