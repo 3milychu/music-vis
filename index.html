@@ -15,8 +15,8 @@ body, html {
 }
 .page {
 	display:block;
-	width:70%;
-	height:400vh;
+	width:896px;
+	height:2580px;
 	overflow-x:hidden;
 }
 .page-holder {
@@ -256,6 +256,7 @@ function getScore() {
 		target=document.querySelector('#page1');
 		width=window.innerWidth*.70;
 		height=window.innerHeight*4;
+		console.log(width);
 		div = document.createElement('div');
 		div.setAttribute("class","page-holder");
 		div.setAttribute("id","page-holder"+i);
