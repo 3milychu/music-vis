@@ -69,7 +69,7 @@ audio {
 	right:0;
 	width:30%;
 	background-color:#F2F2F2;
-	height:100vh;
+	height:88vh;
 	overflow-y:scroll;
 	z-index:3;
 }
@@ -103,7 +103,8 @@ input {
 
 <!-- reactions -->
 <div class="sidebar">
-	<input value="0-0"></input>
+	<input value="10"></input>
+	<div class=
 	<div id="reactions"></div>
 </div>
 
@@ -149,9 +150,13 @@ function loadReactions() {
 
 audio = document.querySelector('audio');
 audio.onclick=function() {
+	clear();
+}
+
+function clear() {
 	console.log("clear")
 	target=document.querySelector('#reactions');
-	target.html="";
+	target.innerHTML="";
 }
 
 // load music
@@ -170,8 +175,8 @@ function getMusic(data) {
 			scrollTo(label);
 			measure = filter[0]['measure'].toString();
 			beat = filter[0]['beat'].toString();
-			if(ref.value!=measure+"-"+beat) {
-				ref.value= measure+"-"+beat;
+			if(ref.value!=measure+beat) {
+				ref.value= measure+beat;
 				watch = "changed";
 			} else {
 				watch ="same"
@@ -186,42 +191,31 @@ function getReactions(data){
 	reactions = document.querySelector('#reactions');
 	if(watch =="changed") {
 		console.log("changed")
+		clear();
 		add= data.filter(function(d){
-    	return ((d.MOM_STARTBAR == measure) && (d.MOM_STARTBEAT ==beat));
+    	return ((d.MOM_STARTBAR+d.MOM_STARTBEAT <= ref.value) && (d.MOM_ENDBAR+d.MOM_ENDBEAT >= ref.value));
 		 })
-		remove= data.filter(function(d){
-	    	return ((d.MOM_ENDBAR == measure) && (d.MOM_ENDBEAT ==beat));
-		 })
+		console.log(add);
 		if(add.length!=0){
 			for (i=0;i<add.length;i++){
-				comment = add[i]['MOM1CHAR'];
 				id = add[i]['comment_id'];
-				div = document.createElement('div');
-				div.setAttribute("class","item")
-				div.setAttribute('id',id);
-				h3 = document.createElement('h3');
-				h3.innerHTML=add[i]['role'];
-				p = document.createElement('p');
-				p.innerHTML="'"+comment+"'";
-				label = document.createElement('label');
-				// getCategory(add);
-				// label.innerHTML=category;
-				// category.setAttribute('class',category);
-				div.appendChild(h3);
-				div.appendChild(p);
-				// div.appendChild(label);
-				reactions.prepend(div);
+				test = document.getElementById(id);
+				console.log(test);
+				if(test==null){
+					comment = add[i]['MOM1CHAR'];
+					div = document.createElement('div');
+					div.setAttribute("class","item")
+					div.setAttribute('id',id);
+					h3 = document.createElement('h3');
+					h3.innerHTML=add[i]['role'];
+					p = document.createElement('p');
+					p.innerHTML="'"+comment+"'";
+					label = document.createElement('label');
+					div.appendChild(h3);
+					div.appendChild(p);
+					reactions.prepend(div);
+				}
 			}
-		}
-		if(remove.length!=0){
-			console.log(remove);
-			for(j=0;j<remove.length;j++){
-				id=remove[j]['comment_id']
-				console.log(id);
-				target = document.getElementById(id);
-				console.log(target);
-				target.remove();
-			}	
 		}
 	};
 }
@@ -257,7 +251,6 @@ function getScore() {
 		target=document.querySelector('#page1');
 		width=window.innerWidth*.70;
 		height=window.innerHeight*4;
-		console.log(width);
 		div = document.createElement('div');
 		div.setAttribute("class","page-holder");
 		div.setAttribute("id","page-holder"+i);
