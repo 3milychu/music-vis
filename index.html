@@ -2,10 +2,12 @@
 <html>
 <head>
 	<title></title>
+	<link href="https://fonts.googleapis.com/css?family=Overpass:200,300,400,600,800" rel="stylesheet">
 	<script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <style>
 body, html {
+	font-family:'Overpass', sans-serif;
 	top:0;
 	left:0;
 	margin:0;
@@ -68,6 +70,26 @@ audio {
 	width:30%;
 	background-color:#F2F2F2;
 	height:100vh;
+	overflow-y:scroll;
+}
+#reactions .item {
+	padding:5%;
+	font-size:0.8em;
+}
+.item h3 {
+	font-size:0.8em;
+	color:#666666;
+	margin:0%;
+	line-height:0.5em;
+}
+.item p {
+	padding:5%;
+	background-color:#CCCCCC;
+	color:#666666;
+	border-radius:0.5em;
+}
+input {
+	display:none;
 }
 </style>
 <body>
@@ -80,6 +102,7 @@ audio {
 
 <!-- reactions -->
 <div class="sidebar">
+	<input value="0-0"></input>
 	<div id="reactions"></div>
 </div>
 
@@ -93,7 +116,8 @@ audio {
 formatTime = d3.format(",.1f");
 var measure;
 var beat;
-var ref;
+var ref = document.querySelector('input');
+var watch = "same";
 
 //mobile view
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
@@ -122,6 +146,13 @@ function loadReactions() {
 	})
 }
 
+audio = document.querySelector('audio');
+audio.onclick=function() {
+	console.log("clear")
+	target=document.querySelector('#reactions');
+	target.html="";
+}
+
 // load music
 function getMusic(data) {
 	hover(1);
@@ -136,9 +167,14 @@ function getMusic(data) {
 			label = filter[0]['img'];
 			hover(label);
 			scrollTo(label);
-			measure = filter[0]['measure'];
-			beat = filter[0]['beat'];
-			ref = measure+"-"+beat;
+			measure = filter[0]['measure'].toString();
+			beat = filter[0]['beat'].toString();
+			if(ref.value!=measure+"-"+beat) {
+				ref.value= measure+"-"+beat;
+				watch = "changed";
+			} else {
+				watch ="same"
+			}
 			loadReactions();
 		} 
 	}, 30);
@@ -147,23 +183,46 @@ function getMusic(data) {
 // get reactions
 function getReactions(data){
 	reactions = document.querySelector('#reactions');
-	console.log(measure,beat)
-	filter2 = data.filter(function(d){
-    	return ((d.MOM.STARTBAR == "'"+measure+"'") && (d.MOM.STARTBEAT == "'"+beat+"'"));
-	 })
-	console.log(filter2);
-	if(filter2.length!=0){
-		for (i=0;i<filter2.length;i++){
-			comment = filter[i]['MOM1CHAR'];
-			id = filter[i]['comment_id'];
-			div = document.createElement('div');
-			div.setAttribute('id',id);
-			p = document.createElement('p');
-			p.innerHTML=comment;
-			div.appendChild(p);
-			reactions.appendChild(div);
+	if(watch =="changed") {
+		console.log("changed")
+		add= data.filter(function(d){
+    	return ((d.MOM_STARTBAR == measure) && (d.MOM_STARTBEAT ==beat));
+		 })
+		remove= data.filter(function(d){
+	    	return ((d.MOM_ENDBAR == measure) && (d.MOM_ENDBEAT ==beat));
+		 })
+		if(add.length!=0){
+			for (i=0;i<add.length;i++){
+				comment = add[i]['MOM1CHAR'];
+				id = add[i]['comment_id'];
+				div = document.createElement('div');
+				div.setAttribute("class","item")
+				div.setAttribute('id',id);
+				h3 = document.createElement('h3');
+				h3.innerHTML=add[i]['role'];
+				p = document.createElement('p');
+				p.innerHTML="'"+comment+"'";
+				label = document.createElement('label');
+				// getCategory(add);
+				// label.innerHTML=category;
+				// category.setAttribute('class',category);
+				div.appendChild(h3);
+				div.appendChild(p);
+				// div.appendChild(label);
+				reactions.prepend(div);
+			}
 		}
-	}
+		if(remove.length!=0){
+			console.log(remove);
+			for(j=0;j<remove.length;j++){
+				id=remove[j]['comment_id']
+				console.log(id);
+				target = document.getElementById(id);
+				console.log(target);
+				target.remove();
+			}	
+		}
+	};
 }
 // helper functions to highlight played moment in score and scroll to it in window
 function reset() {
