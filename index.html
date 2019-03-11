@@ -173,8 +173,8 @@ function getMusic(data) {
 			label = filter[0]['img'];
 			hover(label);
 			scrollTo(label);
-			measure = filter[0]['measure'].toString();
-			beat = filter[0]['beat'].toString();
+			measure = filter[0]['measure'];
+			beat = filter[0]['beat'];
 			if(ref.value!=measure+beat) {
 				ref.value= measure+beat;
 				watch = "changed";
@@ -192,8 +192,9 @@ function getReactions(data){
 	if(watch =="changed") {
 		console.log("changed")
 		clear();
+		console.log(ref.value);
 		add= data.filter(function(d){
-    	return ((d.MOM_STARTBAR+d.MOM_STARTBEAT <= ref.value) && (d.MOM_ENDBAR+d.MOM_ENDBEAT >= ref.value));
+    	return ((parseInt(d.MOM_STARTBAR+d.MOM_STARTBEAT) <= ref.value) && (parseInt(d.MOM_ENDBAR+d.MOM_ENDBEAT) >= ref.value));
 		 })
 		console.log(add);
 		if(add.length!=0){
@@ -202,6 +203,8 @@ function getReactions(data){
 				test = document.getElementById(id);
 				console.log(test);
 				if(test==null){
+					console.log(parseInt(add[i]['MOM_STARTBAR']+add[i]['MOM_STARTBEAT']))
+					console.log(parseInt(add[i]['MOM_ENDBAR']+add[i]['MOM_ENDBEAT']))
 					comment = add[i]['MOM1CHAR'];
 					div = document.createElement('div');
 					div.setAttribute("class","item")
@@ -235,7 +238,8 @@ function hover(img){
 
 function scrollTo(img){
 	target = document.querySelector('#page-holder'+img);
-	target.scrollIntoViewIfNeeded();
+	// target.scrollIntoViewIfNeeded();
+	target.scrollIntoView();
 }
 
 //calculate which measure each beat falls under
