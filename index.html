@@ -18,6 +18,7 @@ body, html {
 	width:896px;
 	height:2580px;
 	overflow-x:hidden;
+	transform-origin:0 0;
 }
 .page-holder {
 	position:relative;
@@ -63,6 +64,9 @@ audio {
 	width:80%;
 	padding:0%;
 	margin:0%;
+}
+audio:focus {
+	outline:0;
 }
 .sidebar {
 	position:fixed;
@@ -128,6 +132,21 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
     	page[i].style.height="120vh";
     }
 };
+
+function calculateSize() {
+	h=window.innerHeight*4;
+	if(h!=2580){
+		transform = h/2580;
+		pages =document.querySelectorAll('.page')
+		for(i=0;i<pages.length;i++){
+			pages[i].style.transform="scale("+transform+")";
+		}
+	}
+}
+
+window.onresize=function() {
+	calculateSize();
+}
 
 // run functions
 getScore();
@@ -263,11 +282,11 @@ function getScore() {
 		img = document.createElement('img');
 		img.src="assets/page1/"+i+".png";
 		if(i<13){
-			div.style.height=height/6+"px";
+			div.style.height=height/7+"px";
 		}else if (i>44){
-			div.style.height=height/9.5+"px";
+			div.style.height=height/10+"px";
 		} else {
-			div.style.height=height/13+"px";
+			div.style.height=height/15+"px";
 		}
 		div.appendChild(img);
 		div.appendChild(overlay);
