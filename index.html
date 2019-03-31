@@ -4,126 +4,54 @@
 	<title></title>
 	<link href="https://fonts.googleapis.com/css?family=Overpass:200,300,400,600,800" rel="stylesheet">
 	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
-<style>
-body, html {
-	font-family:'Overpass', sans-serif;
-	top:0;
-	left:0;
-	margin:0;
-	padding:0;
-}
-.page {
-	display:block;
-	width:896px;
-	height:2580px;
-	overflow-x:hidden;
-	transform-origin:0 0;
-}
-.page-holder {
-	position:relative;
-	display:inline-block;
-	vertical-align:top;
-	width:auto;
-	cursor:pointer;
-}
-.page-holder img {
-	height:100%;
-	width:auto;
-}
-.overlay {
-	position:absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	height: 100%;
-	width: 100%;
-	opacity: 0;
-	transition: .5s ease;
-/*	background-color: #008CBA;*/
-	background-color: black;
-	z-index:2;
-	background-blend-mode: multiply;
-}
-/*.page-holder:hover .overlay {
-	opacity:0.5;
-}*/
-header {
-	position:fixed;
-	bottom:0;
-	width:100%;
-	box-shadow: 0.05em 0.05em 1em #666666;
-	z-index:100;
-	background-color:#F2F2F2;
-	padding:1%;
-	height:fit-content;
-	text-align:center;
-}
-audio {
-	width:80%;
-	padding:0%;
-	margin:0%;
-}
-audio:focus {
-	outline:0;
-}
-.sidebar {
-	position:fixed;
-	right:0;
-	width:30%;
-	background-color:#F2F2F2;
-	height:88vh;
-	overflow-y:scroll;
-	z-index:3;
-}
-#reactions .item {
-	padding:5%;
-	font-size:0.8em;
-}
-.item h3 {
-	font-size:0.8em;
-	color:#666666;
-	margin:0%;
-	line-height:0.5em;
-}
-.item p {
-	padding:5%;
-	background-color:#CCCCCC;
-	color:#666666;
-	border-radius:0.5em;
-}
-input {
-	display:none;
-}
-</style>
 <body>
 <!-- audio -->
 <header>
+		<div class="filters">
+		<div class="option" name="playback" value="experienced">Experienced time</div>
+		<div class="option" name="playback" value="real">Real time</div>
+	</div>
 	<audio controls>
 	  <source src="assets/music.wav" type="audio/wav">
 	</audio>
 </header>
 
-<!-- reactions -->
-<div class="sidebar">
-	<input value="10"></input>
-	<div class=
-	<div id="reactions"></div>
-</div>
-
 <!-- score page-->
 <div class="page" id="page1">
+</div>
+
+<!-- reactions -->
+<div class="view">
+	<input value="10"></input>
+
+	<div id="reactions">
+		<div id="start-message">
+			<div class="button" id="play">Play</div>
+		</div>
+	</div>
+
+</div>
+
+<!-- vis perspective -->
+<div class="perspective">
+		<div class="option" id="space"><i class="material-icons">flare</i></div>
+		<div class="option" id="activity"><i class="material-icons">chat_bubble_outline</i></div>
+		<div class="option" id="signature"><i class="material-icons">fingerprint</i></div>
 </div>
 
 </body>
 <script>
 
-formatTime = d3.format(",.1f");
+var audio;
 var measure;
 var beat;
 var ref = document.querySelector('input');
 var watch = "same";
+formatTime = d3.format(",.1f");
+var time_option;
 
 //mobile view
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
@@ -166,12 +94,28 @@ function loadReactions() {
 
 	})
 }
+resizeInterface();
+window.onresize=function() {
+	resizeInterface();
+}
+status();
+optionsListen("playback");
+document.querySelector('.option[value="experienced"]').click();
+time_option="experienced";
 
+// play on audio click
 audio = document.querySelector('audio');
 audio.onclick=function() {
 	clear();
 }
+// play on play button click
+play = document.querySelector('.button');
+play.onclick=function() {
+	clear();
+	audio.play();
+}
 
+// clear reactions container
 function clear() {
 	console.log("clear")
 	target=document.querySelector('#reactions');
@@ -180,7 +124,6 @@ function clear() {
 
 // load music
 function getMusic(data) {
-	hover(1);
 	music = document.querySelector('audio')
 	setInterval(function () {
 	    time = formatTime(music.currentTime);
@@ -202,7 +145,37 @@ function getMusic(data) {
 			}
 			loadReactions();
 		} 
-	}, 30);
+	}, 20);
+}
+
+function optionsListen(name) {
+	options=document.querySelectorAll(".option[name='"+ name +"']");
+	for(i=0;i<options.length;i++){
+		options[i].onclick=function(){
+			for(i=0;i<options.length;i++){
+				options[i].style.backgroundColor="transparent";
+				options[i].style.color="black";
+			}
+			this.style.backgroundColor="black";
+			this.style.color="white";
+			console.log(this.innerHTML);
+			if(this.innerHTML=="Experienced time"){
+				time_option = "experienced";
+			}else if(this.innerHTML=="Real time") {
+				time_option = "real";
+			}
+		}
+	}
+}
+
+// get selections
+status = [];
+function status() {
+	options= document.querySelectorAll('.option');
+	for(i=0;i<options.length;i++){
+		color=options[i].style.backgroundColor;
+	}
+	
 }
 
 // get reactions
@@ -215,6 +188,12 @@ function getReactions(data){
 		add= data.filter(function(d){
     	return ((parseInt(d.MOM_STARTBAR+d.MOM_STARTBEAT) <= ref.value) && (parseInt(d.MOM_ENDBAR+d.MOM_ENDBEAT) >= ref.value));
 		 })
+		console.log(time_option);
+		if(time_option == "experienced"){
+			adjustPlayback(add);
+		} else if (time_option =="real"){
+			audio.playbackRate = 1;
+		}
 		console.log(add);
 		if(add.length!=0){
 			for (i=0;i<add.length;i++){
@@ -222,8 +201,6 @@ function getReactions(data){
 				test = document.getElementById(id);
 				console.log(test);
 				if(test==null){
-					console.log(parseInt(add[i]['MOM_STARTBAR']+add[i]['MOM_STARTBEAT']))
-					console.log(parseInt(add[i]['MOM_ENDBAR']+add[i]['MOM_ENDBEAT']))
 					comment = add[i]['MOM1CHAR'];
 					div = document.createElement('div');
 					div.setAttribute("class","item")
@@ -236,12 +213,63 @@ function getReactions(data){
 					div.appendChild(h3);
 					div.appendChild(p);
 					reactions.prepend(div);
+					displayEndorsement(add[i], id);
 				}
 			}
 		}
 	};
 }
-// helper functions to highlight played moment in score and scroll to it in window
+
+function displayEndorsement(data, comment_id){
+	results = [];
+	rater1 = data['rater1_reassigned'];
+	if(rater1<3){
+		results.push("disagree")
+	} else {
+		results.push("agree")
+	}
+	rater2 = data['rater2_reassigned'];
+	if(rater2<3){
+		results.push("disagree")
+	} else {
+		results.push("agree")
+	}
+	agrees = results.filter(item => item == "agree" )
+	disagrees = results.filter(item => item == "disagree")
+	console.log(agrees);
+	console.log(comment_id)
+	target = document.getElementById(comment_id);
+	console.log(target)
+	endorsements = document.createElement('div');
+	endorsements.setAttribute("class", "endorsements");
+	endorsements.innerHTML="<div class=social><em>"+ agrees.length + " <i class='material-icons'>thumb_up</i></em></div><div class=social><em>"+ disagrees.length + " <i class='material-icons' style='transform:translate(360deg);color:#CCCCCC'>thumb_down</i></em></div>";
+	target.prepend(endorsements);
+}
+
+function displayTags(data){
+
+}
+
+// adjust audio playback rate based on # reactions
+function adjustPlayback(data) {
+	slow=0.5;
+	normal=1;
+	fast=2;
+	veryfast=2.5
+	console.log(data.length);
+	if(data.length==0){
+		audio.playbackRate = veryfast;
+	} else if(data.length==1){
+		audio.playbackRate = fast;
+	}else if (data.length>1 && data.length <3){
+		audio.playbackRate = normal;
+	} else {
+		audio.playbackRate = slow;
+	}
+	console.log(audio.playbackRate);
+}
+
+// highlight score image and scroll to it during audio play
 function reset() {
 	overlays = document.querySelectorAll('.overlay');
 	for(i=0;i<overlays.length;i++){
@@ -252,13 +280,17 @@ function reset() {
 function hover(img){
 	target = document.querySelector('#page-holder'+img)
 	overlay = target.querySelector('.overlay');
-	overlay.style.opacity="0.5"
+	overlay.style.opacity="0.7"
 }
 
 function scrollTo(img){
-	target = document.querySelector('#page-holder'+img);
-	// target.scrollIntoViewIfNeeded();
-	target.scrollIntoView();
+	scrollpost = document.querySelector('.page');
+	test=document.querySelector('#page-holder'+img);
+	target=test.offsetLeft - window.innerWidth/2;
+	scrollpost.scrollTo({
+	  left: target,
+	  behavior: 'smooth'
+	});
 }
 
 //calculate which measure each beat falls under
@@ -270,7 +302,7 @@ function getScore() {
 		measures.push(measure_start);
 	}
 	console.log(measures);
-	for(i=1;i<61;i++){
+	for(i=1;i<144;i++){
 		target=document.querySelector('#page1');
 		width=window.innerWidth*.70;
 		height=window.innerHeight*4;
@@ -280,19 +312,28 @@ function getScore() {
 		overlay=document.createElement('div');
 		overlay.setAttribute("class","overlay");
 		img = document.createElement('img');
-		img.src="assets/page1/"+i+".png";
-		if(i<13){
-			div.style.height=height/7+"px";
-		}else if (i>44){
-			div.style.height=height/10+"px";
-		} else {
-			div.style.height=height/15+"px";
-		}
+		img.src="assets/cropped/500w/"+i+".png";
+		div.style.height=height/30+"px";
 		div.appendChild(img);
 		div.appendChild(overlay);
 		target.appendChild(div);
 	}
 }
+
+// resize reactions container based on window size
+function resizeInterface() {
+	header=document.querySelector('header');
+	header_h=header.offsetHeight;
+	check=document.querySelector('.page');
+	check.style.marginTop=header_h+"px";
+	calc_h = check.offsetHeight;
+	view = document.querySelector('.view');
+	offset = header_h+calc_h;
+	view.style.height=window.innerHeight - offset+"px";
+	start_message = document.querySelector('#start-message');
+	start_message.style.height=view.offsetHeight+"px";
+}
+
 
 </script>
 </html>
