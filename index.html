@@ -109,10 +109,10 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
 
 // run functions
 getScore();
+spatial();
 d3.csv('data/timestamps.csv')
 	.then(function(data) {
 		getMusic(data);
-		spatial();
 	})
 	.catch(function(error){
 	})
@@ -121,6 +121,7 @@ function loadReactions() {
 	d3.json('https://raw.githubusercontent.com/3milychu/music-vis/master/data/moment_all.json')
 	.then(function(data){
 		getReactions(data);
+		endorsementsDetail(data);
 	})
 	.catch(function(error){
 
@@ -277,6 +278,9 @@ function getReactions(data){
 	}
 	// display reactions
 	reactions = document.querySelector('#reactions');
+	if(watch == "same"){
+		// resetSpatial();
+	}
 	if(watch =="changed") {
 		clear();
 		add= data.filter(function(d){
@@ -286,7 +290,6 @@ function getReactions(data){
 			for (i=0;i<add.length;i++){
 				id = add[i]['comment_id'];
 				test = document.getElementById(id);
-				console.log(add[i]);
 				if(test==null){
 					comment = add[i]['MOM1CHAR'];
 					div = document.createElement('div');
@@ -310,6 +313,11 @@ function getReactions(data){
 }
 
 
+function getpos(event) {
+	var e = window.event;
+	x = e.clientX + "px";
+	y = e.clientY + "px";
+}
 // setup spatial view
 function spatial() {
 	container = document.querySelector('#reactions2');
@@ -324,11 +332,6 @@ function spatial() {
 	people = document.querySelectorAll('.person');
 	for(i=0;i<people.length;i++){
 		people[i].onmouseover=function() {
-			function getpos(event) {
-				var e = window.event;
-				x = e.clientX + "px";
-				y = e.clientY + "px";
-			}
 			// get mouse event
 			getpos();
 			text= this.id;
@@ -344,13 +347,11 @@ function spatial() {
 }
 
 function updateSpatial(data){
-	// people = document.querySelectorAll('.person');
-	// for(i=0;i<people.length;i++){
-	// 	people[i].style.backgroundColor="#CCCCCC";
-	// }
 	role = data['role'];
 	role = role.replace(/\s/g, "_");
 	role = role.toLowerCase();
+	rater1 = data['rater1'].replace(/\s/g, "_").toLowerCase();
+	rater2 = data['rater2'].replace(/\s/g, "_").toLowerCase();
 	console.log(role);
 	sentiment = data['sentiment'];
 	target = document.getElementById(role);
@@ -358,8 +359,15 @@ function updateSpatial(data){
 		target.style.backgroundColor="#FCC388";
 	} else if (sentiment == "neg") {
 		target.style.backgroundColor="#B6B5C9";
-	} else {
+	} else if (sentiment == "mixed" | sentiment =="other"){
 		target.style.backgroundColor="#7FCDEE";
+	}
+}
+
+function resetSpatial() {
+	people = document.querySelectorAll('.person');
+	for(i=0;i<people.length;i++){
+		people[i].style.backgroundColor="#CCCCCC";
 	}
 }
 
@@ -383,23 +391,112 @@ function displayEndorsement(data, comment_id){
 	results = [];
 	rater1 = data['rater1_reassigned'];
 	if(rater1<3){
-		results.push("disagree")
+		results.push({
+			rater: data['rater1'],
+			judgement:"disagree"
+		});
 	} else {
-		results.push("agree")
+		results.push({
+			rater: data['rater1'],
+			judgement:"agree"
+		});
 	}
 	rater2 = data['rater2_reassigned'];
 	if(rater2<3){
-		results.push("disagree")
+		results.push({
+			rater: data['rater2'],
+			judgement:"disagree"
+		});
 	} else {
-		results.push("agree")
+		results.push({
+			rater: data['rater2'],
+			judgement:"agree"
+		});
 	}
-	agrees = results.filter(item => item == "agree" )
-	disagrees = results.filter(item => item == "disagree")
+	agrees = results.filter(function(d) {return d.judgement =="agree"})
+	disagrees = results.filter(function(d) {return d.judgement =="disagree"})
 	target = document.getElementById(comment_id);
 	endorsements = document.createElement('div');
 	endorsements.setAttribute("class", "endorsements");
-	endorsements.innerHTML="<div class=social><em>"+ agrees.length + " <i class='material-icons'>thumb_up</i></em></div><div class=social><em>"+ disagrees.length + " <i class='material-icons' style='transform:translate(360deg);color:#CCCCCC'>thumb_down</i></em></div>";
+	endorsements.innerHTML="<div class='social agree' name="+ comment_id +"><em>"+ agrees.length + " <i class='material-icons'>thumb_up</i></em></div><div class='social disagree' name="+ comment_id +"><em>"+ disagrees.length + " <i class='material-icons' style='transform:translate(360deg);color:#CCCCCC'>thumb_down</i></em></div>";
 	target.prepend(endorsements);
+}
+
+function endorsementsDetail(data) {
+	tooltip=document.querySelector('.tooltip');
+	agrees = document.querySelectorAll(".agree");
+	disagrees = document.querySelectorAll(".disagree");
+	for (i=0;i<agrees.length;i++){
+		agrees[i].onmouseover=function() {
+			agree = [];
+			disagree = [];
+			getpos();
+			tooltip.style.left=x;
+			tooltip.style.top=y;
+			comment_id = this.getAttribute("name");
+			index = data.findIndex(obj => obj.comment_id==comment_id);
+			if(data[index]['rater1_reassigned']<3){
+				disagree.push(data[index]['rater1'])
+			} else {
+				agree.push(data[index]['rater1'])
+			}
+			if(data[index]['rater2_reassigned']<3){
+				disagree.push(data[index]['rater2'])
+			} else {
+				agree.push(data[index]['rater2'])
+			}
+			displayEndorsement();
+
+			function displayEndorsement() {
+				if(agree.length!=0){
+					tooltip.style.display="inline-block";
+					tooltip.innerHTML="";
+					for(j=0;j<agree.length;j++){
+					tooltip.innerHTML+="<div>"+agree[j]+"</div>"
+					}
+				}
+			}
+		}
+		agrees[i].onmouseout=function() {
+			tooltip.style.display="none";
+		}
+	}
+	for (i=0;i<disagrees.length;i++){
+	disagrees[i].onmouseover=function() {
+		agree = [];
+		disagree = [];
+		getpos();
+		tooltip.style.left=x;
+		tooltip.style.top=y;
+		comment_id = this.getAttribute("name");
+		index = data.findIndex(obj => obj.comment_id==comment_id);
+		if(data[index]['rater1_reassigned']<3){
+			disagree.push(data[index]['rater1'])
+		} else {
+			agree.push(data[index]['rater1'])
+		}
+		if(data[index]['rater2_reassigned']<3){
+			disagree.push(data[index]['rater2'])
+		} else {
+			agree.push(data[index]['rater2'])
+		}
+		displayEndorsement();
+
+		function displayEndorsement() {
+			if(disagree.length!=0){
+				tooltip.style.display="inline-block";
+				tooltip.innerHTML="";
+				for(j=0;j<disagree.length;j++){
+				tooltip.innerHTML+="<div>"+disagree[j]+"</div>"
+				}
+			}
+		}
+	}
+	disagrees[i].onmouseout=function() {
+		tooltip.style.display="none";
+	}
+}
+
 }
 
 // each reaction's category by sentiment

@@ -239,6 +239,7 @@ em {
 .social .material-icons {
 	font-size:1em;
 	color:#666666;
+	cursor:pointer;
 }
 .disagree {
 	transform:rotate(360deg);
