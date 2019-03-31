@@ -40,7 +40,18 @@
 	</div>
 	<!-- spatial -->
 	<div id="reactions2">
-		<h2>Spatial view coming soon!</h2>
+		<div id="hall">
+			<div class="performers">
+				<div class="performer" id="pianist"></div>
+				<div class="performer" id="cellist"></div>
+			</div>
+			<div class="audience">
+			</div>
+			<div class="backups">
+				<div class="backup" id="pianist"></div>
+				<div class="backup" id="cellist"></div>
+			</div>
+		</div>
 	</div>
 	<!-- signature -->
 	<div id="reactions3">
@@ -101,6 +112,7 @@ getScore();
 d3.csv('data/timestamps.csv')
 	.then(function(data) {
 		getMusic(data);
+		spatial(data);
 	})
 	.catch(function(error){
 	})
@@ -270,7 +282,6 @@ function getReactions(data){
 		add= data.filter(function(d){
     	return ((parseInt(d.MOM_STARTBAR+d.MOM_STARTBEAT) <= ref.value) && (parseInt(d.MOM_ENDBAR+d.MOM_ENDBEAT) >= ref.value));
 		 })
-		console.log(add);
 		if(add.length!=0){
 			for (i=0;i<add.length;i++){
 				id = add[i]['comment_id'];
@@ -295,6 +306,19 @@ function getReactions(data){
 			}
 		}
 	};
+}
+
+function spatial(data) {
+	container = document.querySelector('#reactions2');
+	target = container.querySelector('.audience');
+	console.log(target);
+	for(i=0;i<15;i++){
+		div = document.createElement('div');
+		div.setAttribute("class", "member");
+		div.id = "member"+i;
+		target.appendChild(div);
+	}
+
 }
 
 // dynamic or locked view of score based on # of reactions 

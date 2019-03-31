@@ -272,10 +272,60 @@ div[value=neg]{
 #view-tooltip {
 	z-index:4;
 }
+/*spatial*/
+#hall {
+	width:100%;
+	margin:auto;
+	text-align:center;
+	vertical-align:middle;
+	padding: 5% 0%;
+}
+.performers {
+	width:20%;
+	margin:auto;
+}
+.performer {
+	width:2.5em;
+	height:2.5em;
+	border-radius:50%;
+	background-color:#CCCCCC;
+	display:inline-block;
+	margin:2% 5%;
+}
+.audience {
+	width:30%;
+	margin:auto;
+}
+.member {
+	width:2em;
+	height:2em;
+	background-color:#CCCCCC;
+	display:inline-block;
+	margin:2%;
+}
+.backups {
+	width:20%;
+	margin:auto;
+}
+.backup {
+	width:1.5em;
+	height:1.5em;
+	background-color:#CCCCCC;
+	transform-origin: 50% 50%;
+	transform:rotate(45deg);
+	display:inline-block;
+	margin:3%;
+}
 @media screen and (max-width:767px){
 	#reactions .item {
 		display:block;
 		width:90%;
 		margin:auto;
+	}
+	#hall {
+		padding: 20% 0%;
+	}
+	.audience {
+		width:50%;
 	}
 }
