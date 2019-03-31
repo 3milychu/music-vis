@@ -17,6 +17,7 @@ body, html {
 	overflow-x: scroll;
 	overflow-y:hidden;
 	-webkit-overflow-scrolling: touch;
+	transition:all 0.25s ease-in-out;
 }
 .page-holder {
 	position:relative;
@@ -24,7 +25,7 @@ body, html {
 	vertical-align:top;
 	width:auto;
 	cursor:pointer;
-	transition:all 0.5s ease-in-out;
+	transition:all 0.25s ease-in-out;
 }
 .page-holder img {
 	height:100%;
@@ -143,6 +144,21 @@ input {
 	margin:auto;
 	z-index:3;
 }
+.perspective .option {
+	border-radius:50%;
+	width:2em!important;
+	height:2em!important;
+	border:0.05em solid black;
+	margin:1%;
+	padding:1%;
+	cursor:pointer;
+	transition:0.5s all ease-in-out;
+}
+.perspective .option:hover {
+	background-color:#CCCCCC;
+	transform-origin: 50 50;
+	transform:scale(1.2);
+}
 ::-webkit-scrollbar {
   display:none;
     width: 0px;
@@ -171,7 +187,9 @@ input {
 	}
 }
 .filters {
+	width:40%;
 	margin:auto;
+	display:inline-block;
 }
 .filters > .option {
 	margin:0.5%;
@@ -216,4 +234,11 @@ div[value=neg]{
 	background-color:#B6B5C9;
 	color:white;
 
+}
+@media screen and (max-width:767px){
+	#reactions .item {
+		display:block;
+		width:90%;
+		margin:auto;
+	}
 }
