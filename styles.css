@@ -141,22 +141,34 @@ input {
 	text-align:center;
 	left:0;
 	bottom:0;
-	margin:auto;
 	z-index:3;
 }
 .perspective .option {
-	border-radius:50%;
-	width:2em!important;
-	height:2em!important;
-	border:0.05em solid black;
-	margin:1%;
-	padding:1%;
+	padding:1% 0%;
+	margin:0%;
+	border:none;
 	cursor:pointer;
 	transition:0.5s all ease-in-out;
 }
+.circle-button {
+	width:fit-content;
+	border-radius:50%;
+	background-color:#F2F2F2;
+	width:2em;
+	height:2em;
+	border:0.05em solid black;
+	padding:10%;
+	margin:auto;
+	transition:0.5s all ease-in-out;
+}
+.label {
+	font-size:0.5em;
+	margin:10%;
+	text-align:center;
+}
 .perspective .option:hover {
-	background-color:#CCCCCC;
-	transform-origin: 50 50;
+/*	background-color:#CCCCCC;*/
+	transform-origin: 50% 50%;
 	transform:scale(1.2);
 }
 ::-webkit-scrollbar {
@@ -234,6 +246,19 @@ div[value=neg]{
 	background-color:#B6B5C9;
 	color:white;
 
+}
+.tooltip {
+	position:absolute;
+	display:none;
+	font-weight:400;
+	font-size:0.8em;
+	background-color:white;
+	padding:1%;
+	box-shadow:0em 0em 1em #666666;
+	border-radius:1em;
+}
+#view-tooltip {
+	z-index:4;
 }
 @media screen and (max-width:767px){
 	#reactions .item {

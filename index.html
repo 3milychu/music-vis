@@ -42,10 +42,28 @@
 
 <!-- vis perspective -->
 <div class="perspective">
-		<div class="option" id="spatial"><i class="material-icons">flare</i></div>
-		<div class="option" id="comments"><i class="material-icons">chat_bubble_outline</i></div>
-		<div class="option" id="signature"><i class="material-icons">fingerprint</i></div>
+		<div class="option" id="spatial">
+			<div class="label">Spatial View</div>
+			<div class="circle-button">
+				<i class="material-icons">flare</i>
+			</div>
+		</div>
+		<div class="option" id="comments">
+			<div class="label">Comments View</div>
+			<div class="circle-button">
+				<i class="material-icons">chat_bubble_outline</i>
+			</div>
+		</div>
+		<div class="option" id="signature">
+			<div class="label">Signature View</div>
+			<div class="circle-button">
+				<i class="material-icons">fingerprint</i>
+			</div>
+		</div>
 </div>
+
+<!-- view tooltip -->
+<div class="tooltip" id="view-tooltip"></div>
 
 </body>
 <script>
@@ -89,16 +107,14 @@ resizeInterface();
 window.onresize=function() {
 	resizeInterface();
 }
-status();
 optionsListen("playback");
 document.querySelector('.option[value="real"]').click();
 time_option="real";
 optionsListen("zoom");
 document.querySelector('.option[value="locked"]').click();
 zoom_option="locked";
-document.querySelector('#comments').click();
 status();
-
+document.querySelector('#comments').click();
 
 // play on audio click
 audio = document.querySelector('audio');
@@ -171,6 +187,11 @@ function optionsListen(name) {
 	}
 }
 
+// capitalize first letter
+function caps(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 // get selections
 status = [];
 function status() {
@@ -179,14 +200,21 @@ function status() {
 	for (i=0;i<p_options.length;i++){
 		p_options[i].onclick=function() {
 			for(j=0;j<p_options.length;j++){
-				p_options[j].style.backgroundColor="transparent";
-				p_options[j].style.color="black";
+				modify = p_options[j].querySelector('.circle-button');
+				modify.style.backgroundColor="#F2F2F2";
+				modify.style.color="black";
+				modify.style.transform="scale(0.7)";
 			}
-			// run perspective rules here
+			// change color
 			target = document.getElementById(this.id);
+			target = target.querySelector('.circle-button');
+			target.style.transform="scale(1)";
 			target.style.backgroundColor="black";
 			target.style.color="white";
 		}
+		// p_options[i].onmouseout= function() {
+		// 	tooltip.style.display="none";
+		// }
 	}
 }
 
