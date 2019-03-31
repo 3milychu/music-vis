@@ -32,11 +32,21 @@
 <div class="view">
 	<input value="10"></input>
 
+	<!-- comments -->
 	<div id="reactions">
 		<div id="start-message">
 			<div class="button" id="play">Play</div>
 		</div>
 	</div>
+	<!-- spatial -->
+	<div id="reactions2">
+		<h2>Spatial view coming soon!</h2>
+	</div>
+	<!-- signature -->
+	<div id="reactions3">
+		<h2>Signature view coming soon!</h2>
+	</div>
+
 
 </div>
 
@@ -68,6 +78,7 @@
 </body>
 <script>
 
+var view;
 var audio;
 var measure;
 var beat;
@@ -211,11 +222,31 @@ function status() {
 			target.style.transform="scale(1)";
 			target.style.backgroundColor="black";
 			target.style.color="white";
+			// change var view
+			view = this.id;
+			getView(view);
 		}
 		// p_options[i].onmouseout= function() {
 		// 	tooltip.style.display="none";
 		// }
 	}
+}
+
+function getView(view){
+	if(view == "comments"){
+		document.querySelector('#reactions').style.display="inline-block";
+		document.querySelector('#reactions2').style.display="none";
+		document.querySelector('#reactions3').style.display="none";
+	} else if (view == "spatial") {
+		document.querySelector('#reactions').style.display="none";
+		document.querySelector('#reactions2').style.display="inline-block";
+		document.querySelector('#reactions3').style.display="none";
+	} else if (view == "signature") {
+		document.querySelector('#reactions').style.display="none";
+		document.querySelector('#reactions2').style.display="none";
+		document.querySelector('#reactions3').style.display="inline-block";
+	}
+
 }
 
 // get reactions
