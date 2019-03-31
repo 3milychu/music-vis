@@ -24,6 +24,7 @@ body, html {
 	vertical-align:top;
 	width:auto;
 	cursor:pointer;
+	transition:all 0.5s ease-in-out;
 }
 .page-holder img {
 	height:100%;
@@ -44,6 +45,7 @@ body, html {
 	background-color: none;
 	z-index:100;
 	background-blend-mode: multiply;
+	transition:all 0.5s ease-in-out;
 }
 /*.page-holder:hover .overlay {
 	opacity:0.5;

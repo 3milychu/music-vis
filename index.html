@@ -100,8 +100,11 @@ window.onresize=function() {
 }
 status();
 optionsListen("playback");
-document.querySelector('.option[value="experienced"]').click();
-time_option="experienced";
+document.querySelector('.option[value="real"]').click();
+time_option="real";
+
+
+
 
 // play on audio click
 audio = document.querySelector('audio');
@@ -113,6 +116,7 @@ play = document.querySelector('.button');
 play.onclick=function() {
 	clear();
 	audio.play();
+	alignScoreView(0);
 }
 
 // clear reactions container
@@ -145,7 +149,7 @@ function getMusic(data) {
 			}
 			loadReactions();
 		} 
-	}, 20);
+	}, 10);
 }
 
 function optionsListen(name) {
@@ -194,6 +198,7 @@ function getReactions(data){
 		} else if (time_option =="real"){
 			audio.playbackRate = 1;
 		}
+		alignScoreView(add.length)
 		console.log(add);
 		if(add.length!=0){
 			for (i=0;i<add.length;i++){
@@ -219,6 +224,22 @@ function getReactions(data){
 			}
 		}
 	};
+}
+
+function alignScoreView(comments_count){
+	console.log(comments_count)
+	score_view = document.querySelectorAll('.page-holder');
+	height = window.innerHeight;
+	for(i=0;i<score_view.length;i++){
+		if (comments_count==0){
+		score_view[i].style.height=height/2+"px";
+		console.log(score_view[i].style.height)
+		} else if (comments_count==1){
+			score_view[i].style.height=height/4+"px";
+		} else {
+			score_view[i].style.height=height/8+"px";
+		}
+	}
 }
 
 function displayEndorsement(data, comment_id){
@@ -324,10 +345,9 @@ function getScore() {
 		measures.push(measure_start);
 	}
 	console.log(measures);
-	for(i=1;i<144;i++){
+	for(i=1;i<193;i++){
 		target=document.querySelector('#page1');
-		width=window.innerWidth*.70;
-		height=window.innerHeight*4;
+		height=window.innerHeight
 		div = document.createElement('div');
 		div.setAttribute("class","page-holder");
 		div.setAttribute("id","page-holder"+i);
@@ -335,7 +355,7 @@ function getScore() {
 		overlay.setAttribute("class","overlay");
 		img = document.createElement('img');
 		img.src="assets/cropped/500w/"+i+".png";
-		div.style.height=height/30+"px";
+		div.style.height=height/8+"px";
 		div.appendChild(img);
 		div.appendChild(overlay);
 		target.appendChild(div);
