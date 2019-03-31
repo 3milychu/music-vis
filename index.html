@@ -214,6 +214,7 @@ function getReactions(data){
 					div.appendChild(p);
 					reactions.prepend(div);
 					displayEndorsement(add[i], id);
+					displayTags(add[i], id);
 				}
 			}
 		}
@@ -236,17 +237,38 @@ function displayEndorsement(data, comment_id){
 	}
 	agrees = results.filter(item => item == "agree" )
 	disagrees = results.filter(item => item == "disagree")
-	console.log(agrees);
-	console.log(comment_id)
 	target = document.getElementById(comment_id);
-	console.log(target)
 	endorsements = document.createElement('div');
 	endorsements.setAttribute("class", "endorsements");
 	endorsements.innerHTML="<div class=social><em>"+ agrees.length + " <i class='material-icons'>thumb_up</i></em></div><div class=social><em>"+ disagrees.length + " <i class='material-icons' style='transform:translate(360deg);color:#CCCCCC'>thumb_down</i></em></div>";
 	target.prepend(endorsements);
 }
 
-function displayTags(data){
+function displayTags(data, comment_id){
+	tags = []
+	categories=['dynamics', 'dynamics and balance', 'balance', 'tempo', 'timing', 'rhythmic motion', 'sychronization', 'communication', 'matching_musical_idea', 'expressivity', 'character', 'tone quality', 'ending'];
+	for(i=0;i<categories.length;i++){
+		category = categories[i];
+		if(data[category]!=undefined && data[category]!= ""){
+			tags.push({
+				tag: category,
+				sentiment:data[category]
+			});
+		}
+	}
+	console.log(tags);
+	for(i=0;i<tags.length;i++){
+		console.log("check")
+		console.log(tags[i]['tag'])
+		category_tag = document.createElement('div');
+		category_tag.setAttribute("class", "tag");
+		category_tag.setAttribute("value",tags[i]['sentiment'] )
+		category_tag.innerHTML=tags[i]['tag'];
+		console.log(comment_id);
+		target = document.getElementById(comment_id);
+		console.log(target);
+		target.appendChild(category_tag);
+	}
 
 }
 

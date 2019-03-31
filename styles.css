@@ -83,10 +83,10 @@ audio:focus {
 }
 #reactions .item {
 	display:inline-block;
-	width:25%;
+	width:29%;
 	padding:2%;
 	font-size:0.8em;
-	vertical-align: top:;
+	vertical-align: top;
 }
 .new {
 	animation: 0.5s fadeUp ease-in-out;
@@ -199,4 +199,19 @@ em {
 .disagree {
 	transform:rotate(360deg);
 	color:#CCCCCC;
+}
+.tag {
+	display:inline-block;	
+	margin:1% 3%;
+	padding:0% 3%;
+	color:#666666;
+}
+div[value=pos]{
+	background-color:#FCC388;
+
+}
+div[value=neg]{
+	background-color:#B6B5C9;
+	color:white;
+
 }
