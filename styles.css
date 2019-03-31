@@ -279,6 +279,9 @@ div[value=neg]{
 	vertical-align:middle;
 	padding: 5% 0%;
 }
+.person {
+	cursor:pointer;
+}
 .performers {
 	width:20%;
 	margin:auto;
