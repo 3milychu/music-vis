@@ -42,14 +42,14 @@
 	<div id="reactions2">
 		<div id="hall">
 			<div class="performers">
-				<div class="performer" id="pianist"></div>
-				<div class="performer" id="cellist"></div>
+				<div class="person performer" id="performing_pianist"></div>
+				<div class="person performer" id="performing_cellist"></div>
 			</div>
 			<div class="audience">
 			</div>
 			<div class="backups">
-				<div class="backup" id="pianist"></div>
-				<div class="backup" id="cellist"></div>
+				<div class="person backup" id="backup_pianist"></div>
+				<div class="person backup" id="backup_cellist"></div>
 			</div>
 		</div>
 	</div>
@@ -84,7 +84,7 @@
 </div>
 
 <!-- view tooltip -->
-<div class="tooltip" id="view-tooltip"></div>
+<div class="tooltip"></div>
 
 </body>
 <script>
@@ -112,7 +112,7 @@ getScore();
 d3.csv('data/timestamps.csv')
 	.then(function(data) {
 		getMusic(data);
-		spatial(data);
+		spatial();
 	})
 	.catch(function(error){
 	})
@@ -286,7 +286,7 @@ function getReactions(data){
 			for (i=0;i<add.length;i++){
 				id = add[i]['comment_id'];
 				test = document.getElementById(id);
-				console.log(test);
+				console.log(add[i]);
 				if(test==null){
 					comment = add[i]['MOM1CHAR'];
 					div = document.createElement('div');
@@ -302,23 +302,65 @@ function getReactions(data){
 					reactions.prepend(div);
 					displayEndorsement(add[i], id);
 					displayTags(add[i], id);
+					updateSpatial(add[i]);
 				}
 			}
 		}
 	};
 }
 
-function spatial(data) {
+
+// setup spatial view
+function spatial() {
 	container = document.querySelector('#reactions2');
 	target = container.querySelector('.audience');
-	console.log(target);
+	tooltip=document.querySelector('.tooltip');
 	for(i=0;i<15;i++){
 		div = document.createElement('div');
-		div.setAttribute("class", "member");
-		div.id = "member"+i;
+		div.classList.add('person','member');
+		div.id = "class_member_"+i;
 		target.appendChild(div);
 	}
+	people = document.querySelectorAll('.person');
+	for(i=0;i<people.length;i++){
+		people[i].onmouseover=function() {
+			function getpos(event) {
+				var e = window.event;
+				x = e.clientX + "px";
+				y = e.clientY + "px";
+			}
+			// get mouse event
+			getpos();
+			text= this.id;
+			tooltip.style.display="inline-block";
+			tooltip.innerHTML = caps(text.replace(/_/g, " "));
+		  	tooltip.style.left=x;
+		  	tooltip.style.top=y;
+		}
+		people[i].onmouseout=function() {
+			tooltip.style.display="none";
+		}
+	}
+}
 
+function updateSpatial(data){
+	// people = document.querySelectorAll('.person');
+	// for(i=0;i<people.length;i++){
+	// 	people[i].style.backgroundColor="#CCCCCC";
+	// }
+	role = data['role'];
+	role = role.replace(/\s/g, "_");
+	role = role.toLowerCase();
+	console.log(role);
+	sentiment = data['sentiment'];
+	target = document.getElementById(role);
+	if(sentiment == "pos"){
+		target.style.backgroundColor="#FCC388";
+	} else if (sentiment == "neg") {
+		target.style.backgroundColor="#B6B5C9";
+	} else {
+		target.style.backgroundColor="#7FCDEE";
+	}
 }
 
 // dynamic or locked view of score based on # of reactions 

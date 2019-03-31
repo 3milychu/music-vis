@@ -268,8 +268,6 @@ div[value=neg]{
 	padding:1%;
 	box-shadow:0em 0em 1em #666666;
 	border-radius:1em;
-}
-#view-tooltip {
 	z-index:4;
 }
 /*spatial*/
