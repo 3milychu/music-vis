@@ -133,10 +133,8 @@ window.onresize=function() {
 }
 optionsListen("playback");
 document.querySelector('.option[value="real"]').click();
-time_option="real";
 optionsListen("zoom");
 document.querySelector('.option[value="locked"]').click();
-zoom_option="locked";
 status();
 document.querySelector('#comments').click();
 
@@ -207,6 +205,9 @@ function optionsListen(name) {
 			}
 			modify.style.backgroundColor="transparent";
 			modify.style.color="black";
+			console.log(this.innerHTML);
+			console.log(time_option);
+			console.log(zoom_option);
 		}
 	}
 }
@@ -264,18 +265,6 @@ function getView(view){
 
 // get reactions
 function getReactions(data){
-	// adjust playback rate
-	if(time_option == "experienced"){
-		adjustPlayback(add);
-	} else if (time_option =="real"){
-		audio.playbackRate = 1;
-	}
-	if(zoom_option=="dynamic"){
-		alignScoreView(add.length)
-	}else if(zoom_option=="locked"){
-		score_view = document.querySelector('#page1');
-		score_view.style.height=height/8+"px";
-	}
 	// display reactions
 	reactions = document.querySelector('#reactions');
 	if(watch == "same"){
@@ -286,6 +275,18 @@ function getReactions(data){
 		add= data.filter(function(d){
     	return ((parseInt(d.MOM_STARTBAR+d.MOM_STARTBEAT) <= ref.value) && (parseInt(d.MOM_ENDBAR+d.MOM_ENDBEAT) >= ref.value));
 		 })
+		// adjust playback rate
+		if(time_option == "experienced"){
+			adjustPlayback(add);
+		} else if (time_option =="real"){
+			audio.playbackRate = 1;
+		}
+		if(zoom_option=="dynamic"){
+			alignScoreView(add.length)
+		}else if(zoom_option=="locked"){
+			score_view = document.querySelector('#page1');
+			score_view.style.height=height/8+"px";
+		}
 		if(add.length!=0){
 			for (i=0;i<add.length;i++){
 				id = add[i]['comment_id'];
