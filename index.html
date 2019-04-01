@@ -6,6 +6,8 @@
 	<script src="https://d3js.org/d3.v5.min.js"></script>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="styles.css">
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<meta name="viewport" content="width=device-width">
 </head>
 <body>
 <!-- audio -->
@@ -46,6 +48,20 @@
 				<div class="person performer" id="performing_cellist"></div>
 			</div>
 			<div class="audience">
+				<div class="person member" id="class_member_1"></div>
+				<div class="person member" id="class_member_2"></div>
+				<div class="person member" id="class_member_3"></div>
+				<div class="person member" id="class_member_4"></div>
+				<div class="person member" id="class_member_5"></div>
+				<div class="person member" id="class_member_6"></div>
+				<div class="person member" id="class_member_7"></div>
+				<div class="person member" id="class_member_8"></div>
+				<div class="person member" id="class_member_9"></div>
+				<div class="person member" id="class_member_10"></div>
+				<div class="person member" id="class_member_11"></div>
+				<div class="person member" id="class_member_12"></div>
+				<div class="person member" id="class_member_13"></div>
+				<div class="person member" id="class_member_14"></div>
 			</div>
 			<div class="backups">
 				<div class="person backup" id="non-performing_pianist"></div>
@@ -87,15 +103,15 @@
 <div class="tooltip"></div>
 
 </body>
+<script type="text/javascript" src="computed.js"></script>
 <script>
-
 var view;
 var audio;
 var measure;
 var beat;
 var ref = document.querySelector('input');
 var watch = "same";
-formatTime = d3.format(",.1f");
+formatTime = d3.format(",.2f");
 var time_option;
 var zoom_option;
 
@@ -108,8 +124,10 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
 };
 
 // run functions
+window.onload=function() {
+	spatial();
+}
 getScore();
-spatial();
 d3.csv('data/timestamps.csv')
 	.then(function(data) {
 		getMusic(data);
@@ -181,7 +199,7 @@ function getMusic(data) {
 			}
 			loadReactions();
 		} 
-	}, 15);
+	}, 5);
 }
 
 function optionsListen(name) {
@@ -240,9 +258,6 @@ function status() {
 			view = this.id;
 			getView(view);
 		}
-		// p_options[i].onmouseout= function() {
-		// 	tooltip.style.display="none";
-		// }
 	}
 }
 
@@ -266,7 +281,6 @@ function getView(view){
 // get reactions
 function getReactions(data){
 	// display reactions
-	reactions = document.querySelector('#reactions');
 	if(watch == "same"){
 	}
 	if(watch =="changed") {
@@ -288,31 +302,36 @@ function getReactions(data){
 		}
 		if(add.length!=0){
 			for (i=0;i<add.length;i++){
-				id = add[i]['comment_id'];
+				info = add[i];
+				id = info['comment_id'];
+				comment = info['MOM1CHAR'];
+				role = info['role'];
 				test = document.getElementById(id);
-				role = add[i]['role'];
 				if(test==null){
-					comment = add[i]['MOM1CHAR'];
-					div = document.createElement('div');
-					div.setAttribute("class","item")
-					div.setAttribute('id',id);
-					h3 = document.createElement('h3');
-					h3.innerHTML=add[i]['role'];
-					p = document.createElement('p');
-					p.innerHTML="'"+comment+"'";
-					label = document.createElement('label');
-					div.appendChild(h3);
-					div.appendChild(p);
-					reactions.prepend(div);
-					displayEndorsement(add[i], id);
-					displayTags(add[i], id);
-					updateSpatial(add[i], role);
+					createComment(info,id,role)
+					displayEndorsement(info, id);
+					displayTags(info, id);
+					updateSpatial(info, role);
 				}
 			}
-		} else {
-			resetSpatial();
 		}
 	};
+}
+
+function createComment(data, id, role){
+	reactions = document.querySelector('#reactions');
+	comment = data['MOM1CHAR'];
+	div = document.createElement('div');
+	div.setAttribute("class","item")
+	div.setAttribute('id',id);
+	h3 = document.createElement('h3');
+	h3.innerHTML=role;
+	p = document.createElement('p');
+	p.innerHTML="'"+comment+"'";
+	label = document.createElement('label');
+	div.appendChild(h3);
+	div.appendChild(p);
+	reactions.prepend(div);
 }
 
 
@@ -323,15 +342,7 @@ function getpos(event) {
 }
 // setup spatial view
 function spatial() {
-	container = document.querySelector('#reactions2');
-	target = container.querySelector('.audience');
 	tooltip=document.querySelector('.tooltip');
-	for(i=0;i<15;i++){
-		div = document.createElement('div');
-		div.classList.add('person','member');
-		div.id = "class_member_"+i;
-		target.appendChild(div);
-	}
 	people = document.querySelectorAll('.person');
 	for(i=0;i<people.length;i++){
 		people[i].onmouseover=function() {
@@ -352,6 +363,8 @@ function spatial() {
 function updateSpatial(data, role){
 	role = role.replace(/\s/g, "_");
 	role = role.toLowerCase();
+	rate1 = parseInt(data['rater1_reassigned']);
+	rate2 = parseInt(data['rater1_reassigned']);
 	rater1 = data['rater1'].replace(/\s/g, "_").toLowerCase();
 	rater2 = data['rater2'].replace(/\s/g, "_").toLowerCase();
 	console.log(role);
@@ -359,10 +372,31 @@ function updateSpatial(data, role){
 	target = document.getElementById(role);
 	if(sentiment == "pos"){
 		target.style.backgroundColor="#FCC388";
+		if(rate1<3){
+			document.getElementById(rater1).style.backgroundColor="#B6B5C9";
+		} else {
+			document.getElementById(rater1).style.backgroundColor="#FCC388";
+		}
+		if(rate2<3){
+			document.getElementById(rater2).style.backgroundColor="#B6B5C9";
+		} else {
+			document.getElementById(rater2).style.backgroundColor="#FCC388";
+		}
 	} else if (sentiment == "neg") {
 		target.style.backgroundColor="#B6B5C9";
+		if(rate1<3){
+			document.getElementById(rater1).style.backgroundColor="#FCC388";
+		} else {
+			document.getElementById(rater1).style.backgroundColor="#B6B5C9";
+		}
+		if(rate2<3){
+			document.getElementById(rater2).style.backgroundColor="#FCC388";
+		} else {
+			document.getElementById(rater2).style.backgroundColor="#B6B5C9";
+		}
 	} else if (sentiment == "mixed" | sentiment =="other"){
 		target.style.backgroundColor="#7FCDEE";
+
 	}
 }
 
@@ -391,7 +425,7 @@ function alignScoreView(comments_count){
 // number of agreements/disagreements by raters for each reaction
 function displayEndorsement(data, comment_id){
 	results = [];
-	rater1 = data['rater1_reassigned'];
+	rater1 = parseInt(data['rater1_reassigned']);
 	if(rater1<3){
 		results.push({
 			rater: data['rater1'],
@@ -437,12 +471,12 @@ function endorsementsDetail(data) {
 			tooltip.style.top=y;
 			comment_id = this.getAttribute("name");
 			index = data.findIndex(obj => obj.comment_id==comment_id);
-			if(data[index]['rater1_reassigned']<3){
+			if(parseInt(data[index]['rater1_reassigned'])<3){
 				disagree.push(data[index]['rater1'])
 			} else {
 				agree.push(data[index]['rater1'])
 			}
-			if(data[index]['rater2_reassigned']<3){
+			if(parseInt(data[index]['rater2_reassigned'])<3){
 				disagree.push(data[index]['rater2'])
 			} else {
 				agree.push(data[index]['rater2'])
@@ -472,12 +506,12 @@ function endorsementsDetail(data) {
 		tooltip.style.top=y;
 		comment_id = this.getAttribute("name");
 		index = data.findIndex(obj => obj.comment_id==comment_id);
-		if(data[index]['rater1_reassigned']<3){
+		if(parseInt(data[index]['rater1_reassigned'])<3){
 			disagree.push(data[index]['rater1'])
 		} else {
 			agree.push(data[index]['rater1'])
 		}
-		if(data[index]['rater2_reassigned']<3){
+		if(parseInt(data[index]['rater2_reassigned'])<3){
 			disagree.push(data[index]['rater2'])
 		} else {
 			agree.push(data[index]['rater2'])
