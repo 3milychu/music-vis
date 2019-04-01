@@ -48,8 +48,8 @@
 			<div class="audience">
 			</div>
 			<div class="backups">
-				<div class="person backup" id="backup_pianist"></div>
-				<div class="person backup" id="backup_cellist"></div>
+				<div class="person backup" id="non-performing_pianist"></div>
+				<div class="person backup" id="non-performing_cellist"></div>
 			</div>
 		</div>
 	</div>
@@ -181,7 +181,7 @@ function getMusic(data) {
 			}
 			loadReactions();
 		} 
-	}, 10);
+	}, 15);
 }
 
 function optionsListen(name) {
@@ -268,7 +268,6 @@ function getReactions(data){
 	// display reactions
 	reactions = document.querySelector('#reactions');
 	if(watch == "same"){
-		// resetSpatial();
 	}
 	if(watch =="changed") {
 		clear();
@@ -291,6 +290,7 @@ function getReactions(data){
 			for (i=0;i<add.length;i++){
 				id = add[i]['comment_id'];
 				test = document.getElementById(id);
+				role = add[i]['role'];
 				if(test==null){
 					comment = add[i]['MOM1CHAR'];
 					div = document.createElement('div');
@@ -306,9 +306,11 @@ function getReactions(data){
 					reactions.prepend(div);
 					displayEndorsement(add[i], id);
 					displayTags(add[i], id);
-					updateSpatial(add[i]);
+					updateSpatial(add[i], role);
 				}
 			}
+		} else {
+			resetSpatial();
 		}
 	};
 }
@@ -347,8 +349,7 @@ function spatial() {
 	}
 }
 
-function updateSpatial(data){
-	role = data['role'];
+function updateSpatial(data, role){
 	role = role.replace(/\s/g, "_");
 	role = role.toLowerCase();
 	rater1 = data['rater1'].replace(/\s/g, "_").toLowerCase();
@@ -603,7 +604,9 @@ function resizeInterface() {
 	offset = header_h+calc_h;
 	view.style.height=window.innerHeight - offset+"px";
 	start_message = document.querySelector('#start-message');
-	start_message.style.height=view.offsetHeight+"px";
+	if(start_message!=null){
+		start_message.style.height=view.offsetHeight+"px";
+	}
 }
 
 
