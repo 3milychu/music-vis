@@ -1,16 +1,37 @@
-// formatTime = d3.format(",.1f");
-// music = document.querySelector('audio');
+var play = document.querySelector('#play');
+var pause = document.querySelector('#pause');
+var formatTime = d3.format(",.2f");
+var sound = new Howl({
+  src: ['assets/music.wav']
+});
 
-// var app = new Vue({
-//   el: '#reactions',
-//   data: {
-//   },
-// 	computed: {
-// 	  musicTime: function () {
-// 	   var vue_time = formatTime(music.currentTime);
-// 	   return vue_time;
-// 	  }
-// 	}
-// })
+play.onclick=function() {
+	sound.play();
+	console.log("playing")
+}
+pause.onclick=function() {
+	sound.pause();
+	console.log("paused")
+}
 
-// console.log(app.musicTime);
+var app = new Vue({
+	el: '#player',
+	data: {
+		time: formatTime(sound.seek())
+	},
+	watch: {
+		// whenever time changes, this function should run
+	    time: function (newtime, oldtime) {
+	      this.debouncedGetTime();
+	    }
+	},
+	 created: function () {
+		this.debouncedGetTime = _.debounce(this.getTime, 30)
+	},
+	methods: {
+		getTime: function() {
+			// get the reaction data
+			return this.time;
+		}
+	}
+})

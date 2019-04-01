@@ -7,7 +7,6 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-	<script src="node_moidules/howler/dist/howler.js"></script>
 	<meta name="viewport" content="width=device-width">
 </head>
 <body>
@@ -104,17 +103,25 @@
 <div class="tooltip"></div>
 
 </body>
-<script type="text/javascript" src="computed.js"></script>
+<!-- <script type="text/javascript" src="computed.js"></script> -->
 <script>
+var formatTime = d3.format(",.2f");
+var music = document.querySelector('audio');
+var time;
 var view;
 var audio;
 var measure;
 var beat;
 var ref = document.querySelector('input');
 var watch = "same";
-formatTime = d3.format(",.2f");
 var time_option;
 var zoom_option;
+
+// var sound = new Howl({
+//   src: ['sound.mp3']
+// });
+
+// sound.play();
 
 //mobile view
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
@@ -179,28 +186,31 @@ function clear() {
 
 // load music
 function getMusic(data) {
-	music = document.querySelector('audio')
 	setInterval(function () {
-	    time = formatTime(music.currentTime);
+		time = formatTime(music.currentTime);
 		filter = data.filter(function(d){
-	    	return (formatTime(d.timestamp).indexOf(time) === 0);
+	    	return (formatTime(d.timestamp).indexOf(time) == 0);
 		 })
 		if(filter.length==1){
-			reset();
-			label = filter[0]['img'];
-			hover(label);
-			scrollTo(label);
-			measure = filter[0]['measure'];
-			beat = filter[0]['beat'];
-			if(ref.value!=measure+beat) {
-				ref.value= measure+beat;
-				watch = "changed";
-			} else {
-				watch ="same"
-			}
-			loadReactions();
+			roll(filter[0]);
 		} 
-	}, 5);
+	}, 0);
+}
+
+function roll(data) {
+	reset();
+	label = data['img'];
+	hover(label);
+	scrollTo(label);
+	measure = data['measure'];
+	beat = data['beat'];
+	if(ref.value!=measure+beat) {
+	ref.value= measure+beat;
+	watch = "changed";
+	} else {
+	watch ="same"
+	}
+	loadReactions();
 }
 
 function optionsListen(name) {
@@ -283,13 +293,27 @@ function getView(view){
 function getReactions(data){
 	resetSpatial();
 	// display reactions
-	if(watch == "same"){
-	}
 	if(watch =="changed") {
 		clear();
 		add= data.filter(function(d){
     	return ((parseInt(d.MOM_STARTBAR+d.MOM_STARTBEAT) <= ref.value) && (parseInt(d.MOM_ENDBAR+d.MOM_ENDBEAT) >= ref.value));
 		 })
+		// add stuff
+		if(add.length!=0){
+			for (i=0;i<add.length;i++){
+				info = add[i];
+				id = info['comment_id'];
+				comment = info['MOM1CHAR'];
+				role = info['role'];
+				test = document.getElementById(id);
+				if(test==null|test==undefined){
+					createComment(info,id,role)
+					displayEndorsement(info, id);
+					displayTags(info, id);
+					updateSpatial(info, role);
+				}
+			}
+		}
 		// adjust playback rate
 		if(time_option == "experienced"){
 			adjustPlayback(add);
@@ -301,21 +325,6 @@ function getReactions(data){
 		}else if(zoom_option=="locked"){
 			score_view = document.querySelector('#page1');
 			score_view.style.height=height/8+"px";
-		}
-		if(add.length!=0){
-			for (i=0;i<add.length;i++){
-				info = add[i];
-				id = info['comment_id'];
-				comment = info['MOM1CHAR'];
-				role = info['role'];
-				test = document.getElementById(id);
-				if(test==null){
-					createComment(info,id,role)
-					displayEndorsement(info, id);
-					displayTags(info, id);
-					updateSpatial(info, role);
-				}
-			}
 		}
 	};
 }
