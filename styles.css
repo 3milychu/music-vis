@@ -281,6 +281,31 @@ div[value=neg]{
 }
 .person {
 	cursor:pointer;
+	background-color:#CCCCCC;
+	transition:0.5s ease-in-out;
+}
+@keyframes posFade{
+	0% {
+		transform-origin: 50% 50%;
+		transform:scale(1.2);
+		background-color:#FCC388;
+	}
+	25% {
+		transform:scale(0.8);
+	}
+	50% {
+		transform:scale(1.2);
+	}
+	75% {
+		transform:scale(0.8);
+	}
+	100% {
+		transform:scale(1);
+		background-color:#F2F2F2;
+	}
+}
+@keyframes negFade {
+
 }
 .performers {
 	width:20%;
@@ -290,7 +315,6 @@ div[value=neg]{
 	width:2.5em;
 	height:2.5em;
 	border-radius:50%;
-	background-color:#CCCCCC;
 	display:inline-block;
 	margin:2% 5%;
 }

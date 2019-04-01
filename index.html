@@ -7,6 +7,7 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script src="node_moidules/howler/dist/howler.js"></script>
 	<meta name="viewport" content="width=device-width">
 </head>
 <body>
@@ -280,6 +281,7 @@ function getView(view){
 
 // get reactions
 function getReactions(data){
+	resetSpatial();
 	// display reactions
 	if(watch == "same"){
 	}
@@ -366,33 +368,38 @@ function updateSpatial(data, role){
 	rate1 = parseInt(data['rater1_reassigned']);
 	rate2 = parseInt(data['rater1_reassigned']);
 	rater1 = data['rater1'].replace(/\s/g, "_").toLowerCase();
+	rater1 = document.getElementById(rater1);
 	rater2 = data['rater2'].replace(/\s/g, "_").toLowerCase();
+	rater2 = document.getElementById(rater2);
 	console.log(role);
 	sentiment = data['sentiment'];
 	target = document.getElementById(role);
 	if(sentiment == "pos"){
 		target.style.backgroundColor="#FCC388";
 		if(rate1<3){
-			document.getElementById(rater1).style.backgroundColor="#B6B5C9";
+			rater1.style.backgroundColor="#B6B5C9";
+			setTimeout(function() {
+				target.style.backgroundColor="#F2F2F2";
+			}, 10000);
 		} else {
-			document.getElementById(rater1).style.backgroundColor="#FCC388";
+			rater1.style.backgroundColor="#FCC388";
 		}
 		if(rate2<3){
-			document.getElementById(rater2).style.backgroundColor="#B6B5C9";
+			rater2.style.backgroundColor="#B6B5C9";
 		} else {
-			document.getElementById(rater2).style.backgroundColor="#FCC388";
+			rater2.style.backgroundColor="#FCC388";
 		}
 	} else if (sentiment == "neg") {
 		target.style.backgroundColor="#B6B5C9";
 		if(rate1<3){
-			document.getElementById(rater1).style.backgroundColor="#FCC388";
+			rater1.style.backgroundColor="#FCC388";
 		} else {
-			document.getElementById(rater1).style.backgroundColor="#B6B5C9";
+			rater1.style.backgroundColor="#B6B5C9";
 		}
 		if(rate2<3){
-			document.getElementById(rater2).style.backgroundColor="#FCC388";
+			rater2.style.backgroundColor="#FCC388";
 		} else {
-			document.getElementById(rater2).style.backgroundColor="#B6B5C9";
+			rater2.style.backgroundColor="#B6B5C9";
 		}
 	} else if (sentiment == "mixed" | sentiment =="other"){
 		target.style.backgroundColor="#7FCDEE";
@@ -401,9 +408,9 @@ function updateSpatial(data, role){
 }
 
 function resetSpatial() {
-	people = document.querySelectorAll('.person');
-	for(i=0;i<people.length;i++){
-		people[i].style.backgroundColor="#CCCCCC";
+	toreset = document.querySelectorAll('.person');
+	for(i=0;i<toreset.length;i++){
+		toreset[i].style.backgroundColor="#CCCCCC";
 	}
 }
 
@@ -561,7 +568,7 @@ function displayTags(data, comment_id){
 
 // adjust audio playback rate based on # reactions
 function adjustPlayback(data) {
-	slow=0.5;
+	slow=0.4;
 	normal=1;
 	fast=2;
 	veryfast=2.5
