@@ -63,6 +63,7 @@
 	<!-- comments -->
 	<div id="reactions">
 		<div id="start-message">
+			<h1>Notes on Perspective</h1>
 			<div class="button" id="play">Play</div>
 		</div>
 	</div>
@@ -188,7 +189,7 @@ window.onresize=function() {
 optionsListen("playback");
 document.querySelector('.option[value="real"]').click();
 optionsListen("zoom");
-document.querySelector('.option[value="locked"]').click();
+document.querySelector('.option[value="dynamic"]').click();
 status();
 document.querySelector('#comments').click();
 menuListen();
@@ -270,7 +271,7 @@ function optionsListen(name) {
 	options=document.querySelectorAll("div[name="+name+"]");
 	for(i=0;i<options.length;i++){
 		options[i].onclick=function(){
-			this.style.backgroundColor="black";
+			this.style.backgroundColor="#666666";
 			this.style.color="white";
 			if(this.innerHTML=="Experienced time"){
 				time_option = "experienced";
@@ -692,7 +693,7 @@ function scrollTo(img){
 	}else {
 		scrollpost.scrollTo({
 		  left: target,
-		  behavior:'smooth'
+		  // behavior:'smooth'
 		});
 	}
 
