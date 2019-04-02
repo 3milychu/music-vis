@@ -291,7 +291,6 @@ function getView(view){
 
 // get reactions
 function getReactions(data){
-	resetSpatial();
 	// display reactions
 	if(watch =="changed") {
 		clear();
@@ -384,43 +383,52 @@ function updateSpatial(data, role){
 	sentiment = data['sentiment'];
 	target = document.getElementById(role);
 	if(sentiment == "pos"){
-		target.style.backgroundColor="#FCC388";
+		target.classList.add('posFade');
 		if(rate1<3){
-			rater1.style.backgroundColor="#B6B5C9";
-			setTimeout(function() {
-				target.style.backgroundColor="#F2F2F2";
-			}, 10000);
+			rater1.classList.add('negFade');
 		} else {
-			rater1.style.backgroundColor="#FCC388";
+			rater1.classList.add('posFade');
 		}
 		if(rate2<3){
-			rater2.style.backgroundColor="#B6B5C9";
+			rater2.classList.add('negFade');
 		} else {
-			rater2.style.backgroundColor="#FCC388";
+			rater2.classList.add('posFade');
 		}
 	} else if (sentiment == "neg") {
-		target.style.backgroundColor="#B6B5C9";
+			target.classList.add('negFade');
 		if(rate1<3){
-			rater1.style.backgroundColor="#FCC388";
+			rater1.classList.add('posFade');
 		} else {
-			rater1.style.backgroundColor="#B6B5C9";
+			rater1.classList.add('negFade');
 		}
 		if(rate2<3){
-			rater2.style.backgroundColor="#FCC388";
+			rater2.classList.add('posFade');
 		} else {
-			rater2.style.backgroundColor="#B6B5C9";
+			rater2.classList.add('negFade');
 		}
 	} else if (sentiment == "mixed" | sentiment =="other"){
-		target.style.backgroundColor="#7FCDEE";
+		target.classList.add('mixedFade');
 
 	}
-}
 
-function resetSpatial() {
-	toreset = document.querySelectorAll('.person');
-	for(i=0;i<toreset.length;i++){
-		toreset[i].style.backgroundColor="#CCCCCC";
-	}
+	setTimeout(function() {
+
+		if (target.classList.contains('posFade')){
+			target.classList.remove('posFade')
+		} else if (target.classList.contains('negFade')){
+			target.classList.remove('negFade')
+		}
+		if (rater1.classList.contains('posFade')){
+			rater1.classList.remove('posFade')
+		} else if (rater1.classList.contains('negFade')){
+			rater1.classList.remove('negFade')
+		}
+		if (rater2.classList.contains('posFade')){
+			rater2.classList.remove('posFade')
+		} else if (rater2.classList.contains('negFade')){
+			rater2.classList.remove('negFade')
+		}
+	},10000)
 }
 
 // dynamic or locked view of score based on # of reactions 

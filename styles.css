@@ -180,7 +180,7 @@ audio:focus {
 	border-radius:0.5em;
 }
 input {
-/*	display:none;*/
+	display:none;
 }
 #start-message {
 	display: flex;
@@ -352,7 +352,25 @@ div[value=neg]{
 .person {
 	cursor:pointer;
 	background-color:#CCCCCC;
-	transition:0.05s ease-in-out;
+	transition:1s ease-in-out;
+}
+.posFade{
+	animation: posFade ease-in-out;
+	animation-duration:5s;
+	animation-iteration-count: 1;
+	background-color:#CCCCCC!important;
+}
+.negFade{
+	animation: negFade ease-in-out;
+	animation-duration:5s;
+	animation-iteration-count: 1;
+	background-color:#CCCCCC!important;
+}
+.mixedFade{
+	animation: mixedFade ease-in-out;
+	animation-duration:5s;
+	animation-iteration-count: 1;
+	background-color:#CCCCCC!important;
 }
 @keyframes posFade{
 	0% {
@@ -371,10 +389,49 @@ div[value=neg]{
 	}
 	100% {
 		transform:scale(1);
-		background-color:#F2F2F2;
+		background-color:#CCCC;
 	}
 }
 @keyframes negFade {
+	0% {
+		transform-origin: 50% 50%;
+		transform:scale(1.2);
+		background-color:#B6B5C9;
+	}
+	25% {
+		transform:scale(0.8);
+	}
+	50% {
+		transform:scale(1.2);
+	}
+	75% {
+		transform:scale(0.8);
+	}
+	100% {
+		transform:scale(1);
+		background-color:#CCCC;
+	}
+
+}
+@keyframes mixedFade {
+	0% {
+		transform-origin: 50% 50%;
+		transform:scale(1.2);
+		background-color:#7FCDEE;
+	}
+	25% {
+		transform:scale(0.8);
+	}
+	50% {
+		transform:scale(1.2);
+	}
+	75% {
+		transform:scale(0.8);
+	}
+	100% {
+		transform:scale(1);
+		background-color:#CCCC;
+	}
 
 }
 .performers {
