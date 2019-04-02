@@ -206,7 +206,6 @@ function roll(data) {
 	hover(label);
 	scrollTo(label);
 	getRef(data);
-	loadReactions();
 }
 
 function getRef(data){
@@ -215,6 +214,7 @@ function getRef(data){
 	if(ref.value!=measure+beat) {
 		ref.value= measure+beat;
 		watch = "changed";
+		loadReactions();
 		} else {
 		watch ="same"
 	}
@@ -299,16 +299,14 @@ function getView(view){
 // get reactions
 function getReactions(data){
 	// display reactions
-	if(watch =="changed") {
-		clear();
-		add= data.filter(function(d){
-    	return ((parseInt(d.MOM_STARTBAR+d.MOM_STARTBEAT) <= ref.value) && (parseInt(d.MOM_ENDBAR+d.MOM_ENDBEAT) >= ref.value));
-		 })
-		// add stuff
-		addComments(add);
-		// adjust playback rate
-		setExperienceOptions(add);
-	};
+	clear();
+	add= data.filter(function(d){
+	return ((parseInt(d.MOM_STARTBAR+d.MOM_STARTBEAT) <= ref.value) && (parseInt(d.MOM_ENDBAR+d.MOM_ENDBEAT) >= ref.value));
+	 })
+	// add stuff
+	addComments(add);
+	// adjust playback rate
+	setExperienceOptions(add);
 }
 
 function addComments(add) {
