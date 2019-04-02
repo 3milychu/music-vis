@@ -24,6 +24,7 @@
 	<audio controls>
 	  <source src="assets/music.wav" type="audio/wav">
 	</audio>
+		<input value="10"></input>
 </header>
 
 <!-- score page-->
@@ -32,7 +33,6 @@
 
 <!-- reactions -->
 <div class="view">
-	<input value="10"></input>
 
 	<!-- comments -->
 	<div id="reactions">
@@ -72,6 +72,8 @@
 	<!-- signature -->
 	<div id="reactions3">
 		<h2>Signature view coming soon!</h2>
+		<a href="wires/signature/sig-detail.jpg" target="_blank">Signature mapping sketch</a>
+		<a href="wires/signature/sig-total.jpg" target="_blank">Signature grading sketch</a>
 	</div>
 
 
@@ -193,6 +195,7 @@ function getMusic(data) {
 		 })
 		if(filter.length==1){
 			roll(filter[0]);
+			console.log(time, formatTime(filter[0]['timestamp']))
 		} 
 	}, 0);
 }
@@ -202,15 +205,19 @@ function roll(data) {
 	label = data['img'];
 	hover(label);
 	scrollTo(label);
+	getRef(data);
+	loadReactions();
+}
+
+function getRef(data){
 	measure = data['measure'];
 	beat = data['beat'];
 	if(ref.value!=measure+beat) {
-	ref.value= measure+beat;
-	watch = "changed";
-	} else {
-	watch ="same"
+		ref.value= measure+beat;
+		watch = "changed";
+		} else {
+		watch ="same"
 	}
-	loadReactions();
 }
 
 function optionsListen(name) {
@@ -298,34 +305,42 @@ function getReactions(data){
     	return ((parseInt(d.MOM_STARTBAR+d.MOM_STARTBEAT) <= ref.value) && (parseInt(d.MOM_ENDBAR+d.MOM_ENDBEAT) >= ref.value));
 		 })
 		// add stuff
-		if(add.length!=0){
-			for (i=0;i<add.length;i++){
-				info = add[i];
-				id = info['comment_id'];
-				comment = info['MOM1CHAR'];
-				role = info['role'];
-				test = document.getElementById(id);
-				if(test==null|test==undefined){
-					createComment(info,id,role)
-					displayEndorsement(info, id);
-					displayTags(info, id);
-					updateSpatial(info, role);
-				}
+		addComments(add);
+		// adjust playback rate
+		setExperienceOptions(add);
+	};
+}
+
+function addComments(add) {
+	if(add.length!=0){
+		for (i=0;i<add.length;i++){
+			info = add[i];
+			id = info['comment_id'];
+			comment = info['MOM1CHAR'];
+			role = info['role'];
+			test = document.getElementById(id);
+			if(test==null|test==undefined){
+				createComment(info,id,role)
+				displayEndorsement(info, id);
+				displayTags(info, id);
+				updateSpatial(info, role);
 			}
 		}
-		// adjust playback rate
-		if(time_option == "experienced"){
-			adjustPlayback(add);
-		} else if (time_option =="real"){
-			audio.playbackRate = 1;
-		}
-		if(zoom_option=="dynamic"){
-			alignScoreView(add.length)
-		}else if(zoom_option=="locked"){
-			score_view = document.querySelector('#page1');
-			score_view.style.height=height/8+"px";
-		}
-	};
+	}
+}
+
+function setExperienceOptions(add){
+	if(time_option == "experienced"){
+		adjustPlayback(add);
+	} else if (time_option =="real"){
+		audio.playbackRate = 1;
+	}
+	if(zoom_option=="dynamic"){
+		alignScoreView(add.length)
+	}else if(zoom_option=="locked"){
+		score_view = document.querySelector('#page1');
+		score_view.style.height=height/8+"px";
+	}
 }
 
 function createComment(data, id, role){

@@ -180,7 +180,11 @@ audio:focus {
 	border-radius:0.5em;
 }
 input {
-	display:none;
+/*	display:none;*/
+color:#F2F2F2;
+background-color:#F2F2F2;
+outline:0;
+border:none;
 }
 #start-message {
 	display: flex;
@@ -205,6 +209,12 @@ input {
   	border-radius:2em;
   	cursor:pointer;
 
+}
+#reactions3 a {
+	display:block;
+	text-align:center;
+	color:black;
+	text-decoration-style:normal;
 }
 .button:hover {
 	background-color:black;
