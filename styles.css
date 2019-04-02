@@ -356,20 +356,20 @@ div[value=neg]{
 }
 .posFade{
 	animation: posFade ease-in-out;
-	animation-duration:5s;
-	animation-iteration-count: 1;
+	animation-duration:10s;
+	animation-iteration-count: 2;
 	background-color:#CCCCCC!important;
 }
 .negFade{
 	animation: negFade ease-in-out;
-	animation-duration:5s;
-	animation-iteration-count: 1;
+	animation-duration:10s;
+	animation-iteration-count: 2;
 	background-color:#CCCCCC!important;
 }
 .mixedFade{
 	animation: mixedFade ease-in-out;
-	animation-duration:5s;
-	animation-iteration-count: 1;
+	animation-duration:10s;
+	animation-iteration-count: 2;
 	background-color:#CCCCCC!important;
 }
 @keyframes posFade{

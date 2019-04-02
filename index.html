@@ -379,7 +379,6 @@ function updateSpatial(data, role){
 	rater1 = document.getElementById(rater1);
 	rater2 = data['rater2'].replace(/\s/g, "_").toLowerCase();
 	rater2 = document.getElementById(rater2);
-	console.log(role);
 	sentiment = data['sentiment'];
 	target = document.getElementById(role);
 	if(sentiment == "pos"){
@@ -410,25 +409,33 @@ function updateSpatial(data, role){
 		target.classList.add('mixedFade');
 
 	}
-
-	setTimeout(function() {
-
-		if (target.classList.contains('posFade')){
-			target.classList.remove('posFade')
-		} else if (target.classList.contains('negFade')){
-			target.classList.remove('negFade')
-		}
-		if (rater1.classList.contains('posFade')){
+	setTimeout( ()=> {
+		role = this.role.toString();
+		role = role.replace(/\s/g, "_").toLowerCase();
+		role = document.getElementById(role);
+		if(role.classList.contains('posFade')){
+			role.classList.remove('posFade')
+		} else if (role.classList.contains('negFade')){
+			role.classList.remove('negFade')
+		} else if (role.classList.contains('mixedFade')){
+			role.classList.remove('mixedFade')
+		};
+		if(rater1.classList.contains('posFade')){
 			rater1.classList.remove('posFade')
 		} else if (rater1.classList.contains('negFade')){
 			rater1.classList.remove('negFade')
-		}
-		if (rater2.classList.contains('posFade')){
+		} else if (rater1.classList.contains('mixedFade')){
+			rater1.classList.remove('mixedFade')
+		};
+		if(rater2.classList.contains('posFade')){
 			rater2.classList.remove('posFade')
 		} else if (rater2.classList.contains('negFade')){
 			rater2.classList.remove('negFade')
-		}
+		} else if (rater2.classList.contains('mixedFade')){
+			rater2.classList.remove('mixedFade')
+		};
 	},10000)
+
 }
 
 // dynamic or locked view of score based on # of reactions 
