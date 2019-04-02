@@ -22,6 +22,31 @@
 		<div class="option playback" name="playback" value="real">Real time</div>
 	</div>
 
+	<div id="perspective-filter">
+		<i class="material-icons">remove_red_eye</i>
+	</div>
+
+	<div class="people-filters">
+		<div class="filters" id=people-filter-1>
+			<h1>Performers</h1>
+			<option name="performers" value="both">Both</option>
+			<option name="performers" value="locked">Pianist Only</option>
+			<option name="performers" value="locked">Cellist Only</option>
+		</div>
+		<div class="filters" id=people-filter-1>
+			<h1>Audience</h1>
+			<option name="audience" value="dynamic">All</option>
+			<option name="audience" value="locked">Heard Only</option>
+			<option name="audience" value="locked">Played Only</option>
+		</div>
+		<div class="filters" id=people-filter-1>
+			<h1>Backup</h1>
+			<option name="backup" value="dynamic">Both</option>
+			<option name="backup" value="locked">Pianist Only</option>
+			<option name="backup" value="locked">Cellist Only</option>
+		</div>
+	</div>
+
 	<audio controls>
 	  <source src="assets/music.wav" type="audio/wav">
 	</audio>
@@ -72,7 +97,7 @@
 	</div>
 	<!-- signature -->
 	<div id="reactions3">
-		<h2>Signature view coming soon!</h2>
+		<h2>Signature view goes here</h2>
 		<a href="wires/signature/sig-detail.jpg" target="_blank">Signature mapping sketch</a>
 		<a href="wires/signature/sig-total.jpg" target="_blank">Signature grading sketch</a>
 	</div>
@@ -166,6 +191,7 @@ optionsListen("zoom");
 document.querySelector('.option[value="locked"]').click();
 status();
 document.querySelector('#comments').click();
+menuListen();
 
 // play on audio click
 audio = document.querySelector('audio');
@@ -221,6 +247,25 @@ function getRef(data){
 	}
 }
 
+// people filters menu
+function menuListen(){
+	menu = document.querySelector('#perspective-filter');
+	people_options = document.querySelector('.people-filters');
+var toggle = function (a, b) {
+    var togg = false;
+    return function () {
+        // passes return value back to caller
+        return (togg = !togg) ? a() : b();
+    };
+};
+	menu.addEventListener('click', toggle(function () {
+	    people_options.style.display="block";
+	}, function () { 
+		people_options.style.display="none";
+	}));
+}
+
+// time navigation options listen
 function optionsListen(name) {
 	options=document.querySelectorAll("div[name="+name+"]");
 	for(i=0;i<options.length;i++){
@@ -271,7 +316,7 @@ function status() {
 			target = document.getElementById(this.id);
 			target = target.querySelector('.circle-button');
 			target.style.transform="scale(1)";
-			target.style.backgroundColor="black";
+			target.style.backgroundColor="#169FFF";
 			target.style.color="white";
 			// change var view
 			view = this.id;
@@ -282,7 +327,7 @@ function status() {
 
 function getView(view){
 	if(view == "comments"){
-		document.querySelector('#reactions').style.display="inline-block";
+		document.querySelector('#reactions').style.height="inline-block";
 		document.querySelector('#reactions2').style.display="none";
 		document.querySelector('#reactions3').style.display="none";
 	} else if (view == "spatial") {
@@ -646,7 +691,8 @@ function scrollTo(img){
 		});
 	}else {
 		scrollpost.scrollTo({
-		  left: target
+		  left: target,
+		  behavior:'smooth'
 		});
 	}
 
@@ -654,7 +700,7 @@ function scrollTo(img){
 
 //calculate which measure each beat falls under
 function getScore() {
-	for(i=1;i<193;i++){
+	for(i=1;i<274;i++){
 		target=document.querySelector('#page1');
 		height=window.innerHeight
 		div = document.createElement('div');
