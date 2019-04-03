@@ -223,7 +223,6 @@ function removeStartMessage() {
 	}
 }
 
-
 // load music
 function getMusic(data) {
 	setInterval(function () {
@@ -262,13 +261,14 @@ function getRef(data){
 function menuListen(){
 	menu = document.querySelector('#perspective-filter');
 	people_options = document.querySelector('.people-filters');
-var toggle = function (a, b) {
-    var togg = false;
-    return function () {
-        // passes return value back to caller
-        return (togg = !togg) ? a() : b();
-    };
-};
+	
+	var toggle = function (a, b) {
+	    var togg = false;
+	    return function () {
+	        // passes return value back to caller
+	        return (togg = !togg) ? a() : b();
+	    };
+	};
 	menu.addEventListener('click', toggle(function () {
 	    people_options.style.display="block";
 	}, function () { 
@@ -352,6 +352,8 @@ function getView(view){
 	}
 
 }
+
+
 
 // get reactions
 function getReactions(data){
@@ -738,11 +740,47 @@ function resizeInterface() {
 	calc_h = check.offsetHeight;
 	view = document.querySelector('.view');
 	offset = header_h+calc_h;
-	view.style.height=window.innerHeight - offset+"px";
+	view_height = window.innerHeight - offset+"px";
+	view.style.height=view_height;
 	start_message = document.querySelector('#start-message');
 	if(start_message!=null){
 		start_message.style.height=view.offsetHeight+"px";
 	}
+	toggleScore();
+
+}
+
+function toggleScore() {
+	page = document.querySelector('.page');
+	view1 = document.querySelector('#reactions');
+	view2 = document.querySelector('#reactions2');
+	view3 = document.querySelector('#reactions3');
+	var toggle = function (a, b) {
+	    var togg = false;
+	    return function () {
+	        // passes return value back to caller
+	        return (togg = !togg) ? a() : b();
+	    };
+	};
+	return_h =page.style.height;
+	view1.addEventListener('click', toggle(function () {
+		console.log('hello')
+	    page.style.height="0px";
+	}, function () { 
+		page.style.height=return_h;
+	}));
+	view2.addEventListener('click', toggle(function () {
+		console.log('hello')
+	    page.style.height="0px";
+	}, function () { 
+		page.style.height=return_h;
+	}));
+	view3.addEventListener('click', toggle(function () {
+		console.log('hello')
+	    page.style.height="0px";
+	}, function () { 
+		page.style.height=return_h;
+	}));	
 }
 
 
