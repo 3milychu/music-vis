@@ -751,16 +751,16 @@ function updateSpatial(data, role){
 function alignScoreView(comments_count){
 	console.log(comments_count)
 	score_view = document.querySelector('#page1');
+	container_view = document.querySelector('.view');
+	container_height= container_view.clientHeight;
 	height = window.innerHeight;
-		if (comments_count==0){
-			score_view.style.height=height/2+"px";
-		} else if (comments_count==1){
+		if (comments_count<1){
+			score_view.style.height=(container_height-100)+"px";
+		} else if (comments_count>=1 && comments_count <3){
 			score_view.style.height=height/4+"px";
 		} else if (comments_count >= 3) {
 			score_view.style.height=height/8+"px";
-		} else {
-			score_view.style.height=height/2+"px";
-		}
+		};
 }
 
 // number of agreements/disagreements by raters for each reaction
