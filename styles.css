@@ -101,7 +101,7 @@ audio::-webkit-media-controls-toggle-closed-captions-button{
 	opacity: 0;
 	transition: .5s ease;
 	border-radius:0.5em 0.5em 0em 0em;
-	background-color: #169FFF;
+	background-color: black;
 	z-index:99;
 	background-blend-mode: multiply;
 	transition:all 0.5s ease-in-out;
@@ -567,7 +567,7 @@ div[value=neg]{
 		margin:auto;
 	}
 	#hall {
-		padding: 20% 0%;
+		padding: 10% 0%;
 	}
 	.audience {
 		width:50%;
