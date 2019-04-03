@@ -100,16 +100,12 @@ audio::-webkit-media-controls-toggle-closed-captions-button{
 	height: 100%;
 	width: 100%;
 	opacity: 0.5;
-	transition: .5s ease;
 /*	border-radius:0.5em 0.5em 0em 0em;*/
 	background-color: black;
 	z-index:99;
-	background-blend-mode: multiply;
-	transition:all 0.5s ease-in-out;
+	mix-blend-mode: hard-light;
+/*	transition:all 0.5s ease-in-out;*/
 }
-/*.page-holder:hover .overlay {
-	opacity:0.5;
-}*/
 header {
 	position:fixed;
 	top:0;

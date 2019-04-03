@@ -921,14 +921,16 @@ function adjustPlayback(data) {
 function reset() {
 	overlays = document.querySelectorAll('.overlay');
 	for(i=0;i<overlays.length;i++){
-		overlays[i].style.opacity="0.5"
+		overlays[i].style.opacity="0.5";
+		overlay.style.removeProperty('background');
 	}
 }
 
 function hover(img){
 	target = document.querySelector('#page-holder'+img)
 	overlay = target.querySelector('.overlay');
-	overlay.style.opacity="0"
+	// overlay.style.opacity="0.2";
+	overlay.style.background="linear-gradient(to left, rgba(0,0,0,1), rgba(0,0,0,0)), linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0))";
 }
 
 function scrollTo(img){
