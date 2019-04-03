@@ -99,9 +99,7 @@
 	</div>
 	<!-- signature -->
 	<div id="reactions3">
-		<h2>Signature view goes here</h2>
-		<a href="wires/signature/sig-detail.jpg" target="_blank">Signature mapping sketch</a>
-		<a href="wires/signature/sig-total.jpg" target="_blank">Signature grading sketch</a>
+   			 <div id="canvas"></div>
 	</div>
 
 
@@ -147,11 +145,6 @@ var watch = "same";
 var time_option;
 var zoom_option;
 
-// var sound = new Howl({
-//   src: ['sound.mp3']
-// });
-
-// sound.play();
 
 //mobile view
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
@@ -194,6 +187,7 @@ document.querySelector('.option[value="dynamic"]').click();
 status();
 document.querySelector('#comments').click();
 menuListen();
+drawCircles(18);
 
 // play on audio click
 audio = document.querySelector('audio');
@@ -212,6 +206,7 @@ play.onclick=function() {
 function clear() {
 	console.log("clear")
 	removeStartMessage();
+	clearSignature();
 }
 
 // remove start message
@@ -221,6 +216,15 @@ function removeStartMessage() {
 		target.innerHTML="";
 		target.style.paddingBottom="70vh";
 	}
+}
+
+// clear signature
+function clearSignature() {
+	d3.selectAll('path').remove();
+	d3.selectAll('circle')
+		.attr("fill", "#1A1A1A")
+		.attr("class", "")
+		.attr("r", 10);
 }
 
 // load music
@@ -381,7 +385,83 @@ function addComments(add) {
 				displayEndorsement(info, id);
 				displayTags(info, id);
 				updateSpatial(info, role);
+				getSignature(info, role)
 			}
+		}
+	}
+}
+
+function getSignature(data, role){
+	sentiment = data['sentiment'];
+	var point1 = getGraphableId(role);
+	var point2 = getGraphableId(data['rater1'])
+	var point3 = getGraphableId(data['rater2'])
+	
+	if(data['rater1_reassigned']>=3){
+		console.log(point1, point2)
+		if(sentiment == "pos"){
+			drawPath(point1, point2, "sig_pos");
+		} else {
+			drawPath(point1, point2, "sig_neg");
+		}
+	} else {
+		if(sentiment == "pos"){
+			highlight(point2, "usig_neg")
+		} else {
+			highlight(point2, "usig_pos")
+		}
+	}
+	if(data['rater2_reassigned']>=3){
+		console.log(point1, point3)
+		if(sentiment == "pos"){
+			drawPath(point1, point3, "sig_pos");
+		} else {
+			drawPath(point1, point3, "sig_neg");
+		}
+	} else {
+		if(sentiment == "pos"){
+			highlight(point3, "usig_neg")
+		} else {
+			highlight(point3, "usig_pos")
+		}
+	}
+	if(data['rater1_reassigned']<3 && data['rater2_reassigned']<3){
+		if(sentiment=="pos"){
+			highlight(point1, "usig_pos");
+			highlight(point2, "usig_neg");
+			highlight(point3, "usig_neg");
+		} 
+		if(sentiment=="neg"){
+			highlight(point1, "usig_neg");
+			highlight(point2, "usig_pos");
+			highlight(point3, "usig_pos");
+		} 
+	}
+
+}
+
+function getGraphableId(name){
+	sig_ref = parseInt(name.slice(-1));
+	test = Number.isInteger(sig_ref);
+	if(test==true){
+		test2 = Number.isInteger(parseInt(name.slice(-2)));
+		if(test2 == false){
+			return "person"+sig_ref;
+		} else {
+			return "person1"+sig_ref;
+		}
+	} else if (test==false){
+		if(name=="Performing pianist"){
+			return "person15";
+		}
+		if(name=="Performing cellist"){
+			return "person16";
+		}
+		if(name=="Non-performing pianist"){
+			return "person17";
+		}
+		if(name=="Non-performing cellist"){
+			return "person18";
 		}
 	}
 }
@@ -422,6 +502,163 @@ function getpos(event) {
 	x = e.clientX + "px";
 	y = e.clientY + "px";
 }
+
+// setup signature view
+function drawCircles(num_circles){
+
+       var createNodes = function (numNodes, radius) {
+         var nodes = [], 
+             width = (radius * 2) + 50,
+             height = (radius * 2) + 50,
+             angle,
+             x,
+             y,
+             i;
+         for (i=0; i<numNodes; i++) {
+          angle = (i / (numNodes/2)) * Math.PI; // Calculate the angle at which the element will be placed.
+                                                // For a semicircle, we would use (i / numNodes) * Math.PI.
+          x = (radius * Math.cos(angle)) + (width/2); // Calculate the x position of the element.
+          y = (radius * Math.sin(angle)) + (width/2); // Calculate the y position of the element.
+          nodes.push({'id': i+1, 'x': x, 'y': y});
+         }
+         return nodes;
+       }
+
+       var createSvg = function (radius, callback) {
+         d3.selectAll('svg').remove();
+         var svg = d3.select('#canvas')
+         	.append('svg')
+            .attr('width', (radius * 2) + 50)
+            .attr('height', (radius * 2) + 50);
+        	callback(svg);
+       }
+
+       var createElements = function (svg, nodes, elementRadius) {
+         element = svg.selectAll('circle')
+            .data(nodes)
+            .enter()
+            .append('circle')
+            .attr("id", function(d,i){return "person" + d.id})
+            .attr('r', elementRadius)
+            .attr('cx', function (d, i) {return d.x;})
+            .attr('cy', function (d, i) {return d.y;})
+            .append('text')
+            .attr("x", function(d){return d.x})
+            .attr("y", function(d){return d.y})
+       }
+
+       var draw = function () {
+       	view = document.querySelector('.view');
+		view_height = view.style.height;
+		view_height = view_height.split("px");
+		view_height = view_height[0]
+		console.log(view_height);
+         var numNodes = num_circles;
+         var radius = view_height/8;
+         var nodes = createNodes(numNodes, radius);
+         createSvg(radius, function (svg) {
+           createElements(svg, nodes, 10);
+         });
+       }
+
+       document.addEventListener('DOMContentLoaded', (event) => {
+          draw();
+          showSigPpl();
+        })
+}
+// draw shared network for signature view
+function drawPath(point1_id, point2_id, sig_class) {
+
+            var p1x = parseFloat(document.getElementById(point1_id).getAttribute("cx"));
+            var p1y = parseFloat(document.getElementById(point1_id).getAttribute("cy"));
+            var p2x = parseFloat(document.getElementById(point2_id).getAttribute("cx"));
+            var p2y = parseFloat(document.getElementById(point2_id).getAttribute("cy"));
+
+            // mid-point of line:
+            var mpx = (p2x + p1x) * 0.5;
+            var mpy = (p2y + p1y) * 0.5;
+
+            // angle of perpendicular to line:
+            var theta = Math.atan2(p2y - p1y, p2x - p1x) - Math.PI / 2;
+
+            // distance of control point from mid-point of line:
+            var offset = 30;
+
+            // location of control point:
+            var c1x = mpx + offset * Math.cos(theta);
+            var c1y = mpy + offset * Math.sin(theta);
+
+            // center of svg
+           	this_h=document.querySelector('svg').clientHeight;
+            c1x =this_h/2;
+            c1y=this_h/2;
+
+            // construct the command to draw a quadratic curve
+            var curve = "M" + p1x + " " + p1y + " Q " + c1x + " " + c1y + " " + p2x + " " + p2y;
+
+            path = d3.select('svg')
+              .append('path')
+              .attr("class","curve "+sig_class)
+              .attr('d', curve);
+
+            path
+              .transition()        
+              .duration(1000)
+              .ease(d3.easeLinear)
+        }
+
+// highlight unique reactions in signature view
+function highlight(point, sig_class){
+	var highlight = document.getElementById(point);
+	highlight.classList.add(sig_class);
+	highlight.setAttribute("r",15);
+}
+
+function showSigPpl() {
+	tooltip=document.querySelector('.tooltip');
+	circles = document.querySelectorAll('circle');
+	for(i=0;i<circles.length;i++){
+		circles[i].onmouseover=function() {
+			// get mouse event
+			getpos();
+			text= this.id;
+			if(text=="person15" || text=="person16" || text=="person17" || text=="person18"){
+				
+				if(text=="person15"){
+					text= "Performing pianist";
+				}
+				if(text=="person16"){
+					text= "Performing cellist";
+				}
+				if(text=="person17"){
+					text= "Non-performing pianist";
+				}
+				if(text=="person18"){
+					text="Non-performing cellist";
+				}
+			} else {
+				test = Number.isInteger(parseInt(text.slice(-2)));
+				if(test==true){
+					ending = parseInt(text.slice(-2));
+					text = "Class member "+ ending;
+				} else if (test==false) {
+					ending = parseInt(text.slice(-1));
+					text = "Class member "+ ending;
+				}
+				
+			}
+			tooltip.style.display="inline-block";
+			tooltip.innerHTML = caps(text.replace(/_/g, " "));
+		  	tooltip.style.left=x;
+		  	tooltip.style.top=y;
+		}
+		circles[i].onmouseout=function() {
+			tooltip.style.display="none";
+		}
+	}
+}
+
+
 // setup spatial view
 function spatial() {
 	tooltip=document.querySelector('.tooltip');
@@ -516,12 +753,13 @@ function alignScoreView(comments_count){
 	score_view = document.querySelector('#page1');
 	height = window.innerHeight;
 		if (comments_count==0){
-		score_view.style.height=height/2+"px";
-		console.log(score_view.style.height)
+			score_view.style.height=height/2+"px";
 		} else if (comments_count==1){
 			score_view.style.height=height/4+"px";
-		} else {
+		} else if (comments_count >= 3) {
 			score_view.style.height=height/8+"px";
+		} else {
+			score_view.style.height=height/2+"px";
 		}
 }
 
@@ -683,14 +921,14 @@ function adjustPlayback(data) {
 function reset() {
 	overlays = document.querySelectorAll('.overlay');
 	for(i=0;i<overlays.length;i++){
-		overlays[i].style.opacity="0"
+		overlays[i].style.opacity="0.5"
 	}
 }
 
 function hover(img){
 	target = document.querySelector('#page-holder'+img)
 	overlay = target.querySelector('.overlay');
-	overlay.style.opacity="0.9"
+	overlay.style.opacity="0"
 }
 
 function scrollTo(img){
@@ -752,7 +990,7 @@ function resizeInterface() {
 
 function toggleScore() {
 	page = document.querySelector('.page');
-	view1 = document.querySelector('#reactions');
+	// view1 = document.querySelector('#reactions');
 	view2 = document.querySelector('#reactions2');
 	view3 = document.querySelector('#reactions3');
 	var toggle = function (a, b) {
@@ -763,12 +1001,12 @@ function toggleScore() {
 	    };
 	};
 	return_h =page.style.height;
-	view1.addEventListener('click', toggle(function () {
-		console.log('hello')
-	    page.style.height="0px";
-	}, function () { 
-		page.style.height=return_h;
-	}));
+	// view1.addEventListener('click', toggle(function () {
+	// 	console.log('hello')
+	//     page.style.height="0px";
+	// }, function () { 
+	// 	page.style.height=return_h;
+	// }));
 	view2.addEventListener('click', toggle(function () {
 		console.log('hello')
 	    page.style.height="0px";

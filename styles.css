@@ -65,6 +65,7 @@ audio::-webkit-media-controls-return-to-realtime-button{
 audio::-webkit-media-controls-toggle-closed-captions-button{
 
 }
+
 /*app*/
 .page {
 	display:block;
@@ -96,11 +97,11 @@ audio::-webkit-media-controls-toggle-closed-captions-button{
 	bottom: 0;
 	left: 0;
 	right: 0;
-	height: 10%;
+	height: 100%;
 	width: 100%;
-	opacity: 0;
+	opacity: 0.5;
 	transition: .5s ease;
-	border-radius:0.5em 0.5em 0em 0em;
+/*	border-radius:0.5em 0.5em 0em 0em;*/
 	background-color: black;
 	z-index:99;
 	background-blend-mode: multiply;
@@ -216,6 +217,10 @@ option:hover {
 	width:100%;
 	height:100%;
 	cursor:pointer;
+	position:relative;
+}
+#reactions3 {
+	background-color:#1A1A1A;
 }
 #reactions {
 	display:inline-block;
@@ -561,6 +566,53 @@ div[value=neg]{
 	display:inline-block;
 	margin:3%;
 }
+/*signature*/
+
+#canvas{
+	position:relative;
+}
+circle {
+	fill:#1A1A1A;
+}
+.sig_pos {
+	stroke: #FCC388!important;
+}
+.sig_neg {
+	stroke: #B6B5C9!important;
+}
+.usig_pos {
+	fill: #FCC388!important;
+
+}
+.usig_neg {
+	fill: #B6B5C9!important;
+}
+.curve {
+	transform-origin: 50% 50%;
+	stroke-width:2;
+	fill:none;
+	stroke-linecap:round;
+/*	animation:lineFadeIn 1s ease-in-out;*/
+}
+@keyframes lineFadeIn {
+	0% {
+		opacity:0;
+		transform:scale(0.8);
+	}
+	100% {
+		opacity:1;
+		transform:scale(1);
+	}
+}
+svg {
+	box-shadow:0.5em 0.5em 1em black;
+	margin-top:5%;
+	background-color:#C1272D;
+	border-radius:50%;
+	margin-left:auto; 
+	margin-right:auto; 
+	display:block;
+}
 @media screen and (max-width:767px){
 	#reactions .item {
 		display:block;
@@ -572,5 +624,8 @@ div[value=neg]{
 	}
 	.audience {
 		width:50%;
+	}
+	svg {
+		margin-top:15%;
 	}
 }
