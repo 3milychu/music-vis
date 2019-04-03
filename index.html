@@ -210,9 +210,17 @@ play.onclick=function() {
 // clear reactions container
 function clear() {
 	console.log("clear")
-	target=document.querySelector('#reactions');
-	target.innerHTML="";
+	removeStartMessage();
 }
+
+// remove start message
+function removeStartMessage() {
+	if(time!=0.00){
+		target=document.querySelector('#reactions');
+		target.innerHTML="";
+	}
+}
+
 
 // load music
 function getMusic(data) {
@@ -328,7 +336,7 @@ function status() {
 
 function getView(view){
 	if(view == "comments"){
-		document.querySelector('#reactions').style.height="inline-block";
+		document.querySelector('#reactions').style.display="inline-block";
 		document.querySelector('#reactions2').style.display="none";
 		document.querySelector('#reactions3').style.display="none";
 	} else if (view == "spatial") {

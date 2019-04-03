@@ -7,74 +7,64 @@ body, html {
 	overflow-x:hidden;
 }
 /*audio player*/
-.player {
-	position:relative;
-	width:50%;
-	margin:auto;
-	margin-top:0%;
-	height:fit-content;
-	overflow:hidden;
-	font-size:0.8em;
+audio::-webkit-media-controls-panel{
+background-color:transparent;
 }
-.album-art {
-	width:10%;
-}
-.song-details {
-	width:20%;
-	display:inline-block;
-	vertical-align:top;
-}
-.song-title {
-	display:inline-block;
-}
-.song-artist {
-	display:inline-block;
-}
-.time-container {
-	width:50%;
-	position:relative;
-	margin:auto;
-	text-align:center;
-}
-.current-time {
-	position:absolute;
-	display:inline-block;
-	left:0;
+
+audio::-webkit-media-controls-mute-button{
 
 }
-.duration {
-	position:absolute;
-	display:inline-block;
-	right:0;
-}
-div.control-container {
-  text-align: center;
-  margin-top: 40px; }
-  div.control-container div.amplitude-prev {
-    width: 28px;
-    height: 24px;
-    cursor: pointer;
-    background: url("../img/previous.svg");
-    display: inline-block;
-    vertical-align: middle; }
-  div.control-container div.amplitude-play-pause {
-    width: 40px;
-    height: 44px;
-    cursor: pointer;
-    display: inline-block;
-    vertical-align: middle; }
-    div.control-container div.amplitude-play-pause.amplitude-paused {
-      background: url("../img/play.svg"); }
-    div.control-container div.amplitude-play-pause.amplitude-playing {
-      background: url("../img/pause.svg"); }
-  div.control-container div.amplitude-next {
-    width: 28px;
-    height: 24px;
-    cursor: pointer;
-    background: url("../img/next.svg");
-    display: inline-block;
-    vertical-align: middle; }
 
+audio::-webkit-media-controls-play-button{
+}
+
+audio::-webkit-media-controls-timeline-container{
+
+}
+
+audio::-webkit-media-controls-current-time-display{
+
+}
+
+audio::-webkit-media-controls-time-remaining-display{
+
+}
+
+audio::-webkit-media-controls-timeline{
+
+}
+
+audio::-webkit-media-controls-volume-slider-container{
+
+}
+
+audio::-webkit-media-controls-volume-slider{
+
+}
+
+audio::-webkit-media-controls-seek-back-button{
+
+}
+
+audio::-webkit-media-controls-seek-forward-button{
+
+}
+
+audio::-webkit-media-controls-fullscreen-button{
+
+}
+
+audio::-webkit-media-controls-rewind-button{
+
+}
+
+audio::-webkit-media-controls-return-to-realtime-button{
+
+}
+
+audio::-webkit-media-controls-toggle-closed-captions-button{
+
+}
 /*app*/
 .page {
 	display:block;
