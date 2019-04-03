@@ -552,9 +552,16 @@ function drawCircles(num_circles){
 		view_height = view.style.height;
 		view_height = view_height.split("px");
 		view_height = view_height[0]
+		view_width = view.clientWidth;
 		console.log(view_height);
          var numNodes = num_circles;
-         var radius = view_height/8;
+         var radius;
+         if(window.innerWidth<=767){
+         	radius = view_width/4;
+         } else {
+         	radius = view_height/8;
+         }
+         
          var nodes = createNodes(numNodes, radius);
          createSvg(radius, function (svg) {
            createElements(svg, nodes, 10);
