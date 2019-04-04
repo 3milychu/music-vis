@@ -327,7 +327,8 @@ function optionsListen(name) {
 	options=document.querySelectorAll("div[name="+name+"]");
 	for(i=0;i<options.length;i++){
 		options[i].onclick=function(){
-			this.style.background="linear-gradient(360deg, #AF917F, #E8B586)";
+			// this.style.background="linear-gradient(360deg, #AF917F, #E8B586)";
+			this.style.backgroundColor="#b5b3b3";
 			this.style.color="white";
 			if(this.innerHTML=="Experienced time"){
 				time_option = "experienced";
