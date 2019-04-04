@@ -12,6 +12,7 @@ body {
 /*audio player*/
 audio::-webkit-media-controls-panel{
 background-color:transparent;
+
 }
 
 audio::-webkit-media-controls-mute-button{
@@ -145,6 +146,7 @@ audio {
 	width:80%;
 	padding:2% 0% 0% 0%;
 	margin:0%;
+/*	margin-top:-2%;*/
 }
 audio:focus {
 	outline:0;
@@ -465,7 +467,7 @@ div[value=neg]{
 	margin:auto;
 	text-align:center;
 	vertical-align:middle;
-	padding: 5% 0%;
+	padding: 2% 0%;
 }
 .person {
 	cursor:pointer;
@@ -564,8 +566,9 @@ div[value=neg]{
 	margin:2% 5%;
 }
 .audience {
-	width:80%;
+	width:60%;
 	margin:auto;
+	display:inline-block;
 }
 .member {
 	width:2em;
@@ -575,6 +578,7 @@ div[value=neg]{
 	margin:2%;
 }
 .backups {
+	display:inline-block;
 	width:20%;
 	margin:auto;
 }
