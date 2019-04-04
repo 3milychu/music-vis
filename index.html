@@ -198,6 +198,7 @@ status();
 document.querySelector('#comments').click();
 menuListen();
 drawCircles(18);
+hover(1);
 
 // play on audio click
 audio = document.querySelector('audio');
@@ -704,13 +705,13 @@ function showSigPpl() {
 				}
 				
 			}
-			tooltip.style.display="inline-block";
+			tooltip.style.opacity="1";
 			tooltip.innerHTML = caps(text.replace(/_/g, " "));
 		  	tooltip.style.left=x;
 		  	tooltip.style.top=y;
 		}
 		circles[i].onmouseout=function() {
-			tooltip.style.display="none";
+			tooltip.style.opacity="0";
 		}
 	}
 }
@@ -725,13 +726,13 @@ function spatial() {
 			// get mouse event
 			getpos();
 			text= this.id;
-			tooltip.style.display="inline-block";
+			tooltip.style.opacity="1";
 			tooltip.innerHTML = caps(text.replace(/_/g, " "));
 		  	tooltip.style.left=x;
 		  	tooltip.style.top=y;
 		}
 		people[i].onmouseout=function() {
-			tooltip.style.display="none";
+			tooltip.style.opacity="0";
 		}
 	}
 }
@@ -885,7 +886,7 @@ function endorsementsDetail(data) {
 
 			function displayEndorsement() {
 				if(agree.length!=0){
-					tooltip.style.display="inline-block";
+					tooltip.style.opacity="1";
 					tooltip.innerHTML="";
 					for(j=0;j<agree.length;j++){
 					tooltip.innerHTML+="<div>"+agree[j]+"</div>"
@@ -894,7 +895,7 @@ function endorsementsDetail(data) {
 			}
 		}
 		agrees[i].onmouseout=function() {
-			tooltip.style.display="none";
+			tooltip.style.opacity="0";
 		}
 	}
 	for (i=0;i<disagrees.length;i++){
@@ -920,7 +921,7 @@ function endorsementsDetail(data) {
 
 		function displayEndorsement() {
 			if(disagree.length!=0){
-				tooltip.style.display="inline-block";
+				tooltip.style.opacity="1";
 				tooltip.innerHTML="";
 				for(j=0;j<disagree.length;j++){
 				tooltip.innerHTML+="<div>"+disagree[j]+"</div>"
@@ -929,7 +930,7 @@ function endorsementsDetail(data) {
 		}
 	}
 	disagrees[i].onmouseout=function() {
-		tooltip.style.display="none";
+		tooltip.style.opacity="0";
 	}
 }
 
