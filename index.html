@@ -129,9 +129,11 @@
 		</div>
 
 		<div class="floater">
-			<div id="app-name">
-				Fantasiestücke, Op.73 (Schumann, Robert)
-			</div>
+			<a href="https://en.wikipedia.org/wiki/Fantasy_Pieces_for_Clarinet_and_Piano_(Schumann)" target="_blank">
+				<div id="app-name">
+					Fantasiestücke, Op.73 (Schumann, Robert)
+				</div>
+			</a>
 		</div>
 </div>
 
@@ -202,12 +204,25 @@ audio = document.querySelector('audio');
 audio.onclick=function() {
 	clear();
 }
+
+audio.onpause=function(){
+	stopSpin();
+}
 // play on play button click
 play = document.querySelector('.button');
 play.onclick=function() {
 	clear();
 	audio.play();
 	
+}
+
+audio.onplay=function() {
+	perspective = document.querySelector('.perspective');
+	perspective.style.backgroundColor="white";
+	labels = document.querySelectorAll('.label');
+	for(i=0;i<labels.length;i++){
+		labels[i].style.color="black";
+	}
 }
 
 // clear reactions container
@@ -369,18 +384,22 @@ function status() {
 
 // get dataset view: 0= comments; 2=spatial, 3=signature
 function getView(view){
+	view_container = document.querySelector('.view');
 	if(view == "comments"){
 		document.querySelector('#reactions').style.display="inline-block";
 		document.querySelector('#reactions2').style.display="none";
 		document.querySelector('#reactions3').style.display="none";
+		view_container.style.backgroundColor="white";
 	} else if (view == "spatial") {
 		document.querySelector('#reactions').style.display="none";
 		document.querySelector('#reactions2').style.display="inline-block";
 		document.querySelector('#reactions3').style.display="none";
+		view_container.style.backgroundColor="white";
 	} else if (view == "signature") {
 		document.querySelector('#reactions').style.display="none";
 		document.querySelector('#reactions2').style.display="none";
 		document.querySelector('#reactions3').style.display="inline-block";
+		view_container.style.backgroundColor="#1A1A1A";
 	}
 
 }
