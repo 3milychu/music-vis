@@ -88,6 +88,7 @@ audio::-webkit-media-controls-toggle-closed-captions-button{
 	display:inline-block;
 	vertical-align:top;
 	width:fit-content;
+	min-width:fit-content;
 	cursor:pointer;
 	transition:all 0.25s ease-in-out;
 }
