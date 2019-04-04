@@ -301,7 +301,7 @@ function optionsListen(name) {
 				modify = document.querySelector('div[value=dynamic');
 			}
 			modify.style.backgroundColor="transparent";
-			modify.style.color="black";
+			modify.style.color="#666666";
 			console.log(this.innerHTML);
 			console.log(time_option);
 			console.log(zoom_option);
@@ -758,11 +758,13 @@ function updateSpatial(data, role){
 function alignScoreView(comments_count){
 	console.log(comments_count)
 	score_view = document.querySelector('#page1');
+	perspective = document.querySelector('.perspective');
+	perspective_h = perspective.offsetHeight;
 	container_view = document.querySelector('.view');
-	container_height= container_view.clientHeight;
+	container_height= container_view.offsetHeight;
 	height = window.innerHeight;
 		if (comments_count<1){
-			score_view.style.height=(container_height-100)+"px";
+			score_view.style.height=(container_height-15)+"px";
 		} else if (comments_count>=1 && comments_count <3){
 			score_view.style.height=height/4+"px";
 		} else if (comments_count >= 3) {
@@ -985,6 +987,7 @@ function resizeInterface() {
 	check=document.querySelector('.page');
 	check.style.marginTop=header_h+"px";
 	calc_h = check.offsetHeight;
+	page_height = check.style.height;
 	view = document.querySelector('.view');
 	offset = header_h+calc_h;
 	view_height = window.innerHeight - offset+"px";
@@ -999,31 +1002,22 @@ function resizeInterface() {
 
 function toggleScore() {
 	page = document.querySelector('.page');
-	// view1 = document.querySelector('#reactions');
 	view2 = document.querySelector('#reactions2');
 	view3 = document.querySelector('#reactions3');
+	return_h =page.style.height;
 	var toggle = function (a, b) {
 	    var togg = false;
 	    return function () {
-	        // passes return value back to caller
 	        return (togg = !togg) ? a() : b();
 	    };
 	};
-	return_h =page.style.height;
-	// view1.addEventListener('click', toggle(function () {
-	// 	console.log('hello')
-	//     page.style.height="0px";
-	// }, function () { 
-	// 	page.style.height=return_h;
-	// }));
+	
 	view2.addEventListener('click', toggle(function () {
-		console.log('hello')
 	    page.style.height="0px";
 	}, function () { 
 		page.style.height=return_h;
 	}));
 	view3.addEventListener('click', toggle(function () {
-		console.log('hello')
 	    page.style.height="0px";
 	}, function () { 
 		page.style.height=return_h;
