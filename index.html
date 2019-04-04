@@ -29,7 +29,7 @@
 	</div>
 
 	<div class="people-filters">
-		<option name="all" value="all" style="background-color:black;color:white">Everyone</option>
+		<option name="all" value="all" style="background-color:#1A1A1A;color:white">Everyone</option>
 		<div class="filters" id=people-filter-1>
 			<h1>Performers</h1>
 			<option name="performers" value="both">Both</option>
@@ -327,7 +327,7 @@ function optionsListen(name) {
 	options=document.querySelectorAll("div[name="+name+"]");
 	for(i=0;i<options.length;i++){
 		options[i].onclick=function(){
-			this.style.backgroundColor="#666666";
+			this.style.background="linear-gradient(360deg, #AF917F, #E8B586)";
 			this.style.color="white";
 			if(this.innerHTML=="Experienced time"){
 				time_option = "experienced";
