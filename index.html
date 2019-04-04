@@ -12,13 +12,9 @@
 </head>
 <body>
 <!-- audio -->
+<div class="fill">
+</div>
 <header>
-	
-	<div class="floater">
-		<div id="app-name">
-			Fantasiestücke, Op.73 (Schumann, Robert)
-		</div>
-	</div>
 	<div class="filters">
 		<div class="option zoom" name="zoom" value="dynamic">Dynamic View</div>
 		<div class="option zoom" name="zoom" value="locked">Locked View</div>
@@ -129,6 +125,12 @@
 			<div class="label">Signature View</div>
 			<div class="circle-button">
 				<i class="material-icons">fingerprint</i>
+			</div>
+		</div>
+
+		<div class="floater">
+			<div id="app-name">
+				Fantasiestücke, Op.73 (Schumann, Robert)
 			</div>
 		</div>
 </div>
@@ -1009,6 +1011,7 @@ function getScore() {
 
 // resize reactions container based on window size
 function resizeInterface() {
+	fill = document.querySelector('.fill');
 	header=document.querySelector('header');
 	header_h=header.offsetHeight;
 	check=document.querySelector('.page');
@@ -1023,6 +1026,7 @@ function resizeInterface() {
 	if(start_message!=null){
 		start_message.style.height=view.offsetHeight+"px";
 	}
+	fill.style.height = (calc_h*4) + "px";
 	toggleScore();
 
 }

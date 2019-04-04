@@ -7,8 +7,10 @@ body, html {
 	overflow-x:hidden;
 	overflow-y:hidden;
 }
-body {
-	background-color:#7D7D7D;
+.fill {
+	position:absolute;
+	width:100%;
+	background-color:#767676;
 }
 /*audio player*/
 audio::-webkit-media-controls-panel{
@@ -77,10 +79,10 @@ audio::-webkit-media-controls-toggle-closed-captions-button{
 }
 #app-name {
 	position:absolute;
-	top:45%;
+	bottom:35%;
 	background-color:black;
 	box-shadow:0em 0em 0.5em #666666;
-	left:50%;
+	right:5%;
 	font-weight:300;
 	font-size:1em;
 	letter-spacing:0.2em;
@@ -334,7 +336,7 @@ input {
 	padding:1% 5%;
 }
 .perspective {
-	position:absolute;
+	position:fixed;
 	width:100%;
 	text-align:center;
 	left:0;
@@ -607,11 +609,11 @@ circle {
 }
 .sig_pos {
 	stroke: #FCC388!important;
-	animation: 0.25s sigFadeIn ease-in-out;
+/*	animation: 0.25s sigFadeIn ease-in-out;*/
 }
 .sig_neg {
 	stroke: #B6B5C9!important;
-	animation: 0.25s sigFadeIn ease-in-out;
+/*	animation: 0.25s sigFadeIn ease-in-out;*/
 }
 .usig_pos {
 	fill: #FCC388!important;
