@@ -237,6 +237,7 @@ function clearSignature() {
 function getMusic(data) {
 	setInterval(function () {
 		time = formatTime(music.currentTime);
+		console.log(time);
 		filter = data.filter(function(d){
 	    	return (formatTime(d.timestamp).indexOf(time) == 0);
 		 })
@@ -244,6 +245,9 @@ function getMusic(data) {
 			roll(filter[0]);
 			console.log(time, formatTime(filter[0]['timestamp']))
 		} 
+		if(time==0.00 || time==221.59){
+			stopSpin();
+		}
 	}, 0);
 }
 
@@ -254,6 +258,18 @@ function roll(data) {
 	hover(label);
 	scrollTo(label);
 	getRef(data);
+	spin();
+}
+
+// spin and stop record player in signature view
+function spin(){
+	record = document.querySelector('svg');
+	record.classList.add("spin");
+}
+
+function stopSpin(){
+	record = document.querySelector('svg');
+	record.classList.remove("spin");
 }
 
 
@@ -382,6 +398,7 @@ function getReactions(data){
 	setExperienceOptions(add);
 }
 
+// add reactions to comments view, spatial view and signature view
 function addComments(add) {
 	if(add.length!=0){
 		for (i=0;i<add.length;i++){
@@ -401,6 +418,7 @@ function addComments(add) {
 	}
 }
 
+// draw signatures
 function getSignature(data, role){
 	sentiment = data['sentiment'];
 	var point1 = getGraphableId(role);
@@ -450,16 +468,15 @@ function getSignature(data, role){
 
 }
 
+
 function getGraphableId(name){
-	sig_ref = parseInt(name.slice(-1));
+	// sig_ref = parseInt(name.slice(-1));
+	sig_ref = parseInt(name.slice(-2));
 	test = Number.isInteger(sig_ref);
 	if(test==true){
-		test2 = Number.isInteger(parseInt(name.slice(-2)));
-		if(test2 == false){
+			console.log(sig_ref)
 			return "person"+sig_ref;
-		} else {
-			return "person1"+sig_ref;
-		}
+
 	} else if (test==false){
 		if(name=="Performing pianist"){
 			return "person15";
