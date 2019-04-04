@@ -231,11 +231,13 @@ option {
 	padding: 1% 10%;
 	transition:0.1s all ease-in-out;
 	cursor:pointer;
+	animation:0.1s fadeIn ease-in-out;
 }
 option:hover {
 	background-color:#1A1A1A;
 	color:white;
 }
+
 .view {
 	position:relative;
 	right:0;
