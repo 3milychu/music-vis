@@ -13,6 +13,12 @@
 <body>
 <!-- audio -->
 <header>
+	
+	<div class="floater">
+		<div id="app-name">
+			Fantasiestücke, Op.73 (Schumann, Robert)
+		</div>
+	</div>
 	<div class="filters">
 		<div class="option zoom" name="zoom" value="dynamic">Dynamic View</div>
 		<div class="option zoom" name="zoom" value="locked">Locked View</div>
@@ -241,6 +247,7 @@ function getMusic(data) {
 	}, 0);
 }
 
+// cameras: roll music and show
 function roll(data) {
 	reset();
 	label = data['img'];
@@ -249,6 +256,8 @@ function roll(data) {
 	getRef(data);
 }
 
+
+// get where we are in music/data at all times there is some data
 function getRef(data){
 	measure = data['measure'];
 	beat = data['beat'];
@@ -340,6 +349,7 @@ function status() {
 	}
 }
 
+// get dataset view: 0= comments; 2=spatial, 3=signature
 function getView(view){
 	if(view == "comments"){
 		document.querySelector('#reactions').style.display="inline-block";
@@ -618,7 +628,7 @@ function drawPath(point1_id, point2_id, sig_class) {
 function highlight(point, sig_class){
 	var highlight = document.getElementById(point);
 	highlight.classList.add(sig_class);
-	highlight.setAttribute("r",15);
+	// highlight.setAttribute("r",15);
 }
 
 function showSigPpl() {

@@ -70,6 +70,25 @@ audio::-webkit-media-controls-toggle-closed-captions-button{
 }
 
 /*app*/
+.floater {
+	
+}
+#app-name {
+	position:absolute;
+	top:45%;
+	background-color:black;
+	box-shadow:0em 0em 0.5em #666666;
+	left:50%;
+	font-weight:300;
+	font-size:1em;
+	letter-spacing:0.2em;
+	width:20%;
+	margin:auto;
+	z-index:200;
+	text-align:left;
+	transform:rotate(-5deg);
+	color:#F2F2F2;
+}
 .page {
 	display:block;
 	width:100%;
@@ -545,7 +564,7 @@ div[value=neg]{
 	margin:2% 5%;
 }
 .audience {
-	width:30%;
+	width:80%;
 	margin:auto;
 }
 .member {
@@ -578,9 +597,11 @@ circle {
 }
 .sig_pos {
 	stroke: #FCC388!important;
+	animation: 0.25s sigFadeIn ease-in-out;
 }
 .sig_neg {
 	stroke: #B6B5C9!important;
+	animation: 0.25s sigFadeIn ease-in-out;
 }
 .usig_pos {
 	fill: #FCC388!important;
@@ -596,7 +617,7 @@ circle {
 	stroke-linecap:round;
 /*	animation:lineFadeIn 1s ease-in-out;*/
 }
-@keyframes lineFadeIn {
+@keyframes sigFadeIn {
 	0% {
 		opacity:0;
 		transform:scale(0.8);
@@ -624,10 +645,11 @@ svg {
 	#hall {
 		padding: 10% 0%;
 	}
-	.audience {
-		width:50%;
-	}
 	svg {
 		margin-top:15%;
+	}
+	#app-name {
+		font-size:0.5em;
+		letter-spacing:0em;
 	}
 }
