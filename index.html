@@ -32,27 +32,23 @@
 		<option name="all" value="all" style="background-color:#1A1A1A;color:white">Everyone</option>
 		<div class="filters" id=people-filter-1>
 			<h1>Performers</h1>
-			<option name="performers" value="both">Both</option>
-			<option name="performers" value="locked">Pianist Only</option>
-			<option name="performers" value="locked">Cellist Only</option>
+			<option id="performer" value="both">Both</option>
+			<option id="performer" value="pianist">Pianist Only</option>
+			<option id="performer" value="cellist">Cellist Only</option>
 		</div>
 		<div class="filters" id=people-filter-1>
 			<h1>Audience</h1>
-			<option name="audience" value="dynamic">All</option>
-			<option name="audience" value="locked">Heard Only</option>
-			<option name="audience" value="locked">Played Only</option>
+			<option id="audience" value="all">All</option>
+			<option id="audience" value="heard">Heard Only</option>
+			<option id="audience" value="played">Played Only</option>
 		</div>
 		<div class="filters" id=people-filter-1>
-			<h1>Backup</h1>
-			<option name="backup" value="dynamic">Both</option>
-			<option name="backup" value="locked">Pianist Only</option>
-			<option name="backup" value="locked">Cellist Only</option>
+			<h1>Nonperforming</h1>
+			<option id="backup" value="both">Both</option>
+			<option id="backup" value="pianist">Pianist Only</option>
+			<option id="backup" value="cellist">Cellist Only</option>
 		</div>
 	</div>
-
-	<audio controls>
-	  <source src="assets/music.wav" type="audio/wav">
-	</audio>
 		<input value="10"></input>
 </header>
 
@@ -62,6 +58,36 @@
 
 <!-- reactions -->
 <div class="view">
+
+	<!-- vis perspective -->
+	<div class="perspective">
+			<div class="option" id="spatial">
+				<div class="label">Spatial</div>
+				<div class="circle-button">
+					<i class="material-icons">flare</i>
+				</div>
+			</div>
+			<div class="option" id="comments">
+				<div class="label">Comments</div>
+				<div class="circle-button">
+					<i class="material-icons">chat_bubble_outline</i>
+				</div>
+			</div>
+			<div class="option" id="signature">
+				<div class="label">Signature</div>
+				<div class="circle-button">
+					<i class="material-icons">fingerprint</i>
+				</div>
+			</div>
+
+			<div class="floater">
+				<a href="https://en.wikipedia.org/wiki/Fantasy_Pieces_for_Clarinet_and_Piano_(Schumann)" target="_blank">
+					<div id="app-name">
+						Fantasiestücke, Op.73 (Schumann, Robert)
+					</div>
+				</a>
+			</div>
+	</div>
 
 	<!-- comments -->
 	<div id="reactions">
@@ -107,34 +133,10 @@
 
 </div>
 
-<!-- vis perspective -->
-<div class="perspective">
-		<div class="option" id="spatial">
-			<div class="label">Spatial View</div>
-			<div class="circle-button">
-				<i class="material-icons">flare</i>
-			</div>
-		</div>
-		<div class="option" id="comments">
-			<div class="label">Comments View</div>
-			<div class="circle-button">
-				<i class="material-icons">chat_bubble_outline</i>
-			</div>
-		</div>
-		<div class="option" id="signature">
-			<div class="label">Signature View</div>
-			<div class="circle-button">
-				<i class="material-icons">fingerprint</i>
-			</div>
-		</div>
-
-		<div class="floater">
-			<a href="https://en.wikipedia.org/wiki/Fantasy_Pieces_for_Clarinet_and_Piano_(Schumann)" target="_blank">
-				<div id="app-name">
-					Fantasiestücke, Op.73 (Schumann, Robert)
-				</div>
-			</a>
-		</div>
+<div class="audio-container">
+		<audio controls>
+	 		 <source src="assets/music.wav" type="audio/wav">
+		</audio>
 </div>
 
 <!-- view tooltip -->
@@ -154,6 +156,7 @@ var ref = document.querySelector('input');
 var watch = "same";
 var time_option;
 var zoom_option;
+var card_pos;
 
 
 //mobile view
@@ -195,6 +198,7 @@ document.querySelector('.option[value="real"]').click();
 optionsListen("zoom");
 document.querySelector('.option[value="dynamic"]').click();
 status();
+getView("comments")
 document.querySelector('#comments').click();
 menuListen();
 drawCircles(18);
@@ -209,6 +213,10 @@ audio.onclick=function() {
 audio.onpause=function(){
 	stopSpin();
 }
+audio.onplay=function() {
+	audiocontainer=document.querySelector('.audio-container');
+	audiocontainer.style.backgroundColor="white";
+}
 // play on play button click
 play = document.querySelector('.button');
 play.onclick=function() {
@@ -216,16 +224,6 @@ play.onclick=function() {
 	audio.play();
 	
 }
-
-audio.onplay=function() {
-	perspective = document.querySelector('.perspective');
-	perspective.style.backgroundColor="white";
-	labels = document.querySelectorAll('.label');
-	for(i=0;i<labels.length;i++){
-		labels[i].style.color="black";
-	}
-}
-
 // clear reactions container
 function clear() {
 	console.log("clear")
@@ -253,20 +251,21 @@ function clearSignature() {
 
 // load music
 function getMusic(data) {
-	setInterval(function () {
-		time = formatTime(music.currentTime);
-		console.log(time);
-		filter = data.filter(function(d){
-	    	return (formatTime(d.timestamp).indexOf(time) == 0);
-		 })
-		if(filter.length==1){
-			roll(filter[0]);
-			console.log(time, formatTime(filter[0]['timestamp']))
-		} 
-		if(time==0.00 || time==221.59){
-			stopSpin();
-		}
-	}, 0);
+	audio.onplay=function() {
+		setInterval(function () {
+			time = formatTime(music.currentTime);
+			filter = data.filter(function(d){
+		    	return (formatTime(d.timestamp).indexOf(time) == 0);
+			 })
+			if(filter.length==1){
+				roll(filter[0]);
+				console.log(time, formatTime(filter[0]['timestamp']))
+			} 
+			if(time==0.00 || time==221.59){
+				stopSpin();
+			}
+		}, 0);
+	}
 }
 
 // cameras: roll music and show
@@ -286,8 +285,11 @@ function spin(){
 }
 
 function stopSpin(){
-	record = document.querySelector('svg');
-	record.classList.remove("spin");
+		record = document.querySelector('svg');
+	svg = document.querySelector('svg');
+	if(svg!=null){
+		record.classList.remove("spin");
+	}
 }
 
 
@@ -360,7 +362,7 @@ function caps(string) {
 }
 
 // get selections
-status = [];
+var status = [];
 function status() {
 	perspective = document.querySelector('.perspective');
 	p_options = perspective.querySelectorAll('.option');
@@ -383,26 +385,67 @@ function status() {
 			getView(view);
 		}
 	}
+	// people_filters = document.querySelector('.people-filters');
+	// people_options = people_filters.querySelectorAll('option')
+	// for(i=0;i<people_options.length;i++){
+	// 	people_options[i].onclick=function() {
+	// 		type = this.id;
+	// 		name = this.value;
+	// 		type_family = document.querySelectorAll('#'+type);
+	// 		console.log(name, type);
+	// 		if(this.style.backgroundColor == "rgb(26, 26, 26)"){
+	// 			this.style.backgroundColor="";
+	// 			this.style.color="black";
+
+	// 		} else {
+	// 			for(i=0;i<type_family.length;i++){
+	// 				console.log(this);
+	// 				type_family[i].style.backgroundColor="";
+	// 				type_family[i].style.color="black";
+	// 				this.style.backgroundColor="rgb(26, 26, 26)";
+	// 				this.style.color="white";
+	// 			}
+
+	// 		}
+	// 	}
+	// }
 }
 
 // get dataset view: 0= comments; 2=spatial, 3=signature
 function getView(view){
 	view_container = document.querySelector('.view');
+	start_message = document.querySelector('#start-message');
+	labels = document.querySelectorAll('.label')
 	if(view == "comments"){
 		document.querySelector('#reactions').style.display="inline-block";
 		document.querySelector('#reactions2').style.display="none";
 		document.querySelector('#reactions3').style.display="none";
 		view_container.style.backgroundColor="white";
+		if(start_message!=null){
+			for(i=0;i<labels.length;i++){
+				labels[i].style.color="#F2F2F2";
+			}
+		}
 	} else if (view == "spatial") {
 		document.querySelector('#reactions').style.display="none";
 		document.querySelector('#reactions2').style.display="inline-block";
 		document.querySelector('#reactions3').style.display="none";
 		view_container.style.backgroundColor="white";
+		if(start_message!=null){
+			for(i=0;i<labels.length;i++){
+				labels[i].style.color="#666666";
+			}
+		}
 	} else if (view == "signature") {
 		document.querySelector('#reactions').style.display="none";
 		document.querySelector('#reactions2').style.display="none";
 		document.querySelector('#reactions3').style.display="inline-block";
 		view_container.style.backgroundColor="#1A1A1A";
+		if(start_message!=null){
+			for(i=0;i<labels.length;i++){
+				labels[i].style.color="#F2F2F2";
+			}
+		}
 	}
 
 }
@@ -582,9 +625,17 @@ function drawCircles(num_circles){
             .attr('width', (radius * 2) + 50)
             .attr('height', (radius * 2) + 50);
         	callback(svg);
-       }
+        }
 
-       var createElements = function (svg, nodes, elementRadius) {
+       var createElements = function (svg, radius, nodes, elementRadius) {
+       	   svg
+        	.append('rect')
+        	.attr("id","performers_corner")
+        	.attr("x",radius )
+        	.attr("y",0)
+        	.attr("width",radius+50)
+        	.attr("height",radius+50);
+
          element = svg.selectAll('circle')
             .data(nodes)
             .enter()
@@ -610,12 +661,12 @@ function drawCircles(num_circles){
          if(window.innerWidth<=767){
          	radius = view_width/4;
          } else {
-         	radius = view_height/8;
+         	radius = view_height/3;
          }
          
          var nodes = createNodes(numNodes, radius);
          createSvg(radius, function (svg) {
-           createElements(svg, nodes, 10);
+           createElements(svg, radius, nodes, 10);
          });
        }
 
@@ -664,6 +715,57 @@ function drawPath(point1_id, point2_id, sig_class) {
               .duration(1000)
               .ease(d3.easeLinear)
         }
+
+function updateSvg(width,height){
+
+		svg = d3.select('svg')
+			.transition()
+			.duration(100)
+			.attr("width", height + 50)
+			.attr("height", height + 50);
+
+       function createNodes (numNodes, radius) {
+         var nodes = [], 
+             width = (radius*2) + 50,
+             height = (radius*2) + 50,
+             angle,
+             x,
+             y,
+             i;
+         for (i=0; i<numNodes; i++) {
+          angle = (i / (numNodes/2)) * Math.PI;
+          x = (radius * Math.cos(angle)) + (width/2); // Calculate the x position of the element.
+          y = (radius * Math.sin(angle)) + (width/2); // Calculate the y position of the element.
+          nodes.push({'id': i+1, 'x': x, 'y': y});
+         }
+         return nodes;
+       }
+
+      function updateCircles (radius, nodes, elementRadius) {
+
+      	svg = d3.select('svg');
+
+      	svg.select('rect')
+      		.transition()
+      		.duration(100)
+	    	.attr("x",radius )
+	    	.attr("y",0)
+	    	.attr("width",radius+50)
+	    	.attr("height",radius+50);
+
+        svg.selectAll('circle')
+        	.data(nodes)
+         	.transition()
+         	.duration(100)
+            .attr('r', elementRadius)
+            .attr('cx', function (d, i) {return d.x;})
+            .attr('cy', function (d, i) {return d.y;})
+       };
+
+       nodes = createNodes(18, height/2);
+       updateCircles(height/2, nodes,10)
+
+}
 
 // highlight unique reactions in signature view
 function highlight(point, sig_class){
@@ -814,6 +916,7 @@ function alignScoreView(comments_count){
 	container_view = document.querySelector('.view');
 	container_height= container_view.offsetHeight;
 	height = window.innerHeight;
+	if(card_pos=="down"){
 		if (comments_count<1){
 			score_view.style.height=(container_height-15)+"px";
 		} else if (comments_count>=1 && comments_count <3){
@@ -821,6 +924,10 @@ function alignScoreView(comments_count){
 		} else if (comments_count >= 3) {
 			score_view.style.height=height/8+"px";
 		};
+	} else if (card_pos=="up"){
+		score_view.style.height="0px";
+	}
+
 }
 
 // number of agreements/disagreements by raters for each reaction
@@ -1049,15 +1156,20 @@ function resizeInterface() {
 		start_message.style.height=view.offsetHeight+"px";
 	}
 	fill.style.height = (calc_h*4) + "px";
-	toggleScore();
-
+	toggleScore(view, view_height);
+	svg_w = view.offsetWidth;
+	svg_h = view.offsetHeight;
+	updateSvg(svg_h/1.8, svg_h/1.8);
 }
 
-function toggleScore() {
+function toggleScore(view, view_height) {
 	page = document.querySelector('.page');
 	view2 = document.querySelector('#reactions2');
 	view3 = document.querySelector('#reactions3');
-	return_h =page.style.height;
+	return_2 = view2.offsetHeight;
+	return_3 = view3.offsetHeight;
+	return_h =page.style.height.split("px");
+	return_h = parseInt(return_h[0]);
 	var toggle = function (a, b) {
 	    var togg = false;
 	    return function () {
@@ -1067,13 +1179,25 @@ function toggleScore() {
 	
 	view2.addEventListener('click', toggle(function () {
 	    page.style.height="0px";
+	    view.style.height = (return_2 + return_h)+"px";
+	    view2.style.height = (return_2 + return_h) + "px";
+	    card_pos = "up";
 	}, function () { 
-		page.style.height=return_h;
+		page.style.height=return_h + "px";
+		view2.style.height=return_2 + "px";
+		view.style.marginTop = return_h;
+		card_pos = "down";
 	}));
 	view3.addEventListener('click', toggle(function () {
 	    page.style.height="0px";
+	    view.style.height = (return_3 + return_h)+"px";
+	    view3.style.height = (return_3 + return_h) + "px";
+	    card_pos = "up";
 	}, function () { 
-		page.style.height=return_h;
+		page.style.height=return_h + "px";
+		view3.style.height=return_3 + "px";
+		view.style.marginTop = return_h;
+		card_pos = "down";
 	}));	
 }
 
