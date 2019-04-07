@@ -1301,23 +1301,25 @@ function toggleScore(view, view_height) {
 	
 	view2.addEventListener('click', toggle(function () {
 	    page.style.height="0px";
-	    view.style.height = (return_2 + return_h)+"px";
-	    view2.style.height = (return_2 + return_h) + "px";
+	    view.style.height = window.innerHeight+"px";
+	    console.log(view.style.height)
+	    view2.style.height = window.innerHeight + "px";
 	    card_pos = "up";
 	}, function () { 
 		page.style.height=return_h + "px";
-		view2.style.height=return_2 + "px";
+		view2.style.height=(window.innerHeight-return_h)+ "px";
 		view.style.marginTop = return_h;
 		card_pos = "down";
 	}));
 	view3.addEventListener('click', toggle(function () {
 	    page.style.height="0px";
-	    view.style.height = (return_3 + return_h)+"px";
-	    view3.style.height = (return_3 + return_h) + "px";
+	    view.style.height =  window.innerHeight+"px";
+	     console.log(view.style.height)
+	    view3.style.height =  window.innerHeight+"px";
 	    card_pos = "up";
 	}, function () { 
 		page.style.height=return_h + "px";
-		view3.style.height=return_3 + "px";
+		view3.style.height=(window.innerHeight-return_h)+ "px";
 		view.style.marginTop = return_h;
 		card_pos = "down";
 	}));	
