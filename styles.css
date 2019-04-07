@@ -129,8 +129,8 @@ audio::-webkit-media-controls-toggle-closed-captions-button{
 	position:relative;
 	display:inline-block;
 	vertical-align:top;
-	width:-moz-fit-content;
-	min-width:fit-content;
+	width:100%
+	min-width:100%;
 	cursor:pointer;
 	transition:all 0.25s ease-in-out;
 }
