@@ -25,19 +25,19 @@
 		<option id="all" value="all">Everyone</option>
 		<div class="filters" id=people-filter-1>
 			<h1>Performers</h1>
-			<option id="performer" value="both">Both</option>
+			<option  style="background-color:rgb(26, 26, 26);color:white;" id="performer" value="both">Both</option>
 			<option id="performer" value="pianist">Pianist Only</option>
 			<option id="performer" value="cellist">Cellist Only</option>
 		</div>
 		<div class="filters" id=people-filter-1>
 			<h1>Audience</h1>
-			<option id="audience" value="all">All</option>
+			<option style="background-color:rgb(26, 26, 26);color:white;" id="audience" value="all">All</option>
 			<option id="audience" value="heard">Heard Only</option>
 			<option id="audience" value="played">Played Only</option>
 		</div>
 		<div class="filters" id=people-filter-1>
 			<h1>Nonperforming</h1>
-			<option id="backup" value="both">Both</option>
+			<option style="background-color:rgb(26, 26, 26);color:white;" id="backup" value="both">Both</option>
 			<option id="backup" value="pianist">Pianist Only</option>
 			<option id="backup" value="cellist">Cellist Only</option>
 		</div>
@@ -408,6 +408,7 @@ function getPeopleStatus() {
 			if(this.style.backgroundColor == "rgb(26, 26, 26)"){
 				this.style.backgroundColor="";
 				this.style.color="black";
+				people_status[0][type]="none";
 			} else {
 				for(i=0;i<type_family.length;i++){
 					type_family[i].style.backgroundColor="";
@@ -418,6 +419,7 @@ function getPeopleStatus() {
 
 			}
 			getPeopleStyles();
+			console.log(people_status)
 		}
 	}
 }
@@ -502,7 +504,7 @@ function updateData(data){
 	if(test == "rgb(26, 26, 26)"){
 		data = data;
 	} else {
-		if(performer != "both"){
+		if(performer != "both" && performer!= "none"){
 			data = data.filter(function(d){return d.role == "Performing " + performer})
 		}
 		if(audience == "heard"){
@@ -513,8 +515,17 @@ function updateData(data){
 			data = data.filter(function(d){return d.role.match(/Class member/)})
 			data = data.filter(function(d){return d.played == "yes"})
 		}
-		if(backup != "both"){
+		if(backup != "both" && backup != "none"){
 			data = data.filter(function(d){return d.role== "Non-performing "+ backup})
+		}
+		if(performer == "none"){
+			data = data.filter(function(d){return d.role != "Performing pianist" && d.role != "Performing cellist"})
+		}
+		if(audience == "none"){
+			data = data.filter(function(d){return d.role != "Class member 1" && d.role != "Class member 2" && d.role != "Class member 3" && d.role != "Class member 4" && d.role != "Class member 5" && d.role != "Class member 6" && d.role != "Class member 7" && d.role != "Class member 8" && d.role != "Class member 9" && d.role != "Class member 10" && d.role != "Class member 11" && d.role != "Class member 12" && d.role != "Class member 13" && d.role != "Class member 14"})
+		}
+		if(backup =="none"){
+			data = data.filter(function(d){return d.role != "Non-performing pianist" && d.role != "Non-performing cellist"})
 		}
 	}
 	return data;
