@@ -126,9 +126,6 @@
 </div>
 
 <div class="audio-container">
-		<audio controls>
-	 		 <source src="assets/music.wav" type="audio/wav">
-		</audio>
 
 		<div class="filters-holder">
 			<div class="filters">
@@ -140,6 +137,10 @@
 				<div class="option playback" name="playback" value="real">Real time</div>
 			</div>
 		</div>
+
+		<audio controls>
+	 		 <source src="assets/music.wav" type="audio/wav">
+		</audio>
 </div>
 
 <!-- view tooltip -->
@@ -505,28 +506,40 @@ function updateData(data){
 		data = data;
 	} else {
 		if(performer != "both" && performer!= "none"){
-			data = data.filter(function(d){return d.role == "Performing " + performer})
-		}
-		if(audience == "heard"){
-			data = data.filter(function(d){return d.role.match(/Class member/)})
-			data = data.filter(function(d){return d.heard == "yes"})
-		}
-		if(audience == "played"){
-			data = data.filter(function(d){return d.role.match(/Class member/)})
-			data = data.filter(function(d){return d.played == "yes"})
-		}
-		if(backup != "both" && backup != "none"){
-			data = data.filter(function(d){return d.role== "Non-performing "+ backup})
+			data1 = data.filter(function(d){return d.role == "Performing " + performer})
 		}
 		if(performer == "none"){
-			data = data.filter(function(d){return d.role != "Performing pianist" && d.role != "Performing cellist"})
+			data1 = [];
+		}
+		if(performer == "both"){
+			data1 = data.filter(function(d){return d.role == "Performing pianist" || d.role == "Performing cellist"})
+		}
+		if(audience == "all"){
+			data2 = data.filter(function(d){return d.role.match(/Class member/)})
 		}
 		if(audience == "none"){
-			data = data.filter(function(d){return d.role != "Class member 1" && d.role != "Class member 2" && d.role != "Class member 3" && d.role != "Class member 4" && d.role != "Class member 5" && d.role != "Class member 6" && d.role != "Class member 7" && d.role != "Class member 8" && d.role != "Class member 9" && d.role != "Class member 10" && d.role != "Class member 11" && d.role != "Class member 12" && d.role != "Class member 13" && d.role != "Class member 14"})
+			data2 = [];
+		}
+		if(audience == "heard"){
+			data2 = data.filter(function(d){return d.role.match(/Class member/)})
+			data2 = data2.filter(function(d){return d.heard == "yes"})
+		}
+		if(audience == "played"){
+			data2 = data.filter(function(d){return d.role.match(/Class member/)})
+			data2 = data2.filter(function(d){return d.played == "yes"})
+		}
+		if(backup != "both" && backup != "none"){
+			data3 = data.filter(function(d){return d.role== "Non-performing "+ backup})
 		}
 		if(backup =="none"){
-			data = data.filter(function(d){return d.role != "Non-performing pianist" && d.role != "Non-performing cellist"})
+			data3 = [];
 		}
+		if(backup == "both"){
+			data3 = data.filter(function(d){return d.role == "Non-performing pianist" || d.role == "Non-performing cellist"})
+		}
+		console.log(data1, data2, data3)
+		data4 = data1.concat(data2);
+		data = data3.concat(data4);
 	}
 	return data;
 }

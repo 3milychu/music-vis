@@ -737,3 +737,11 @@ svg {
 		letter-spacing:0em;
 	}
 }
+@media screen and (max-width:530px){
+	.filters-holder {
+		width: 100%;
+	}
+	audio {
+		width:100%;
+	}
+}
