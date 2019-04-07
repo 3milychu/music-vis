@@ -14,22 +14,15 @@
 <!-- audio -->
 <div class="fill">
 </div>
-<header>
-	<div class="filters">
-		<div class="option zoom" name="zoom" value="dynamic">Dynamic View</div>
-		<div class="option zoom" name="zoom" value="locked">Locked View</div>
-	</div>
-	<div class="filters">
-		<div class="option playback" name="playback" value="experienced">Experienced time</div>
-		<div class="option playback" name="playback" value="real">Real time</div>
-	</div>
+<!-- <header>
+</header> -->
 
 	<div id="perspective-filter">
 		<i class="material-icons">remove_red_eye</i>
 	</div>
 
 	<div class="people-filters">
-		<option name="all" value="all" style="background-color:#1A1A1A;color:white">Everyone</option>
+		<option id="all" value="all">Everyone</option>
 		<div class="filters" id=people-filter-1>
 			<h1>Performers</h1>
 			<option id="performer" value="both">Both</option>
@@ -50,7 +43,6 @@
 		</div>
 	</div>
 		<input value="10"></input>
-</header>
 
 <!-- score page-->
 <div class="page" id="page1">
@@ -137,6 +129,17 @@
 		<audio controls>
 	 		 <source src="assets/music.wav" type="audio/wav">
 		</audio>
+
+		<div class="filters-holder">
+			<div class="filters">
+				<div class="option zoom" name="zoom" value="dynamic">Dynamic</div>
+				<div class="option zoom" name="zoom" value="locked">Locked</div>
+			</div>
+			<div class="filters">
+				<div class="option playback" name="playback" value="experienced">Experienced time</div>
+				<div class="option playback" name="playback" value="real">Real time</div>
+			</div>
+		</div>
 </div>
 
 <!-- view tooltip -->
@@ -156,7 +159,11 @@ var ref = document.querySelector('input');
 var watch = "same";
 var time_option;
 var zoom_option;
-var card_pos;
+var card_pos = "down";
+var people_status = [{performer: "both", audience: "all", backup: "both"}];
+var performer = people_status[0]['performer'];
+var audience = people_status[0]['audience'];
+var backup = people_status[0]['backup'];
 
 
 //mobile view
@@ -203,25 +210,26 @@ document.querySelector('#comments').click();
 menuListen();
 drawCircles(18);
 hover(1);
+getPeopleStyles();
 
 // play on audio click
 audio = document.querySelector('audio');
 audio.onclick=function() {
 	clear();
+	audiocontainer=document.querySelector('.audio-container');
+	audiocontainer.style.backgroundColor="white";
 }
 
 audio.onpause=function(){
 	stopSpin();
-}
-audio.onplay=function() {
-	audiocontainer=document.querySelector('.audio-container');
-	audiocontainer.style.backgroundColor="white";
 }
 // play on play button click
 play = document.querySelector('.button');
 play.onclick=function() {
 	clear();
 	audio.play();
+	audiocontainer=document.querySelector('.audio-container');
+	audiocontainer.style.backgroundColor="white";
 	
 }
 // clear reactions container
@@ -330,25 +338,25 @@ function optionsListen(name) {
 	options=document.querySelectorAll("div[name="+name+"]");
 	for(i=0;i<options.length;i++){
 		options[i].onclick=function(){
-			// this.style.background="linear-gradient(360deg, #AF917F, #E8B586)";
-			this.style.backgroundColor="#b5b3b3";
-			this.style.color="white";
+			this.style.fontWeight="800";
+			this.style.color="#1A1A1A";
 			if(this.innerHTML=="Experienced time"){
 				time_option = "experienced";
 				modify = document.querySelector('div[value=real]');
 			}else if(this.innerHTML=="Real time") {
 				time_option = "real";
 				modify = document.querySelector('div[value=experienced]');
-			} else if(this.innerHTML=="Dynamic View"){
+			} else if(this.innerHTML=="Dynamic"){
 				zoom_option= "dynamic";
 				modify = document.querySelector('div[value=locked]');
-			} else if (this.innerHTML=="Locked View"){
+			} else if (this.innerHTML=="Locked"){
 				zoom_option="locked";
 				modify = document.querySelector('div[value=dynamic');
 			}
 			modify.style.removeProperty('background');
 			modify.style.backgroundColor="transparent";
-			modify.style.color="#666666";
+			modify.style.fontWeight="300";
+			modify.style.color="#6666666";
 			console.log(this.innerHTML);
 			console.log(time_option);
 			console.log(zoom_option);
@@ -362,7 +370,6 @@ function caps(string) {
 }
 
 // get selections
-var status = [];
 function status() {
 	perspective = document.querySelector('.perspective');
 	p_options = perspective.querySelectorAll('.option');
@@ -383,32 +390,54 @@ function status() {
 			// change var view
 			view = this.id;
 			getView(view);
+			getPeopleStatus();
 		}
 	}
-	// people_filters = document.querySelector('.people-filters');
-	// people_options = people_filters.querySelectorAll('option')
-	// for(i=0;i<people_options.length;i++){
-	// 	people_options[i].onclick=function() {
-	// 		type = this.id;
-	// 		name = this.value;
-	// 		type_family = document.querySelectorAll('#'+type);
-	// 		console.log(name, type);
-	// 		if(this.style.backgroundColor == "rgb(26, 26, 26)"){
-	// 			this.style.backgroundColor="";
-	// 			this.style.color="black";
+}
 
-	// 		} else {
-	// 			for(i=0;i<type_family.length;i++){
-	// 				console.log(this);
-	// 				type_family[i].style.backgroundColor="";
-	// 				type_family[i].style.color="black";
-	// 				this.style.backgroundColor="rgb(26, 26, 26)";
-	// 				this.style.color="white";
-	// 			}
+function getPeopleStatus() {
+	people_filters = document.querySelector('.people-filters');
+	people_options = people_filters.querySelectorAll('option')
+	for(i=0;i<people_options.length;i++){
+		people_options[i].onclick=function() {
+			type = this.id;
+			name = this.value;
+			type_family = document.querySelectorAll('#'+type);
+			console.log(name, type);
+			people_status[0][type]=name;
+			if(this.style.backgroundColor == "rgb(26, 26, 26)"){
+				this.style.backgroundColor="";
+				this.style.color="black";
+			} else {
+				for(i=0;i<type_family.length;i++){
+					type_family[i].style.backgroundColor="";
+					type_family[i].style.color="black";
+					this.style.backgroundColor="rgb(26, 26, 26)";
+					this.style.color="white";
+				}
 
-	// 		}
-	// 	}
-	// }
+			}
+			getPeopleStyles();
+		}
+	}
+}
+
+
+function getPeopleStyles() {
+	all_selection = document.querySelector('#all')
+	performer = people_status[0]['performer'];
+	audience = people_status[0]['audience'];
+	backup = people_status[0]['backup'];
+	console.log(performer, audience, backup)
+	if(performer == "both" && audience == "all" && backup == "both"){
+		console.log('everyone')
+		all_selection.style.backgroundColor = "#1A1A1A";
+		all.style.color = "white"
+	} else {
+		console.log('not everyone')
+		all_selection.style.backgroundColor = "white";
+		all.style.color = "black";
+	}
 }
 
 // get dataset view: 0= comments; 2=spatial, 3=signature
@@ -456,6 +485,8 @@ function getView(view){
 function getReactions(data){
 	// display reactions
 	clear();
+	data = updateData(data);
+	console.log(data);
 	add= data.filter(function(d){
 	return ((parseInt(d.MOM_STARTBAR+d.MOM_STARTBEAT) <= ref.value) && (parseInt(d.MOM_ENDBAR+d.MOM_ENDBEAT) >= ref.value));
 	 })
@@ -463,6 +494,30 @@ function getReactions(data){
 	addComments(add);
 	// adjust playback rate
 	setExperienceOptions(add);
+}
+
+function updateData(data){
+	all = document.querySelector('#all');
+	test = all.style.backgroundColor;
+	if(test == "rgb(26, 26, 26)"){
+		data = data;
+	} else {
+		if(performer != "both"){
+			data = data.filter(function(d){return d.role == "Performing " + performer})
+		}
+		if(audience == "heard"){
+			data = data.filter(function(d){return d.role.match(/Class member/)})
+			data = data.filter(function(d){return d.heard == "yes"})
+		}
+		if(audience == "played"){
+			data = data.filter(function(d){return d.role.match(/Class member/)})
+			data = data.filter(function(d){return d.played == "yes"})
+		}
+		if(backup != "both"){
+			data = data.filter(function(d){return d.role== "Non-performing "+ backup})
+		}
+	}
+	return data;
 }
 
 // add reactions to comments view, spatial view and signature view
@@ -493,11 +548,12 @@ function getSignature(data, role){
 	var point3 = getGraphableId(data['rater2'])
 	
 	if(data['rater1_reassigned']>=3){
-		console.log(point1, point2)
 		if(sentiment == "pos"){
 			drawPath(point1, point2, "sig_pos");
-		} else {
+		} else if( sentiment == "neg") {
 			drawPath(point1, point2, "sig_neg");
+		} else {
+			drawPath(point1, point2, "sig_mixed")
 		}
 	} else {
 		if(sentiment == "pos"){
@@ -507,11 +563,12 @@ function getSignature(data, role){
 		}
 	}
 	if(data['rater2_reassigned']>=3){
-		console.log(point1, point3)
 		if(sentiment == "pos"){
 			drawPath(point1, point3, "sig_pos");
-		} else {
+		} else if(sentiment == "neg") {
 			drawPath(point1, point3, "sig_neg");
+		} else {
+			drawPath(point1, point3, "sig_mixed")
 		}
 	} else {
 		if(sentiment == "pos"){
@@ -531,6 +588,11 @@ function getSignature(data, role){
 			highlight(point2, "usig_pos");
 			highlight(point3, "usig_pos");
 		} 
+		if(sentiment!= "pos" && sentiment !="neg"){
+			highlight(point1, "usig_mixed");
+			highlight(point2, "usig_mixed");
+			highlight(point3, "usig_mixed");
+		}
 	}
 
 }
@@ -625,16 +687,50 @@ function drawCircles(num_circles){
             .attr('width', (radius * 2) + 50)
             .attr('height', (radius * 2) + 50);
         	callback(svg);
+
+          var defs = svg.append("defs")
+
+		filter = defs
+				 .append("filter")
+				.attr("id", "blur")
+				.append("feGaussianBlur")
+				.attr("stdDeviation", 5);
+
+          gradient = defs
+			  .append("linearGradient")
+			    .attr("id", "gradient")
+			    .attr("x1", "0%")
+			    .attr("y1", "0%")
+			    .attr("x2", "100%")
+			    .attr("y2", "100%")
+			    .attr("spreadMethod", "pad");
+
+			gradient.append("stop")
+			    .attr("offset", "0%")
+			    .attr("stop-color", "#FFFFFF")
+			    .attr("stop-opacity", 1);
+
+			gradient.append("stop")
+			    .attr("offset", "25%")
+			    .attr("stop-color", "#FFFFFF")
+			    .attr("stop-opacity", 1);
+
+			gradient.append("stop")
+			    .attr("offset", "75%")
+			    .attr("stop-color", "#C1272D")
+			    .attr("stop-opacity", 1);
         }
 
        var createElements = function (svg, radius, nodes, elementRadius) {
        	   svg
         	.append('rect')
         	.attr("id","performers_corner")
-        	.attr("x",radius )
+        	.attr("x",radius+25 )
         	.attr("y",0)
         	.attr("width",radius+50)
-        	.attr("height",radius+50);
+        	.attr("height",radius)
+        	.style("filter","url(#blur)")
+        	.style("fill", "url(#gradient)");
 
          element = svg.selectAll('circle')
             .data(nodes)
@@ -655,7 +751,6 @@ function drawCircles(num_circles){
 		view_height = view_height.split("px");
 		view_height = view_height[0]
 		view_width = view.clientWidth;
-		console.log(view_height);
          var numNodes = num_circles;
          var radius;
          if(window.innerWidth<=767){
@@ -748,10 +843,10 @@ function updateSvg(width,height){
       	svg.select('rect')
       		.transition()
       		.duration(100)
-	    	.attr("x",radius )
-	    	.attr("y",0)
-	    	.attr("width",radius+50)
-	    	.attr("height",radius+50);
+        	.attr("x",radius+25 )
+        	.attr("y",0)
+        	.attr("width",radius+50)
+        	.attr("height",radius);
 
         svg.selectAll('circle')
         	.data(nodes)
@@ -915,10 +1010,12 @@ function alignScoreView(comments_count){
 	perspective_h = perspective.offsetHeight;
 	container_view = document.querySelector('.view');
 	container_height= container_view.offsetHeight;
+	audio_container = document.querySelector('.audio-container');
+	audio_container_h = audio_container.offsetHeight
 	height = window.innerHeight;
 	if(card_pos=="down"){
 		if (comments_count<1){
-			score_view.style.height=(container_height-15)+"px";
+			score_view.style.height=(container_height-audio_container_h)+"px";
 		} else if (comments_count>=1 && comments_count <3){
 			score_view.style.height=height/4+"px";
 		} else if (comments_count >= 3) {
@@ -1141,14 +1238,15 @@ function getScore() {
 // resize reactions container based on window size
 function resizeInterface() {
 	fill = document.querySelector('.fill');
-	header=document.querySelector('header');
-	header_h=header.offsetHeight;
+	// header=document.querySelector('header');
+	// header_h=header.offsetHeight;
 	check=document.querySelector('.page');
-	check.style.marginTop=header_h+"px";
+	// check.style.marginTop=header_h+"px";
 	calc_h = check.offsetHeight;
 	page_height = check.style.height;
 	view = document.querySelector('.view');
-	offset = header_h+calc_h;
+	// offset = header_h+calc_h;
+	offset = calc_h;
 	view_height = window.innerHeight - offset+"px";
 	view.style.height=view_height;
 	start_message = document.querySelector('#start-message');
