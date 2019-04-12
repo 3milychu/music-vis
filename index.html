@@ -267,7 +267,7 @@ function getMusic(data) {
 		setInterval(function () {
 			time = formatTime(music.currentTime);
 			filter = data.filter(function(d){
-		    	return (formatTime(d.timestamp).indexOf(time) == 0);
+		    	return (formatTime(d.timestamp-0.20).indexOf(time-0.20) == 0);
 			 })
 			if(filter.length==1){
 				designByCluster(filter);
