@@ -334,6 +334,9 @@ option:hover {
 	position:relative;
 /*	transition:0.5s all ease-in-out;*/
 }
+#reactions2 {
+	display:table;
+}
 #reactions3 {
 	background-color:#1A1A1A;
 	overflow:hidden;
@@ -576,7 +579,7 @@ div[value=neg]{
 	margin:auto;
 	text-align:center;
 	vertical-align:middle;
-	padding: 2% 0%;
+	display:table-cell;
 }
 .person {
 	cursor:pointer;
