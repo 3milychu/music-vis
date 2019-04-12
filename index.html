@@ -17,32 +17,64 @@
 <!-- <header>
 </header> -->
 
-	<div id="perspective-filter">
-		<i class="material-icons">remove_red_eye</i>
-	</div>
+<!-- people filters -->
+<div id="perspective-filter">
+	<i class="material-icons">remove_red_eye</i>
+</div>
 
-	<div class="people-filters">
-		<option id="all" value="all">Everyone</option>
-		<div class="filters" id=people-filter-1>
-			<h1>Performers</h1>
-			<option  style="background-color:rgb(26, 26, 26);color:white;" id="performer" value="both">Both</option>
-			<option id="performer" value="pianist">Pianist Only</option>
-			<option id="performer" value="cellist">Cellist Only</option>
-		</div>
-		<div class="filters" id=people-filter-1>
-			<h1>Class Member</h1>
-			<option style="background-color:rgb(26, 26, 26);color:white;" id="audience" value="all">All</option>
-			<option id="audience" value="heard">Heard Only</option>
-			<option id="audience" value="played">Played Only</option>
-		</div>
-		<div class="filters" id=people-filter-1>
-			<h1>Nonperforming</h1>
-			<option style="background-color:rgb(26, 26, 26);color:white;" id="backup" value="both">Both</option>
-			<option id="backup" value="pianist">Pianist Only</option>
-			<option id="backup" value="cellist">Cellist Only</option>
-		</div>
+<div class="people-filters">
+	<option id="all" value="all">Everyone</option>
+	<div class="filters" id=people-filter-1>
+		<h1>Performers</h1>
+		<option  style="background-color:rgb(26, 26, 26);color:white;" id="performer" value="both">Both</option>
+		<option id="performer" value="pianist">Pianist Only</option>
+		<option id="performer" value="cellist">Cellist Only</option>
 	</div>
-		<input value="10"></input>
+	<div class="filters" id=people-filter-1>
+		<h1>Class Member</h1>
+		<option style="background-color:rgb(26, 26, 26);color:white;" id="audience" value="all">All</option>
+		<option id="audience" value="heard">Heard Only</option>
+		<option id="audience" value="played">Played Only</option>
+	</div>
+	<div class="filters" id=people-filter-1>
+		<h1>Nonperforming</h1>
+		<option style="background-color:rgb(26, 26, 26);color:white;" id="backup" value="both">Both</option>
+		<option id="backup" value="pianist">Pianist Only</option>
+		<option id="backup" value="cellist">Cellist Only</option>
+	</div>
+</div>
+	<input value="10"></input>
+
+
+<!-- vis perspective -->
+<div class="perspective">
+		<div class="option" id="spatial">
+			<div class="label">Spatial</div>
+			<div class="circle-button">
+				<i class="material-icons">flare</i>
+			</div>
+		</div>
+		<div class="option" id="comments">
+			<div class="label">Comments</div>
+			<div class="circle-button">
+				<i class="material-icons">chat_bubble_outline</i>
+			</div>
+		</div>
+		<div class="option" id="signature">
+			<div class="label">Signature</div>
+			<div class="circle-button">
+				<i class="material-icons">fingerprint</i>
+			</div>
+		</div>
+
+		<div class="floater">
+			<a href="https://en.wikipedia.org/wiki/Fantasy_Pieces_for_Clarinet_and_Piano_(Schumann)" target="_blank">
+				<div id="app-name">
+					Fantasiestücke, Op.73 (Schumann, Robert)
+				</div>
+			</a>
+		</div>
+</div>
 
 <!-- score page-->
 <div class="page" id="page1">
@@ -50,36 +82,6 @@
 
 <!-- reactions -->
 <div class="view">
-
-	<!-- vis perspective -->
-	<div class="perspective">
-			<div class="option" id="spatial">
-				<div class="label">Spatial</div>
-				<div class="circle-button">
-					<i class="material-icons">flare</i>
-				</div>
-			</div>
-			<div class="option" id="comments">
-				<div class="label">Comments</div>
-				<div class="circle-button">
-					<i class="material-icons">chat_bubble_outline</i>
-				</div>
-			</div>
-			<div class="option" id="signature">
-				<div class="label">Signature</div>
-				<div class="circle-button">
-					<i class="material-icons">fingerprint</i>
-				</div>
-			</div>
-
-			<div class="floater">
-				<a href="https://en.wikipedia.org/wiki/Fantasy_Pieces_for_Clarinet_and_Piano_(Schumann)" target="_blank">
-					<div id="app-name">
-						Fantasiestücke, Op.73 (Schumann, Robert)
-					</div>
-				</a>
-			</div>
-	</div>
 
 	<!-- comments -->
 	<div id="reactions">
@@ -119,6 +121,7 @@
 	</div>
 	<!-- signature -->
 	<div id="reactions3">
+			<div id="record" class="cluster-none"></div>
    			 <div id="canvas"></div>
 	</div>
 
@@ -180,7 +183,7 @@ window.onload=function() {
 	spatial();
 }
 getScore();
-d3.csv('data/timestamps.csv')
+d3.csv('data/cluster_results.csv')
 	.then(function(data) {
 		getMusic(data);
 	})
@@ -267,14 +270,32 @@ function getMusic(data) {
 		    	return (formatTime(d.timestamp).indexOf(time) == 0);
 			 })
 			if(filter.length==1){
+				designByCluster(filter);
 				roll(filter[0]);
 				console.log(time, formatTime(filter[0]['timestamp']))
 			} 
 			if(time==0.00 || time==221.59){
 				stopSpin();
+				removeClusterDesign();
 			}
 		}, 0);
 	}
+}
+
+// design record based on cluster by score image of that beat
+
+function designByCluster(data){
+	target = document.querySelector('#record');
+	target.className = "";
+	label = data[0]['labels'];
+	console.log("cluster" + label);
+	target.classList.add("cluster"+label);
+}
+
+function removeClusterDesign(){
+	target = document.querySelector('#record');
+	target.className = "";
+	target.classList.add("cluster-none");
 }
 
 // cameras: roll music and show
@@ -328,8 +349,10 @@ function menuListen(){
 	    };
 	};
 	menu.addEventListener('click', toggle(function () {
+		people_options = document.querySelector('.people-filters');
 	    people_options.style.display="block";
 	}, function () { 
+		people_options = document.querySelector('.people-filters');
 		people_options.style.display="none";
 	}));
 }
