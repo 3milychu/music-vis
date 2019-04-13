@@ -101,16 +101,16 @@
 				<div class="person performer" id="performing_cellist"></div>
 			</div>
 			<div class="audience">
-				<div class="person member" id="class_member_1"></div>
-				<div class="person member" id="class_member_2"></div>
-				<div class="person member" id="class_member_3"></div>
-				<div class="person member" id="class_member_4"></div>
-				<div class="person member" id="class_member_5"></div>
-				<div class="person member" id="class_member_6"></div>
-				<div class="person member" id="class_member_7"></div>
-				<div class="person member" id="class_member_8"></div>
-				<div class="person member" id="class_member_9"></div>
-				<div class="person member" id="class_member_10"></div>
+				<div class="person member played" id="class_member_1"></div>
+				<div class="person member played" id="class_member_2"></div>
+				<div class="person member both" id="class_member_3"></div>
+				<div class="person member heard" id="class_member_4"></div>
+				<div class="person member heard" id="class_member_5"></div>
+				<div class="person member heard" id="class_member_6"></div>
+				<div class="person member played" id="class_member_7"></div>
+				<div class="person member heard" id="class_member_8"></div>
+				<div class="person member both" id="class_member_9"></div>
+				<div class="person member heard" id="class_member_10"></div>
 				<div class="person member" id="class_member_11"></div>
 				<div class="person member" id="class_member_12"></div>
 				<div class="person member" id="class_member_13"></div>
@@ -150,7 +150,7 @@
 </div>
 
 <!-- view tooltip -->
-<div class="tooltip"></div>
+<div class="tooltip"><div class="profile"></div></div>
 
 </body>
 <!-- <script type="text/javascript" src="computed.js"></script> -->
@@ -963,62 +963,114 @@ function showSigPpl() {
 	}
 }
 
+function clearDiv(div) {
+	div.innerHTML="";
+}
+
+function getProfile() {
+// make profile container
+			target = document.querySelector('.profile')
+			if(target!=null){
+				target.innerHTML="";
+			} else {
+				div = document.createElement('div')
+				div.setAttribute("class","profile")
+				tooltip.appendChild(div);
+			}
+}
+
+function getProfileData(data, role){
+	target = document.querySelector('.profile')
+	role = caps(role.replace(/_/g, " "))
+	data = data.filter(function(d){return d.role== role});
+	summary1 = data[0]['summary1']
+	summary2 = data[0]['summary2']
+	summary3 = data[0]['summary3']
+	heard = data[0]['heard']
+	if (heard != "no"){
+		heard_bool = "yes"
+	} else {
+		heard_bool = "no"
+	}
+	played = data[0]['played']
+	if(played != "no"){
+		played_bool = "no"
+	} else {
+		played_bool = "yes"
+	}
+	if (role.match("pianist")){
+		pic = "pianist"
+	} else if (role.match("cellist")){
+		pic = "cellist"
+	} else if (role.match("Class member")){
+		if(heard_bool=="yes" && played_bool == "yes"){
+			pic = "both"
+		} else if (heard_bool == "no" && played_bool == "no"){
+			pic = "none"
+		} else if (heard_bool == "yes"){
+			pic = "heard"
+		} else if (played_bool == "yes"){
+			pic = "played"
+		}
+	}
+	getDetails(data, target, pic, role)
+	tooltip.style.opacity="0.95";
+
+}
+
+function getDetails(data, target, pic, role){
+	formatPercent = d3.format(".0%")
+	listendaily = data[0]['q5_listendaily']
+	console.log(listendaily)
+	critique = data[0]['q6_talkwrite']
+	primary_instrument = data[0]['q7_instr_primary'].split(",")
+	all_instruments = data[0]['q8_instr_all'].split(",")
+	play_genres = data[0]['q9_play_genres']
+	listen_genres = data[0]['q10_listen_genres']
+	gender = data[0]['gender']
+	ethnicity = data[0]['ethnicity']
+	education = data[0]['education']
+	random = (Math.floor(Math.random() * 3) + 1).toString()
+	random = "summary" + random;
+	profile_pic = "<div class='profile-pic "+ pic + "'></div>"
+	target.innerHTML+= "<div class=top>" + profile_pic + "<h2>"+ role + "</h2></div>"
+	target.innerHTML+="<h2>Random Thought</h2><p>"+ data[0][random] + "</p>"
+	target.innerHTML+="<h2>" + "Daily Listener" + "</h2>"
+	target.innerHTML+="<div style='width:100%;height:1em'><div style='"+formatPercent(listendaily/5)+"'></div>"
+	target.innerHTML+="<h2>Primary Instrument</h2>"
+	target.innerHTML+="<tag>" + primary_instrument[0].trim() + "</tag>"
+	target.innerHTML+="<h2>Other Instruments</h2>"
+	if(all_instruments!=""){
+		for(j=0;j<all_instruments.length;j++){
+			instrument = all_instruments[j].trim();
+			console.log(instrument);
+			target.innerHTML+="<tag>"+instrument+"</tag>"
+		}
+	}
+}
+
 
 // setup spatial view
 function spatial() {
+	page = document.querySelector('.page')
 	tooltip=document.querySelector('.tooltip');
 	people = document.querySelectorAll('.person');
 	for(i=0;i<people.length;i++){
 		people[i].onmouseover=function() {
-			// get mouse event
+			clearDiv(tooltip)
+			getProfile()
 			getpos();
 			role= this.id;
-			tooltip.style.opacity="1";
 			// get bio info
 			d3.csv('data/bio.csv')
 				.then (function(data){
-					role = caps(role.replace(/_/g, " "))
-					data = data.filter(function(d){return d.role== role});
-					summary1 = data[0]['summary1']
-					summary2 = data[0]['summary2']
-					summary3 = data[0]['summary3']
-					heard = data[0]['heard']
-					if (heard != "no"){
-						heard_bool = "yes"
-					} else {
-						heard_bool = "no"
-					}
-					played = data[0]['played']
-					listendaily = data[0]['q5_listendaily']
-					critique = data[0]['q6_talkwrite']
-					primary_instrument = data[0]['q7_instr_primary']
-					all_instruments = data[0]['q8_instr_all'].split(",")
-					play_genres = data[0]['q9_play_genres']
-					listen_genres = data[0]['q10_listen_genres']
-					gender = data[0]['gender']
-					ethnicity = data[0]['ethnicity']
-					education = data[0]['education']
-					tooltip.innerHTML = role;
-					for(i=0;i<all_instruments.length;i++){
-						whatiwant = all_instruments[i].trim();
-						if (whatiwant !=""){
-							console.log(whatiwant);
-						}
-					}
-					d3.select('.profile').remove();
-					div = document.createElement('div')
-					div.setAttribute("class", "profile")
-					tooltip.appendChild('div');
-					target = document.querySelector('.profile')
-					target.innerHTML+= "<h2>"+ role + "</h2>"
-					target.innerHTML+="<h3>Primary Instrument</h3><div class= primary " + primary_instrument + "</div>"
-
+					getProfileData(data, role)
 				})
 				.catch(function(error){
 
 				})
-		  	tooltip.style.left=x;
-		  	tooltip.style.top=y;
+		  	tooltip.style.left="0px";
+		  	tooltip.style.top=page.clientHeight + "px";
 		}
 		people[i].onmouseout=function() {
 			tooltip.style.opacity="0";

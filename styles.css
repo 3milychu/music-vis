@@ -22,12 +22,84 @@ body, html {
 	letter-spacing:-0.08em;
 }
 /*profiles*/
+.profile {
+	width:20em;
+}
+.profile tag {
+	display:inline-block;
+	font-size:0.8em;
+	margin-right:2%;
+	background-color:#D8A693;
+	color:white;
+	padding:1% 2%;
+	border-radius:2em;
+	font-weight:600;
+}
+.person {
+	background-blend-mode:luminosity;
+	background-size:contain;
+	transition:0.1s all ease-in-out;
+}
+.person:hover {
+	transform-origin: 50% 50%;
+	transform:scale(1.2);
+}
+#performing_cellist, #non-performing_cellist{
+	background-image:url("assets/images/cellist.png");
+}
+#performing_pianist, #non-performing_pianist{
+	background-image:url("assets/images/pianist.png");
+}
 .primary {
 	width:1em;
 	height:1em;
 	background-color:#F2F2F2;
 	border-radius:50%;
 
+}
+.profile-pic{
+	width:2em;
+	height:2em;
+	border-radius:50%;
+	background-size:contain;
+	display:inline-block;
+	vertical-align:middle;
+}
+.top{
+	width:110%;
+}
+.profile h2 {
+	font-size:300;
+	text-align:left;
+	font-size:0.8em;
+	font-weight:600;
+}
+.top h2 {
+	display:inline-block;
+	vertical-align:middle;
+	font-size:300;
+	margin-left:5%;
+	font-size:1em;
+	font-weight:300;
+}
+.profile p {
+	font-size:0.8em;
+	line-height:1.2em;
+}
+.pianist {
+	background-image:url("assets/images/pianist.png");
+}
+.cellist{
+	background-image:url("assets/images/cellist.png");
+}
+.heard {
+	background-image:url("assets/images/heard.png");
+}
+.played {
+	background-image:url("assets/images/played.png");
+}
+.both {
+	background-image:url("assets/images/both.png");
 }
 /*clusters*/
 #record {
@@ -286,7 +358,7 @@ audio:focus {
     position: absolute;
     width: fit-content;
     right: 2%;
-    z-index: 100;
+    z-index: 101;
     background-color: white;
     box-shadow: -0em 0em 0.2em #CCCCCC;
     text-align: center;
@@ -580,7 +652,8 @@ em {
 }
 .tag {
 	font-family:'Futura', sans-serif;
-	font-size:0.8em;
+	font-size:0.5em;
+	font-weight:600;
 	display:inline-block;	
 	margin:1% 3%;
 	padding:2% 4%;
@@ -602,13 +675,17 @@ div[value=neg]{
 	color:#666666;
 	font-weight:400;
 	font-size:0.8em;
-	background-color:white;
+	background-color:#F2F2F2;
 	padding:1%;
-	box-shadow:0em 0em 0.5em #666666;
+	border:0.05em solid #CCCCCC;
 	border-radius:0.5em;
-	z-index:4;
+	z-index:100;
 	transition:0.1s all ease-in-out;
+	animation:0.1s fadeIn ease-in-out;
+	margin:1% 2%;
 }
+
+
 /*spatial*/
 #hall {
 	width:100%;
@@ -620,25 +697,27 @@ div[value=neg]{
 .person {
 	cursor:pointer;
 	background-color:#CCCCCC;
-	transition:1s ease-in-out;
 }
 .posFade{
 	animation: posFade ease-in-out;
 	animation-duration:10s;
 	animation-iteration-count: 2;
 	background-color:#CCCCCC!important;
+	box-shadow:0em 0em 1em #FCC388;
 }
 .negFade{
 	animation: negFade ease-in-out;
 	animation-duration:10s;
 	animation-iteration-count: 2;
 	background-color:#CCCCCC!important;
+	box-shadow:0em 0em 1em #B6B5C9;
 }
 .mixedFade{
 	animation: mixedFade ease-in-out;
 	animation-duration:10s;
 	animation-iteration-count: 2;
 	background-color:#CCCCCC!important;
+	box-shadow:0em 0em 1em #7FCDEE;
 }
 @keyframes posFade{
 	0% {
@@ -831,6 +910,9 @@ svg {
 	#app-name {
 		font-size:0.5em;
 		letter-spacing:0em;
+	}
+	.profile {
+		width:30em;
 	}
 }
 @media screen and (max-width:530px){
