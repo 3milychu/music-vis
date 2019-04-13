@@ -4,6 +4,7 @@
 	<title></title>
 	<link href="https://fonts.googleapis.com/css?family=Overpass:200,300,400,600,800" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Heebo:100,300,400" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 	<script src="https://d3js.org/d3.v5.min.js"></script>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="styles.css">
@@ -49,7 +50,7 @@
 <!-- vis perspective -->
 <div class="perspective">
 		<div class="option" id="spatial">
-			<div class="label">Spatial</div>
+			<div class="label">Scene</div>
 			<div class="circle-button">
 				<i class="material-icons">flare</i>
 			</div>
@@ -61,7 +62,7 @@
 			</div>
 		</div>
 		<div class="option" id="signature">
-			<div class="label">Signature</div>
+			<div class="label">Impressions</div>
 			<div class="circle-button">
 				<i class="material-icons">fingerprint</i>
 			</div>
@@ -87,11 +88,13 @@
 	<div id="reactions">
 		<div id="start-message">
 			<h1>Notes on Perspective</h1>
-			<div class="button" id="play">Play</div>
+			<p>Recital critique for Fantasiestücke, Op.73 (Schumann, Robert) by professional musicians at the Mannes School of Music. This data visualization invites you to interact with the reactions that occured among the specialists by visualizing collected data from the event in experienced time.</p>
+			<div class="button" id="play">Transport</div>
 		</div>
 	</div>
 	<!-- spatial -->
 	<div id="reactions2">
+		<h1 class="title">Scene</h1>
 		<div id="hall">
 			<div class="performers">
 				<div class="person performer" id="performing_pianist"></div>
@@ -409,7 +412,7 @@ function status() {
 			target = document.getElementById(this.id);
 			target = target.querySelector('.circle-button');
 			target.style.transform="scale(1)";
-			target.style.backgroundColor="#169FFF";
+			target.style.backgroundColor="#D8A693";
 			target.style.color="white";
 			// change var view
 			view = this.id;
@@ -969,9 +972,51 @@ function spatial() {
 		people[i].onmouseover=function() {
 			// get mouse event
 			getpos();
-			text= this.id;
+			role= this.id;
 			tooltip.style.opacity="1";
-			tooltip.innerHTML = caps(text.replace(/_/g, " "));
+			// get bio info
+			d3.csv('data/bio.csv')
+				.then (function(data){
+					role = caps(role.replace(/_/g, " "))
+					data = data.filter(function(d){return d.role== role});
+					summary1 = data[0]['summary1']
+					summary2 = data[0]['summary2']
+					summary3 = data[0]['summary3']
+					heard = data[0]['heard']
+					if (heard != "no"){
+						heard_bool = "yes"
+					} else {
+						heard_bool = "no"
+					}
+					played = data[0]['played']
+					listendaily = data[0]['q5_listendaily']
+					critique = data[0]['q6_talkwrite']
+					primary_instrument = data[0]['q7_instr_primary']
+					all_instruments = data[0]['q8_instr_all'].split(",")
+					play_genres = data[0]['q9_play_genres']
+					listen_genres = data[0]['q10_listen_genres']
+					gender = data[0]['gender']
+					ethnicity = data[0]['ethnicity']
+					education = data[0]['education']
+					tooltip.innerHTML = role;
+					for(i=0;i<all_instruments.length;i++){
+						whatiwant = all_instruments[i].trim();
+						if (whatiwant !=""){
+							console.log(whatiwant);
+						}
+					}
+					d3.select('.profile').remove();
+					div = document.createElement('div')
+					div.setAttribute("class", "profile")
+					tooltip.appendChild('div');
+					target = document.querySelector('.profile')
+					target.innerHTML+= "<h2>"+ role + "</h2>"
+					target.innerHTML+="<h3>Primary Instrument</h3><div class= primary " + primary_instrument + "</div>"
+
+				})
+				.catch(function(error){
+
+				})
 		  	tooltip.style.left=x;
 		  	tooltip.style.top=y;
 		}
@@ -1190,7 +1235,7 @@ function endorsementsDetail(data) {
 // each reaction's category by sentiment
 function displayTags(data, comment_id){
 	tags = []
-	categories=['dynamics', 'dynamics and balance', 'balance', 'tempo', 'timing', 'rhythmic motion', 'sychronization', 'communication', 'matching_musical_idea', 'expressivity', 'character', 'tone quality', 'ending'];
+	categories=['dynamics', 'dynamics and balance', 'balance', 'tempo', 'timing', 'rhythmic_motion', 'synchronization', 'communication', 'matching_musical_idea', 'expressivity', 'character', 'tone quality', 'ending'];
 	for(i=0;i<categories.length;i++){
 		category = categories[i];
 		if(data[category]!=undefined && data[category]!= ""){

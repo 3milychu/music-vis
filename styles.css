@@ -13,6 +13,22 @@ body, html {
 	width:100%;
 	background-color:#767676;
 }
+#reactions2 .title {
+	position:absolute;
+	bottom:0;
+	font-size:5em;
+	color:#D8A693;
+	font-weight:900;
+	letter-spacing:-0.08em;
+}
+/*profiles*/
+.primary {
+	width:1em;
+	height:1em;
+	background-color:#F2F2F2;
+	border-radius:50%;
+
+}
 /*clusters*/
 #record {
 	position:absolute;
@@ -23,7 +39,7 @@ body, html {
 	
 }
 .cluster-none {
-	 background-image: repeating-radial-gradient(black, #1d1d1d 35%);
+	 background-image: repeating-radial-gradient(#5D5C73, #FCC388 35%);
 }
 .cluster0 {
   background-image: repeating-radial-gradient(#AD6766, #633343 35%);
@@ -253,7 +269,7 @@ audio:focus {
 	position:absolute;
 	top:0;
 	right:0;
-	background-color:#169FFF;
+	background-color:#D8A693;
 	cursor:pointer;
 	transition:0.25s all ease-in-out;
 }
@@ -382,13 +398,33 @@ input {
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-	animation:0.5s fadeIn ease-in-out;
+	animation:0.25s fadeIn ease-in-out;
 	background:linear-gradient(#FCC388, #5D5C73);
 }
 #start-message h1 {
+	font-size:8em;
+	width:80%;
+	text-align:left;
+	letter-spacing:-0.09em;
 	margin-top:-10%;
 	color:white;
-	font-weight:300;
+	font-weight:900;
+	line-height:0.7em;
+	margin-bottom:0%;
+}
+#start-message p {
+    font-family: 'Inconsolata', monospace;
+    width: 50%;
+    text-align: left;
+    color: white;
+    font-size: 0.8em;
+    margin-bottom: 5%;
+    margin-top: 3%;
+    margin-left: 0%;
+    transform:rotate(-5deg);
+    background-color:transparent;
+    box-shadow:0em 0em 1em #666666;
+    padding:1% 2.5%;
 }
 #reactions2 h2, #reactions3 h2 {
 	margin-top:15%;
@@ -418,10 +454,10 @@ input {
 	text-decoration-style:normal;
 }
 .button:hover {
-	border: 0.05em solid #169FFF;
-	background-color:#169FFF;
+	border: 0.05em solid #D8A693;
+	background-color:#D8A693;
 	box-shadow: 0em 0em 0.5em #CCCCCC;
-	color:white;
+	color:white!important;
 }
 .option {
 	display:inline-block;
@@ -777,6 +813,9 @@ svg {
 	}
 }
 @media screen and (max-width:767px){
+	#start-message h1 {
+		font-size:5em;
+	}
 	#reactions .item {
 		display:block;
 		width:80%;
