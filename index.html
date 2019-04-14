@@ -190,7 +190,7 @@ d3.csv('data/cluster_results.csv')
 	})
 
 function loadReactions() {
-	d3.json('data/moment_all.json')
+	d3.json('https://raw.githubusercontent.com/3milychu/music-vis/master/data/moment_all.json')
 	.then(function(data){
 		console.log(data);
 		getReactions(data);
@@ -1285,8 +1285,7 @@ function endorsementsDetail(data) {
 // each reaction's category by sentiment
 function displayTags(data, comment_id){
 	tags = []
-	// categories=['dynamics', 'dyn_bal', 'balance', 'tempo', 'timing', 'character','rhythmic_motion', 'synchronization', 'communication', 'matching_musical_idea', 'expressivity', 'tone_quality', 'ending'];
-	categories=['dynamics', 'dyn bal', 'balance', 'tempo', 'timing', 'character','rhythmic motion', 'synchronization', 'communication', 'matching musical idea', 'expressivity', 'tone quality', 'ending'];
+	categories=['dynamics', 'dyn_bal', 'balance', 'tempo', 'timing', 'character','rhythmic_motion', 'synchronization', 'communication', 'matching_musical_idea', 'expressivity', 'tone_quality', 'ending'];
 	for(i=0;i<categories.length;i++){
 		category = categories[i];
 		if(data[category]!=undefined && data[category]!= ""){
