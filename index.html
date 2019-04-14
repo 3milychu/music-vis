@@ -27,19 +27,19 @@
 	<option id="all" value="all">Everyone</option>
 	<div class="filters" id=people-filter-1>
 		<h1>Performers</h1>
-		<option  style="background-color:rgb(26, 26, 26);color:white;" id="performer" value="both">Both</option>
+		<option  style="background-color:#D8A693;color:white;" id="performer" value="both">Both</option>
 		<option id="performer" value="pianist">Pianist Only</option>
 		<option id="performer" value="cellist">Cellist Only</option>
 	</div>
 	<div class="filters" id=people-filter-1>
 		<h1>Class Member</h1>
-		<option style="background-color:rgb(26, 26, 26);color:white;" id="audience" value="all">All</option>
+		<option style="background-color:#D8A693;color:white;" id="audience" value="all">All</option>
 		<option id="audience" value="heard">Heard Only</option>
 		<option id="audience" value="played">Played Only</option>
 	</div>
 	<div class="filters" id=people-filter-1>
 		<h1>Nonperforming</h1>
-		<option style="background-color:rgb(26, 26, 26);color:white;" id="backup" value="both">Both</option>
+		<option style="background-color:#D8A693;color:white;" id="backup" value="both">Both</option>
 		<option id="backup" value="pianist">Pianist Only</option>
 		<option id="backup" value="cellist">Cellist Only</option>
 	</div>
@@ -429,7 +429,7 @@ function getPeopleStatus() {
 			type_family = document.querySelectorAll('#'+type);
 			console.log(name, type);
 			people_status[0][type]=name;
-			if(this.style.backgroundColor == "rgb(26, 26, 26)"){
+			if(this.style.backgroundColor == "#D8A693"){
 				this.style.backgroundColor="";
 				this.style.color="black";
 				people_status[0][type]="none";
@@ -437,7 +437,7 @@ function getPeopleStatus() {
 				for(i=0;i<type_family.length;i++){
 					type_family[i].style.backgroundColor="";
 					type_family[i].style.color="black";
-					this.style.backgroundColor="rgb(26, 26, 26)";
+					this.style.backgroundColor="#D8A693";
 					this.style.color="white";
 				}
 
@@ -457,7 +457,7 @@ function getPeopleStyles() {
 	console.log(performer, audience, backup)
 	if(performer == "both" && audience == "all" && backup == "both"){
 		console.log('everyone')
-		all_selection.style.backgroundColor = "#1A1A1A";
+		all_selection.style.backgroundColor = "#D8A693";
 		all.style.color = "white"
 	} else {
 		console.log('not everyone')
@@ -524,7 +524,7 @@ function getReactions(data){
 function updateData(data){
 	all = document.querySelector('#all');
 	test = all.style.backgroundColor;
-	if(test == "rgb(26, 26, 26)"){
+	if(test == "#D8A693"){
 		data = data;
 	} else {
 		if(performer != "both" && performer!= "none"){

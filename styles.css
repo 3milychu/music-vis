@@ -20,6 +20,7 @@ body, html {
 	color:#D8A693;
 	font-weight:900;
 	letter-spacing:-0.08em;
+	transition:0.5s all ease-in-out;
 }
 /*profiles*/
 .profile {
@@ -303,6 +304,7 @@ header {
 	height:fit-content;
 	text-align:center;
 	border-radius:0em 0em 1em 1em;
+	transition:all 0.5s ease-in-out;
 }
 .audio-container {
 	background-color:white;
@@ -391,6 +393,7 @@ audio:focus {
 	}
 }
 option {
+	border-radius:2em;
 	width:fit-content;
 	font-size:0.8em;
 	padding: 1% 10%;
@@ -399,8 +402,8 @@ option {
 	animation:0.1s fadeIn ease-in-out;
 }
 option:hover {
-	background-color:#1A1A1A;
-	color:white!important;
+	background-color:#F2F2F2;
+	color:#666666!important;
 }
 
 .view {
