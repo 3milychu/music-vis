@@ -190,7 +190,7 @@ d3.csv('data/cluster_results.csv')
 	})
 
 function loadReactions() {
-	d3.json('https://raw.githubusercontent.com/3milychu/music-vis/master/data/moment_all.json')
+	d3.json('https://raw.githubusercontent.com/3milychu/music-vis/master/data/moment_all2.json')
 	.then(function(data){
 		console.log(data);
 		getReactions(data);
@@ -570,14 +570,14 @@ function updateData(data){
 function addComments(add) {
 	if(add.length!=0){
 		console.log(add);
-		for (i=0;i<add.length;i++){
-			info = add[i];
+		for (j=0;j<add.length;j++){
+			info = add[j];
 			id = info['comment_id'];
 			comment = info['MOM1CHAR'];
+			console.log(comment);
 			role = info['role'];
 			test = document.getElementById(id);
 			if(test==null || test==undefined){
-				console.log(comment);
 				createComment(info,id,role)
 				displayEndorsement(info, id);
 				displayTags(info, id);
@@ -773,9 +773,9 @@ function drawCircles(num_circles){
        	   svg
         	.append('rect')
         	.attr("id","performers_corner")
-        	.attr("x",radius+25 )
+        	.attr("x",radius-35 )
         	.attr("y",0)
-        	.attr("width",radius+50)
+        	.attr("width",radius+150)
         	.attr("height",radius)
         	.style("filter","url(#blur)")
         	.style("fill", "url(#gradient)");
@@ -891,9 +891,9 @@ function updateSvg(width,height){
       	svg.select('rect')
       		.transition()
       		.duration(100)
-        	.attr("x",radius+25 )
+        	.attr("x",radius-35 )
         	.attr("y",0)
-        	.attr("width",radius+50)
+        	.attr("width",radius+150)
         	.attr("height",radius);
 
         svg.selectAll('circle')
@@ -1062,7 +1062,7 @@ function spatial() {
 			// get bio info
 			d3.csv('data/bio.csv')
 				.then (function(data){
-					// getProfileData(data, role)
+					getProfileData(data, role)
 				})
 				.catch(function(error){
 
@@ -1289,9 +1289,9 @@ function displayTags(data, comment_id){
 	for(i=0;i<categories.length;i++){
 		category = categories[i];
 		if(data[category]!=undefined && data[category]!= ""){
-			// category2 = category.replace(/_/g, " ")
+			category2 = category.replace(/_/g, " ")
 			tags.push({
-				tag: category,
+				tag: category2,
 				sentiment:data[category]
 			});
 		}
