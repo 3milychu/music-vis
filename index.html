@@ -111,10 +111,6 @@
 				<div class="person member heard" id="class_member_8"></div>
 				<div class="person member both" id="class_member_9"></div>
 				<div class="person member heard" id="class_member_10"></div>
-				<div class="person member" id="class_member_11"></div>
-				<div class="person member" id="class_member_12"></div>
-				<div class="person member" id="class_member_13"></div>
-				<div class="person member" id="class_member_14"></div>
 			</div>
 			<div class="backups">
 				<div class="person backup" id="non-performing_pianist"></div>
@@ -215,7 +211,7 @@ status();
 getView("comments")
 document.querySelector('#comments').click();
 menuListen();
-drawCircles(18);
+drawCircles(14);
 hover(1);
 getPeopleStyles();
 
@@ -515,7 +511,6 @@ function getReactions(data){
 	// display reactions
 	clear();
 	data = updateData(data);
-	console.log(data);
 	add= data.filter(function(d){
 	return ((parseInt(d.MOM_STARTBAR+d.MOM_STARTBEAT) <= ref.value) && (parseInt(d.MOM_ENDBAR+d.MOM_ENDBEAT) >= ref.value));
 	 })
@@ -573,13 +568,15 @@ function updateData(data){
 // add reactions to comments view, spatial view and signature view
 function addComments(add) {
 	if(add.length!=0){
+		console.log(add);
 		for (i=0;i<add.length;i++){
 			info = add[i];
 			id = info['comment_id'];
 			comment = info['MOM1CHAR'];
 			role = info['role'];
 			test = document.getElementById(id);
-			if(test==null|test==undefined){
+			if(test==null || test==undefined){
+				console.log(comment);
 				createComment(info,id,role)
 				displayEndorsement(info, id);
 				displayTags(info, id);
@@ -658,16 +655,16 @@ function getGraphableId(name){
 
 	} else if (test==false){
 		if(name=="Performing pianist"){
-			return "person15";
+			return "person11";
 		}
 		if(name=="Performing cellist"){
-			return "person16";
+			return "person12";
 		}
 		if(name=="Non-performing pianist"){
-			return "person17";
+			return "person13";
 		}
 		if(name=="Non-performing cellist"){
-			return "person18";
+			return "person14";
 		}
 	}
 }
@@ -907,7 +904,7 @@ function updateSvg(width,height){
             .attr('cy', function (d, i) {return d.y;})
        };
 
-       nodes = createNodes(18, height/2);
+       nodes = createNodes(14, height/2);
        updateCircles(height/2, nodes,10)
 
 }
@@ -927,18 +924,18 @@ function showSigPpl() {
 			// get mouse event
 			getpos();
 			text= this.id;
-			if(text=="person15" || text=="person16" || text=="person17" || text=="person18"){
+			if(text=="person11" || text=="person12" || text=="person13" || text=="person14"){
 				
-				if(text=="person15"){
+				if(text=="person11"){
 					text= "Performing pianist";
 				}
-				if(text=="person16"){
+				if(text=="person12"){
 					text= "Performing cellist";
 				}
-				if(text=="person17"){
+				if(text=="person13"){
 					text= "Non-performing pianist";
 				}
-				if(text=="person18"){
+				if(text=="person14"){
 					text="Non-performing cellist";
 				}
 			} else {
@@ -1036,7 +1033,7 @@ function getDetails(data, target, pic, role){
 	target.innerHTML+= "<div class=top>" + profile_pic + "<h2>"+ role + "</h2></div>"
 	target.innerHTML+="<h2>Random Thought</h2><p>"+ data[0][random] + "</p>"
 	target.innerHTML+="<h2>" + "Daily Listener" + "</h2>"
-	target.innerHTML+="<div style='width:100%;height:1em'><div style='"+formatPercent(listendaily/5)+"'></div>"
+	target.innerHTML+="<div style='width:80%;height:1em;background-color:#CCCCCC;border-radius:2em;overflow:hidden;'><div style='background:linear-gradient(15deg, #D9DFFF, #00A99A);height:1em;width:"+formatPercent(listendaily/5)+"'></div>"
 	target.innerHTML+="<h2>Primary Instrument</h2>"
 	target.innerHTML+="<tag>" + primary_instrument[0].trim() + "</tag>"
 	target.innerHTML+="<h2>Other Instruments</h2>"
@@ -1064,7 +1061,7 @@ function spatial() {
 			// get bio info
 			d3.csv('data/bio.csv')
 				.then (function(data){
-					getProfileData(data, role)
+					// getProfileData(data, role)
 				})
 				.catch(function(error){
 
@@ -1287,10 +1284,11 @@ function endorsementsDetail(data) {
 // each reaction's category by sentiment
 function displayTags(data, comment_id){
 	tags = []
-	categories=['dynamics', 'dynamics and balance', 'balance', 'tempo', 'timing', 'rhythmic_motion', 'synchronization', 'communication', 'matching_musical_idea', 'expressivity', 'character', 'tone quality', 'ending'];
+	categories=['dynamics', 'dyn_bal', 'balance', 'tempo', 'timing', 'character','rhythmic_motion', 'synchronization', 'communication', 'matching_musical_idea', 'expressivity', 'tone_quality', 'ending'];
 	for(i=0;i<categories.length;i++){
 		category = categories[i];
 		if(data[category]!=undefined && data[category]!= ""){
+			// category2 = category.replace(/_/g, " ")
 			tags.push({
 				tag: category,
 				sentiment:data[category]
