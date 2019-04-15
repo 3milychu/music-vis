@@ -846,18 +846,27 @@ function drawPath(point1_id, point2_id, sig_class) {
             c1x =this_h/2;
             c1y=this_h/2;
 
+           const rc = rough.svg(svg);
+
             // construct the command to draw a quadratic curve
-            var curve = "M" + p1x + " " + p1y + " Q " + c1x + " " + c1y + " " + p2x + " " + p2y;
+            // var curve = "M" + p1x + " " + p1y + " Q " + c1x + " " + c1y + " " + p2x + " " + p2y;
+            curve = rc.path("M" + p1x + " " + p1y + " Q " + c1x + " " + c1y + " " + p2x + " " + p2y, {
+			  stroke: 'inherit', strokeWidth: 5
+			});
+            curve.setAttribute("class","curve "+sig_class)
+            console.log(curve);
 
-            path = d3.select('svg')
-              .append('path')
-              .attr("class","curve "+sig_class)
-              .attr('d', curve);
+            // path = d3.select('svg')
+            //   .append('path')
+            //   .attr("class","curve "+sig_class)
+            //   .attr('d', curve);
 
-            path
-              .transition()        
-              .duration(1000)
-              .ease(d3.easeLinear)
+            svg.appendChild(curve);
+
+            // path
+            //   .transition()        
+            //   .duration(1000)
+            //   .ease(d3.easeLinear)
         }
 
 function updateSvg(width,height){
