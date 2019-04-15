@@ -112,30 +112,38 @@ body, html {
 	
 }
 .cluster-none {
-	 background-image: repeating-radial-gradient(#5D5C73, #FCC388 35%);
+/*	 background-image: repeating-radial-gradient(#5D5C73, #FCC388 35%);*/
+	background-image:url('assets/images/clusternone.png');
+	background-size: cover;
+	 animation:1s fadeIn ease-in-out;
 }
 .cluster0 {
-  background-image: repeating-radial-gradient(#AD6766, #633343 35%);
+	background-image:url('assets/images/cluster3.png');
+	background-size: cover;
   animation:1s fadeIn ease-in-out;
 }
 
 .cluster1 {
-  background-image: repeating-radial-gradient(#F08872, #A0F0CC 35%);
+	background-image:url('assets/images/cluster1.png');
+	background-size: cover;
   animation:1s fadeIn ease-in-out;
 }
 
 .cluster2 {
-  background-image: repeating-radial-gradient(#FCC388, #F16928 35%);
+	background-image:url('assets/images/cluster2.png');
+	background-size: cover;
   animation:1s fadeIn ease-in-out;
 }
 
 .cluster3 {
-  background-image:repeating-radial-gradient(#5EC7D2, #00A99A 35%);
+	background-image:url('assets/images/cluster3.png');
+	background-size: cover;
   animation:1s fadeIn ease-in-out;
 }
 
 .cluster4 {
-  background-image: repeating-radial-gradient(#231F20, #D3AA69 35%);
+	background-image:url('assets/images/cluster4.png');
+	background-size: cover;
   animation:1s fadeIn ease-in-out;
 }
 @keyframes zoom {
@@ -429,7 +437,7 @@ option:hover {
 	display:table;
 }
 #reactions3 {
-	background-color:#1A1A1A;
+	background-color:transparent;
 	overflow:hidden;
 }
 #reactions {
@@ -668,12 +676,12 @@ div[value=pos]{
 
 }
 div[value=neg]{
-	background-color:#B6B5C9;
+	background-color:#6561a5;
 	color:white;
 
 }
 .tooltip {
-	position:absolute;
+	position:fixed;
 	opacity:0;
 	color:#666666;
 	font-weight:400;
@@ -685,7 +693,6 @@ div[value=neg]{
 	z-index:100;
 	transition:0.1s all ease-in-out;
 	animation:0.1s fadeIn ease-in-out;
-	margin:1% 2%;
 }
 
 
@@ -713,7 +720,7 @@ div[value=neg]{
 	animation-duration:10s;
 	animation-iteration-count: 2;
 	background-color:#CCCCCC!important;
-	box-shadow:0em 0em 1em #B6B5C9;
+	box-shadow:0em 0em 1em #6561a5;
 }
 .mixedFade{
 	animation: mixedFade ease-in-out;
@@ -746,7 +753,7 @@ div[value=neg]{
 	0% {
 		transform-origin: 50% 50%;
 		transform:scale(1.2);
-		background-color:#B6B5C9;
+		background-color:#6561a5;
 	}
 	25% {
 		transform:scale(0.8);
@@ -827,14 +834,14 @@ div[value=neg]{
 	position:relative;
 }
 circle {
-	fill:#1A1A1A;
+	fill:white;
 }
 .sig_pos {
 	stroke: #FCC388!important;
 /*	animation: 0.25s sigFadeIn ease-in-out;*/
 }
 .sig_neg {
-	stroke: #B6B5C9!important;
+	stroke: #6561a5!important;
 /*	animation: 0.25s sigFadeIn ease-in-out;*/
 }
 .sig_mixed {
@@ -846,7 +853,7 @@ circle {
 
 }
 .usig_neg {
-	fill: #B6B5C9!important;
+	fill: #6561a5!important;
 }
 .usig_mixed {
 	fill: #7FCDEE!important;
@@ -872,9 +879,9 @@ circle {
 	animation:4s spin infinite linear;
 }
 svg {
-	box-shadow:0.5em 0.5em 1em black;
+	box-shadow:0em 0em 3em white;
 	margin-top:5%;
-	background-color:#C1272D;
+	background-color:white;
 	border-radius:50%;
 	margin-left:auto; 
 	margin-right:auto; 

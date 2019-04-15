@@ -6,6 +6,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Heebo:100,300,400" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script type="text/javascript" src="js/rough.js"></script>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -495,7 +496,7 @@ function getView(view){
 		document.querySelector('#reactions').style.display="none";
 		document.querySelector('#reactions2').style.display="none";
 		document.querySelector('#reactions3').style.display="inline-block";
-		view_container.style.backgroundColor="#1A1A1A";
+		view_container.style.backgroundColor="transparent";
 		if(start_message!=null){
 			for(i=0;i<labels.length;i++){
 				labels[i].style.color="#F2F2F2";
@@ -755,17 +756,17 @@ function drawCircles(num_circles){
 
 			gradient.append("stop")
 			    .attr("offset", "0%")
-			    .attr("stop-color", "#FFFFFF")
+			    .attr("stop-color", "#666666")
 			    .attr("stop-opacity", 1);
 
 			gradient.append("stop")
 			    .attr("offset", "25%")
-			    .attr("stop-color", "#FFFFFF")
+			    .attr("stop-color", "#666666")
 			    .attr("stop-opacity", 1);
 
 			gradient.append("stop")
 			    .attr("offset", "75%")
-			    .attr("stop-color", "#C1272D")
+			    .attr("stop-color", "#DBDBDB")
 			    .attr("stop-opacity", 1);
         }
 
@@ -1034,7 +1035,9 @@ function getDetails(data, target, pic, role){
 	target.innerHTML+= "<div class=top>" + profile_pic + "<h2>"+ role + "</h2></div>"
 	target.innerHTML+="<h2>Random Thought</h2><p>"+ data[0][random] + "</p>"
 	target.innerHTML+="<h2>" + "Daily Listener" + "</h2>"
-	target.innerHTML+="<div style='width:80%;height:1em;background-color:#CCCCCC;border-radius:2em;overflow:hidden;'><div style='background:linear-gradient(15deg, #D9DFFF, #00A99A);height:1em;width:"+formatPercent(listendaily/5)+"'></div>"
+	target.innerHTML+="<div style='width:80%;height:0.5em;background-color:#CCCCCC;border-radius:2em;overflow:hidden;'><div style='background:linear-gradient(15deg, #D9DFFF, #00A99A);border-radius:2em;height:0.5em;width:"+formatPercent(listendaily/5)+"'></div>"
+	target.innerHTML+="<h2>" + "Writes and Talks about Music" + "</h2>"
+	target.innerHTML+="<div style='width:80%;height:0.5em;background-color:#CCCCCC;border-radius:2em;overflow:hidden;'><div style='background:linear-gradient(15deg, #D9DFFF, #00A99A);height:0.5em;border-radius:2em;width:"+formatPercent(critique/5)+"'></div>"
 	target.innerHTML+="<h2>Primary Instrument</h2>"
 	target.innerHTML+="<tag>" + primary_instrument[0].trim() + "</tag>"
 	target.innerHTML+="<h2>Other Instruments</h2>"
@@ -1067,8 +1070,8 @@ function spatial() {
 				.catch(function(error){
 
 				})
-		  	tooltip.style.left="0px";
-		  	tooltip.style.top=page.clientHeight + "px";
+		  	tooltip.style.left=x
+		  	tooltip.style.bottom=y;
 		}
 		people[i].onmouseout=function() {
 			tooltip.style.opacity="0";
