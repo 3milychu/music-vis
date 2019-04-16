@@ -1183,10 +1183,8 @@ function alignScoreView(comments_count){
 	height = window.innerHeight;
 	if(card_pos=="down"){
 		if (comments_count<1){
-			score_view.style.height=(container_height-audio_container_h)+"px";
-		} else if (comments_count>=1 && comments_count <3){
-			score_view.style.height=height/4+"px";
-		} else if (comments_count >= 3) {
+			score_view.style.height=(height-audio_container_h)+"px";
+		} else if (comments_count>=1){
 			score_view.style.height=height/8+"px";
 		};
 	} else if (card_pos=="up"){
