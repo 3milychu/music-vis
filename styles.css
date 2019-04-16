@@ -115,36 +115,39 @@ body, html {
 /*	 background-image: repeating-radial-gradient(#5D5C73, #FCC388 35%);*/
 	background-image:url('assets/images/clusternone.png');
 	background-size: cover;
-	 animation:1s fadeIn ease-in-out;
+	 animation:2s fadeIn ease-in-out;
 }
 .cluster0 {
 	background-image:url('assets/images/cluster3.png');
 	background-size: cover;
-  animation:1s fadeIn ease-in-out;
+  animation:2s fadeIn ease-in-out;
 }
 
 .cluster1 {
 	background-image:url('assets/images/cluster1.png');
 	background-size: cover;
-  animation:1s fadeIn ease-in-out;
+  animation:2s fadeIn ease-in-out;
 }
 
 .cluster2 {
 	background-image:url('assets/images/cluster2.png');
 	background-size: cover;
-  animation:1s fadeIn ease-in-out;
+  animation:2s fadeIn ease-in-out;
 }
 
 .cluster3 {
 	background-image:url('assets/images/cluster3.png');
 	background-size: cover;
-  animation:1s fadeIn ease-in-out;
+  animation:2s fadeIn ease-in-out;
 }
 
 .cluster4 {
 	background-image:url('assets/images/cluster4.png');
 	background-size: cover;
-  animation:1s fadeIn ease-in-out;
+  animation:2s fadeIn ease-in-out;
+}
+#preload { 
+	display: none; 
 }
 @keyframes zoom {
 	0% {
@@ -437,7 +440,7 @@ option:hover {
 	display:table;
 }
 #reactions3 {
-	background-color:transparent;
+	background-color:white;
 	overflow:hidden;
 }
 #reactions {

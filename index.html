@@ -149,6 +149,17 @@
 <!-- view tooltip -->
 <div class="tooltip"><div class="profile"></div></div>
 
+
+<!-- preload images -->
+<div id="preload">
+   <img src="assets/images/clusternone" width="1" height="1"/>
+   <img src="assets/images/cluster0" width="1" height="1"/>
+   <img src="assets/images/cluster1" width="1" height="1"/>
+   <img src="assets/images/cluster2" width="1" height="1"/>
+   <img src="assets/images/cluster3" width="1" height="1"/>
+   <img src="assets/images/cluster4" width="1" height="1"/>
+</div>
+
 </body>
 <!-- <script type="text/javascript" src="computed.js"></script> -->
 <script>
@@ -517,6 +528,7 @@ function getReactions(data){
 	return ((parseInt(d.MOM_STARTBAR+d.MOM_STARTBEAT) <= ref.value) && (parseInt(d.MOM_ENDBAR+d.MOM_ENDBEAT) >= ref.value));
 	 })
 	// add stuff
+	d3.selectAll('.curve').remove();
 	addComments(add);
 	// adjust playback rate
 	setExperienceOptions(add);
@@ -769,6 +781,8 @@ function drawCircles(num_circles){
 			    .attr("stop-color", "#DBDBDB")
 			    .attr("stop-opacity", 1);
         }
+
+        const rc = rough.svg(svg);
 
        var createElements = function (svg, radius, nodes, elementRadius) {
        	   svg
