@@ -305,7 +305,8 @@ audio::-webkit-media-controls-toggle-closed-captions-button{
 	position:relative;
 	display:inline-block;
 	vertical-align:top;
-	width:fit-content;
+	height:80%;
+	width:auto;
 	cursor:pointer;
 	line-height:0;
 	transition:all 0.25s ease-in-out;
@@ -313,7 +314,7 @@ audio::-webkit-media-controls-toggle-closed-captions-button{
 }
 .page-holder img {
 	height:100%;
-	width:auto;
+	width:object-fit;
 }
 .overlay {
 	position:absolute;
@@ -576,6 +577,9 @@ input {
 	margin:-0.2%;
 	padding:1% 5%;
 }
+.zoom {
+	display:none;
+}
 .perspective {
 	overflow:visible;
 	position:absolute;
@@ -824,8 +828,8 @@ div[value=neg]{
 	margin:auto;
 }
 .performer {
-	width:2.5em;
-	height:2.5em;
+	width:5em;
+	height:5em;
 	border-radius:50%;
 	display:inline-block;
 	margin:2% 5%;
@@ -836,8 +840,8 @@ div[value=neg]{
 	display:inline-block;
 }
 .member {
-	width:2em;
-	height:2em;
+	width:4.5em;
+	height:4.5em;
 	background-color:#CCCCCC;
 	display:inline-block;
 	margin:2%;
@@ -848,8 +852,8 @@ div[value=neg]{
 	margin:auto;
 }
 .backup {
-	width:1.5em;
-	height:1.5em;
+	width:5em;
+	height:5em;
 	background-color:#CCCCCC;
 	transform-origin: 50% 50%;
 	transform:rotate(45deg);
