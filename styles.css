@@ -103,6 +103,29 @@ body, html {
 	background-image:url("assets/images/both.png");
 }
 /*clusters*/
+.label0, .label1, .label2, .label3, .label4{
+	height:1em;
+	width:100%;
+	line-height:0em;
+	margin:0;
+	padding:0;
+	display:block;
+}
+.label0{
+	background-color:#D9AC9B;
+}
+.label1{
+	background-color:#B9D9BB;
+}
+.label2{
+	background-color:#FFCA90;
+}
+.label3{
+	background-color:#DAE2E7;
+}
+.label4{
+	background-color:#D5C6B3;
+}
 #record {
 	position:absolute;
 	width:100%;
@@ -118,7 +141,7 @@ body, html {
 	 animation:2s fadeIn ease-in-out;
 }
 .cluster0 {
-	background-image:url('assets/images/cluster3.png');
+	background-image:url('assets/images/clusternone.png');
 	background-size: cover;
   animation:2s fadeIn ease-in-out;
 }
@@ -282,10 +305,11 @@ audio::-webkit-media-controls-toggle-closed-captions-button{
 	position:relative;
 	display:inline-block;
 	vertical-align:top;
-	width:100%
-	min-width:100%;
+	width:fit-content;
 	cursor:pointer;
+	line-height:0;
 	transition:all 0.25s ease-in-out;
+	animation:1s fadeIn ease-in-out;
 }
 .page-holder img {
 	height:100%;
@@ -421,7 +445,7 @@ option:hover {
 	position:relative;
 	right:0;
 	width:100%;
-	background-color:white;
+	background-color:transparent;
 	height:74vh;
 	overflow-y:scroll;
 	z-index:3;
@@ -704,7 +728,8 @@ div[value=neg]{
 	width:100%;
 	margin:auto;
 	text-align:center;
-	vertical-align:middle;
+	vertical-align:top;
+	padding-top:10%;
 	display:table-cell;
 }
 .person {

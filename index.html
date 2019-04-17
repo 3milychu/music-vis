@@ -6,6 +6,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Heebo:100,300,400" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript" src="js/rough.js"></script>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="styles.css">
@@ -51,21 +52,21 @@
 <!-- vis perspective -->
 <div class="perspective">
 		<div class="option" id="spatial">
-			<div class="label">Scene</div>
+			<div class="label"></div>
 			<div class="circle-button">
-				<i class="material-icons">flare</i>
+				<i class="material-icons">location_on</i>
 			</div>
 		</div>
 		<div class="option" id="comments">
-			<div class="label">Comments</div>
+			<div class="label"></div>
 			<div class="circle-button">
-				<i class="material-icons">chat_bubble_outline</i>
+				<i class="material-icons">forum</i>
 			</div>
 		</div>
 		<div class="option" id="signature">
-			<div class="label">Impressions</div>
+			<div class="label"></div>
 			<div class="circle-button">
-				<i class="material-icons">fingerprint</i>
+				<i class="material-icons">palette</i>
 			</div>
 		</div>
 
@@ -152,12 +153,12 @@
 
 <!-- preload images -->
 <div id="preload">
-   <img src="assets/images/clusternone" width="1" height="1"/>
-   <img src="assets/images/cluster0" width="1" height="1"/>
-   <img src="assets/images/cluster1" width="1" height="1"/>
-   <img src="assets/images/cluster2" width="1" height="1"/>
-   <img src="assets/images/cluster3" width="1" height="1"/>
-   <img src="assets/images/cluster4" width="1" height="1"/>
+   <img src="assets/images/clusternone.png" width="1" height="1"/>
+<!--    <img src="assets/images/cluster0.png" width="1" height="1"/> -->
+   <img src="assets/images/cluster1.png" width="1" height="1"/>
+   <img src="assets/images/cluster2.png" width="1" height="1"/>
+   <img src="assets/images/cluster3.png" width="1" height="1"/>
+   <img src="assets/images/cluster4.png" width="1" height="1"/>
 </div>
 
 </body>
@@ -219,14 +220,31 @@ window.onresize=function() {
 optionsListen("playback");
 document.querySelector('.option[value="real"]').click();
 optionsListen("zoom");
-document.querySelector('.option[value="dynamic"]').click();
+document.querySelector('.option[value="locked"]').click();
 status();
 getView("comments")
 document.querySelector('#comments').click();
 menuListen();
 drawCircles(14);
-hover(1);
 getPeopleStyles();
+getAllSignatures();
+
+// get all signatures
+function getAllSignatures() {
+	window.addEventListener('DOMContentLoaded', (event) => {
+		d3.json('https://raw.githubusercontent.com/3milychu/music-vis/master/data/moment_all2.json')
+		.then(function(data){	
+			for(i=0;i<data.length;i++){
+				info = data[i];
+				role = info['role']
+				getSignature(info, role)
+			}
+		})
+		.catch(function(error){
+		})
+	});
+}
+
 
 // play on audio click
 audio = document.querySelector('audio');
@@ -293,6 +311,28 @@ function getMusic(data) {
 		}, 0);
 	}
 }
+
+// animate scrollpost function
+function animatethis(targetElement, speed) {
+    var scrollWidth = $(targetElement).get(0).scrollWidth;
+    var clientWidth = $(targetElement).get(0).clientWidth;
+    $(targetElement).animate({ scrollLeft: scrollWidth},
+    {
+        duration: speed,
+        complete: function () {
+            targetElement.animate({ scrollLeft: 0 },
+            {
+                duration: speed,
+                complete: function () {
+                    animatethis(targetElement, speed);
+                }
+            });
+        }
+    });
+};
+
+
+
 
 // design record based on cluster by score image of that beat
 
@@ -664,7 +704,6 @@ function getGraphableId(name){
 	sig_ref = parseInt(name.slice(-2));
 	test = Number.isInteger(sig_ref);
 	if(test==true){
-			console.log(sig_ref)
 			return "person"+sig_ref;
 
 	} else if (test==false){
@@ -819,7 +858,7 @@ function drawCircles(num_circles){
          if(window.innerWidth<=767){
          	radius = view_width/4;
          } else {
-         	radius = view_height/3;
+         	radius = (view_height/1.7)/2;
          }
          
          var nodes = createNodes(numNodes, radius);
@@ -856,31 +895,31 @@ function drawPath(point1_id, point2_id, sig_class) {
             var c1y = mpy + offset * Math.sin(theta);
 
             // center of svg
-           	this_h=document.querySelector('svg').clientHeight;
-            c1x =this_h/2;
-            c1y=this_h/2;
+           	this_h=document.querySelector('.view').clientHeight;
+            c1x =this_h/2-100;
+            c1y=this_h/2-100;
 
-           const rc = rough.svg(svg);
+           // const rc = rough.svg(svg);
 
             // construct the command to draw a quadratic curve
-            // var curve = "M" + p1x + " " + p1y + " Q " + c1x + " " + c1y + " " + p2x + " " + p2y;
-            curve = rc.path("M" + p1x + " " + p1y + " Q " + c1x + " " + c1y + " " + p2x + " " + p2y, {
-			  stroke: 'inherit', strokeWidth: 5
-			});
-            curve.setAttribute("class","curve "+sig_class)
-            console.log(curve);
+            var curve = "M" + p1x + " " + p1y + " Q " + c1x + " " + c1y + " " + p2x + " " + p2y;
+   //          curve = rc.path("M" + p1x + " " + p1y + " Q " + c1x + " " + c1y + " " + p2x + " " + p2y, {
+			//   stroke: 'inherit', strokeWidth: 5
+			// });
+   //          curve.setAttribute("class","curve "+sig_class)
+   //          console.log(curve);
 
-            // path = d3.select('svg')
-            //   .append('path')
-            //   .attr("class","curve "+sig_class)
-            //   .attr('d', curve);
+            path = d3.select('svg')
+              .append('path')
+              .attr("class","curve "+sig_class)
+              .attr('d', curve);
 
-            svg.appendChild(curve);
+            // svg.appendChild(curve);
 
-            // path
-            //   .transition()        
-            //   .duration(1000)
-            //   .ease(d3.easeLinear)
+            path
+              .transition()        
+              .duration(1000)
+              .ease(d3.easeLinear)
         }
 
 function updateSvg(width,height){
@@ -1094,7 +1133,7 @@ function spatial() {
 
 				})
 		  	tooltip.style.left=x
-		  	tooltip.style.bottom=y;
+		  	tooltip.style.top=y;
 		}
 		people[i].onmouseout=function() {
 			tooltip.style.opacity="0";
@@ -1379,11 +1418,17 @@ function scrollTo(img){
 		  // behavior:'smooth'
 		});
 	}
+	if(target.offsetLeft >= window.innerWidth/2){
+		animatethis($('.page'),90000);
+	} else {
+	}
 
 }
 
 //calculate which measure each beat falls under
 function getScore() {
+d3.csv('data/cluster_results.csv')
+.then(function(data) {
 	for(i=1;i<274;i++){
 		target=document.querySelector('#page1');
 		height=window.innerHeight
@@ -1395,12 +1440,20 @@ function getScore() {
 		img = document.createElement('img');
 		img.src="assets/cropped/500w/"+i+".png";
 		target.style.height=height/8+"px";
-		div.style.height="100%";
+		div.style.height="80%";
+		cluster = document.createElement('div');
+		label = data[i-1]['labels'];
+		cluster.setAttribute("class", "label"+label)
 		div.appendChild(img);
 		div.appendChild(overlay);
+		div.appendChild(cluster);
 		target.appendChild(div);
-	}
+		}
+		})
+	.catch(function(error){
+	})
 }
+	
 
 // resize reactions container based on window size
 function resizeInterface() {
@@ -1424,7 +1477,11 @@ function resizeInterface() {
 	toggleScore(view, view_height);
 	svg_w = view.offsetWidth;
 	svg_h = view.offsetHeight;
-	updateSvg(svg_h/1.8, svg_h/1.8);
+	updateSvg(svg_h/1.7, svg_h/1.7);
+
+	curves = d3.selectAll('curve')
+		.transition()
+		.duration(100)
 }
 
 function toggleScore(view, view_height) {
@@ -1433,8 +1490,7 @@ function toggleScore(view, view_height) {
 	view3 = document.querySelector('#reactions3');
 	return_2 = view2.offsetHeight;
 	return_3 = view3.offsetHeight;
-	return_h =page.style.height.split("px");
-	return_h = parseInt(return_h[0]);
+	return_h = window.innerHeight/8;
 	var toggle = function (a, b) {
 	    var togg = false;
 	    return function () {
