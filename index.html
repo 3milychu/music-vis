@@ -403,6 +403,7 @@ function roll(data) {
 function spin(){
 	record = document.querySelector('svg');
 	record.classList.add("spin");
+	document.getElementById("record").style.animation = "5s zoom infinite ease-in-out";
 }
 
 function stopSpin(){
@@ -410,6 +411,7 @@ function stopSpin(){
 	if(record!=null){
 		record.classList.remove("spin");
 	}
+	document.getElementById("record").style.animation = "";
 }
 
 
@@ -769,8 +771,9 @@ function setExperienceOptions(add){
 	if(zoom_option=="dynamic"){
 		alignScoreView(add.length)
 	}else if(zoom_option=="locked"){
-		score_view = document.querySelector('#page1');
-		score_view.style.height=height/8+"px";
+		// score_view = document.querySelector('#page1');
+		// score_view.style.height=height/8+"px";
+		alignScoreView(add.length)
 	}
 }
 
@@ -1291,12 +1294,14 @@ function alignScoreView(comments_count){
 	audio_container_h = audio_container.offsetHeight
 	height = window.innerHeight;
 	if(card_pos=="down"){
-		if (comments_count<1){
-			score_view.style.height=(height-audio_container_h)+"px";
-		} else if (comments_count>=1){
+		// console.log('down')
+		// if (comments_count<1){
+		// 	score_view.style.height=(height-audio_container_h)+"px";
+		// } else if (comments_count>=1){
 			score_view.style.height=height/8+"px";
-		};
+		// };
 	} else if (card_pos=="up"){
+		console.log("up")
 		score_view.style.height="0px";
 	}
 
@@ -1343,11 +1348,12 @@ function endorsementsDetail(data) {
 	agrees = document.querySelectorAll(".agree");
 	disagrees = document.querySelectorAll(".disagree");
 	for (i=0;i<agrees.length;i++){
-		agrees[i].onmouseenter=function() {
+		agrees[i].onmouseover=function() {
 			agree = [];
 			disagree = [];
 			getpos();
 			tooltip.style.left=x;
+			tooltip.style.right="auto";
 			tooltip.style.top=y;
 			comment_id = this.getAttribute("name");
 			index = data.findIndex(obj => obj.comment_id==comment_id);
@@ -1365,6 +1371,7 @@ function endorsementsDetail(data) {
 
 			function displayEndorsement() {
 				if(agree.length!=0){
+					tooltip.style.display="block";
 					tooltip.style.opacity="1";
 					tooltip.innerHTML="";
 					for(j=0;j<agree.length;j++){
@@ -1373,16 +1380,18 @@ function endorsementsDetail(data) {
 				}
 			}
 		}
-		agrees[i].onmouseleave=function() {
+		agrees[i].onmouseout=function() {
+			tooltip.style.display="none";
 			tooltip.style.opacity="0";
 		}
 	}
 	for (i=0;i<disagrees.length;i++){
-	disagrees[i].onmouseenter=function() {
+	disagrees[i].onmouseover=function() {
 		agree = [];
 		disagree = [];
 		getpos();
 		tooltip.style.left=x;
+		tooltip.style.right="auto";
 		tooltip.style.top=y;
 		comment_id = this.getAttribute("name");
 		index = data.findIndex(obj => obj.comment_id==comment_id);
@@ -1400,6 +1409,7 @@ function endorsementsDetail(data) {
 
 		function displayEndorsement() {
 			if(disagree.length!=0){
+				tooltip.style.display="block";
 				tooltip.style.opacity="1";
 				tooltip.innerHTML="";
 				for(j=0;j<disagree.length;j++){
@@ -1408,7 +1418,8 @@ function endorsementsDetail(data) {
 			}
 		}
 	}
-	disagrees[i].onmouseleave=function() {
+	disagrees[i].onmouseout=function() {
+		tooltip.style.display="none";
 		tooltip.style.opacity="0";
 	}
 }

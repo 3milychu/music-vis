@@ -134,7 +134,7 @@ body, html {
 	width:100%;
 	height:100%;
 	margin:auto;
-	animation:5s zoom infinite ease-in-out;
+/*	animation:5s zoom infinite ease-in-out;*/
 	
 }
 .cluster-none {
