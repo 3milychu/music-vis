@@ -404,6 +404,7 @@ function spin(){
 	record = document.querySelector('svg');
 	record.classList.add("spin");
 	document.getElementById("record").style.animation = "5s zoom infinite ease-in-out";
+	document.querySelector('#reactions2').style.backgroundColor="#1d1d1d";
 }
 
 function stopSpin(){
@@ -412,6 +413,7 @@ function stopSpin(){
 		record.classList.remove("spin");
 	}
 	document.getElementById("record").style.animation = "";
+	document.querySelector('#reactions2').style.backgroundColor="transparent";
 }
 
 

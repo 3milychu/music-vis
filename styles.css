@@ -272,7 +272,6 @@ audio::-webkit-media-controls-toggle-closed-captions-button{
 	margin:auto;
 	z-index:200;
 	text-align:left;
-	transform:rotate(-5deg);
 	color:#F2F2F2;
 	text-decoration-style: normal;
 	cursor:pointer;
@@ -461,6 +460,7 @@ option:hover {
 }
 #reactions2 {
 	display:table;
+	transition:0.5s all ease-in-out;
 }
 #reactions3 {
 	background-color:white;
@@ -512,27 +512,26 @@ input {
 }
 #start-message h1 {
 	font-size:8em;
-	width:80%;
+	width:50%;
 	text-align:left;
 	letter-spacing:-0.09em;
 	margin-top:-10%;
 	color:white;
 	font-weight:900;
 	line-height:0.7em;
-	margin-bottom:0%;
+	margin-bottom:5%;
 }
 #start-message p {
-    font-family: 'Inconsolata', monospace;
+    font-family: 'Overpass', sans-serif;
     width: 50%;
     text-align: left;
+    line-height:1.2em;
+    font-weight:100;
     color: white;
-    font-size: 0.8em;
-    margin-bottom: 5%;
-    margin-top: 3%;
-    margin-left: 0%;
-    transform:rotate(-5deg);
+    font-size: 0.7em;
+	position:absolute;
     background-color:transparent;
-/*    box-shadow:0em 0em 1em #666666;*/
+    bottom:18%;
     padding:1% 2.5%;
 }
 #reactions2 h2, #reactions3 h2 {
