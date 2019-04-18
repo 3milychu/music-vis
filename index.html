@@ -100,7 +100,7 @@
 		<!-- info button lightbox -->
 		<div id="ensemble_about" "class="info">
 			<h1>Meet the Ensemble</h1>
-			<p>Hover over each ensemble member to see their background, familiarity with the piece, and general thoughts about the piece. During the piece, <em id="pos">positive</em>, <em id="neg">negative</em> or  <em id="mixed">mixed</em> reactions by each member will appear when experienced and fade out for 10 seconds.</p>
+			<p>Hover over each ensemble member to see their background, familiarity with Fantasiestücke Op. 73 and general thoughts about the piece. During the performance, <em id="pos">positive</em>, <em id="neg">negative</em> or  <em id="mixed">mixed</em> reactions by each member will glow for 10 seconds from onset of sentiment.</p>
 		</div>
 		<div id="hall">
 			<div class="performers">
@@ -145,7 +145,7 @@
 				<div id="symbol3">
 					<img src="assets/images/symbol3.png">
 				</div>
-				<p>Spots linked with a connector shows that this person experienced a reaction shared by the member they are linked to</p>
+				<p>Spots linked with a thread shows that this person experienced a reaction shared by the member they are linked to</p>
 			</div>
 			<div class="mapping">
 				<div id="symbol4">
@@ -521,15 +521,15 @@ function getPeopleStatus() {
 			type_family = document.querySelectorAll('#'+type);
 			console.log(name, type);
 			people_status[0][type]=name;
-			if(this.style.backgroundColor == "#D8A693"){
-				this.style.backgroundColor="";
+			if(this.style.backgroundColor == "rgb(216, 166, 147)"){
+				this.style.backgroundColor="transparent";
 				this.style.color="black";
 				people_status[0][type]="none";
 			} else {
 				for(i=0;i<type_family.length;i++){
 					type_family[i].style.backgroundColor="";
 					type_family[i].style.color="black";
-					this.style.backgroundColor="#D8A693";
+					this.style.backgroundColor="rgb(216, 166, 147)";
 					this.style.color="white";
 				}
 
@@ -1098,7 +1098,7 @@ function getProfileData(data, role){
 		heard_bool = "no"
 	}
 	played = data[0]['played']
-	if(played != "no"){
+	if(played == "no"){
 		played_bool = "no"
 	} else {
 		played_bool = "yes"
