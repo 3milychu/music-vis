@@ -102,6 +102,9 @@ body, html {
 .both {
 	background-image:url("assets/images/both.png");
 }
+.none {
+	background-image:url("assets/images/none.png");
+}
 /*clusters*/
 .label0, .label1, .label2, .label3, .label4{
 	height:1em;
@@ -131,7 +134,7 @@ body, html {
 	width:100%;
 	height:100%;
 	margin:auto;
-	animation:10s zoom infinite ease-in-out;
+	animation:5s zoom infinite ease-in-out;
 	
 }
 .cluster-none {
@@ -176,13 +179,7 @@ body, html {
 	0% {
 		transform:scale(1);
 	}
-	15% {
-	 	transform:scale(1.1);
-	}
-	25% {
-	 	transform:scale(1);
-	}
-	55% {
+	50% {
 	 	transform:scale(1.5);
 	}
 	100% {
@@ -535,7 +532,7 @@ input {
     margin-left: 0%;
     transform:rotate(-5deg);
     background-color:transparent;
-    box-shadow:0em 0em 1em #666666;
+/*    box-shadow:0em 0em 1em #666666;*/
     padding:1% 2.5%;
 }
 #reactions2 h2, #reactions3 h2 {
@@ -547,7 +544,61 @@ input {
 	text-align: center;
 	animation:0.5s fadeIn ease-in-out;
 }
+/*Ensemble*/
+#pos {
+	color:#FBC28C;
+	display:inline-block;
+	font-weight:700;
+}
+#neg{
+	color:#6563A3;
+	display:inline-block;
+	font-weight:700;
+}
+#mixed {
+	color:#82CDEC;
+	display:inline-block;
+	font-weight:700;
+}
+#reactions2 .circle-button {
+    position: absolute;
+    z-index: 200;
+    text-align:center;
+    padding: 0%;
+    margin:2%;
+}
 
+#reactions2 .circle-button:hover {
+	transform-origin:50% 50%;
+	transform:scale(1.1);
+}
+#ensemble_show, #imp_show {
+	font-style:italic;
+	cursor:pointer;
+}
+#ensemble_about {
+	color:#808080;
+	display:none;
+	position:absolute;
+	top:10%;
+	left:2%;
+	width:30%;
+	height:fit-content;
+	z-index:200;
+	transition:0.5s all ease-in-out;
+	animation:0.5s fadeIn ease-in-out;
+}
+#ensemble_about h1 {
+	margin:0%;
+	padding-bottom:0%;
+	font-size:2.5em;
+	font-weight:200;
+	font-style:italic;
+}
+#ensemble_about p {
+	font-size:0.7em;
+	line-height:1em;
+}
 /*Impressions*/
 #reactions3 .circle-button {
     position: absolute;
@@ -593,6 +644,8 @@ input {
 }
 #imp_about h1 {
 	margin:0%;
+	padding-bottom:0%;
+	font-size:2.5em;
 	font-weight:200;
 	font-style:italic;
 }
@@ -611,7 +664,8 @@ input {
 	border:0.05em #6563A3 solid;
 }
 .mapping img {
-	width:100%;
+	width:200%;
+	margin-left:-50%;
 	height:auto;
 }
 
@@ -923,11 +977,12 @@ div[value=neg]{
 .backup {
 	width:5em;
 	height:5em;
+	border-radius:50%;
 	background-color:#CCCCCC;
 	transform-origin: 50% 50%;
 	transform:rotate(45deg);
 	display:inline-block;
-	margin:3%;
+	margin:5%;
 }
 /*signature*/
 
