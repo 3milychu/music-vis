@@ -180,8 +180,8 @@
 				<div class="option zoom" name="zoom" value="locked">Locked</div>
 			</div>
 			<div class="filters">
-				<div class="option playback" name="playback" value="experienced">Experienced time</div>
-				<div class="option playback" name="playback" value="real">Real time</div>
+				<div class="option playback" name="playback" value="experienced">Relative time</div>
+				<div class="option playback" name="playback" value="real">Absolute time</div>
 			</div>
 		</div>
 
@@ -377,10 +377,20 @@ function animatethis(targetElement, speed) {
 
 function designByCluster(data){
 	target = document.querySelector('#record');
+	svg = document.querySelector('svg');
 	target.className = "";
 	label = data[0]['labels'];
 	console.log("cluster" + label);
+	// turn background to cluster label through css class
 	target.classList.add("cluster"+label);
+	// turn svg color through css class
+	// clear previous svg
+	// if cluster 2, turn disc dark
+	if(label==2){
+		svg.style.backgroundColor="#1d1d1d"
+	} else {
+		svg.style.backgroundColor="transparent"
+	}
 }
 
 function removeClusterDesign(){
@@ -458,10 +468,10 @@ function optionsListen(name) {
 		options[i].onclick=function(){
 			this.style.fontWeight="800";
 			this.style.color="#1A1A1A";
-			if(this.innerHTML=="Experienced time"){
+			if(this.innerHTML=="Relative time"){
 				time_option = "experienced";
 				modify = document.querySelector('div[value=real]');
-			}else if(this.innerHTML=="Real time") {
+			}else if(this.innerHTML=="Absolute time") {
 				time_option = "real";
 				modify = document.querySelector('div[value=experienced]');
 			} else if(this.innerHTML=="Dynamic"){
@@ -1455,7 +1465,7 @@ function displayTags(data, comment_id){
 
 // adjust audio playback rate based on # reactions
 function adjustPlayback(data) {
-	slow=0.4;
+	slow=0.6;
 	normal=1;
 	fast=2;
 	veryfast=2.5
