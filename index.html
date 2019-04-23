@@ -6,11 +6,9 @@
 	<link href="https://fonts.googleapis.com/css?family=Heebo:100,300,300i, 400" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 	<script src="https://d3js.org/d3.v5.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script type="text/javascript" src="js/rough.js"></script>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="styles.css">
-	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<!-- 	<script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 	<meta name="viewport" content="width=device-width">
 </head>
 <body>
@@ -351,28 +349,6 @@ function getMusic(data) {
 	}
 }
 
-// animate scrollpost function
-function animatethis(targetElement, speed) {
-    var scrollWidth = $(targetElement).get(0).scrollWidth;
-    var clientWidth = $(targetElement).get(0).clientWidth;
-    $(targetElement).animate({ scrollLeft: scrollWidth},
-    {
-        duration: speed,
-        complete: function () {
-            targetElement.animate({ scrollLeft: 0 },
-            {
-                duration: speed,
-                complete: function () {
-                    animatethis(targetElement, speed);
-                }
-            });
-        }
-    });
-};
-
-
-
-
 // design record based on cluster by score image of that beat
 
 function designByCluster(data){
@@ -387,7 +363,7 @@ function designByCluster(data){
 	// clear previous svg
 	// if cluster 2, turn disc dark
 	if(label==2){
-		svg.style.backgroundColor="#1d1d1d"
+		svg.style.backgroundColor="#D8A693"
 	} else {
 		svg.style.backgroundColor="transparent"
 	}
@@ -874,7 +850,7 @@ function drawCircles(num_circles){
 			    .attr("stop-opacity", 1);
         }
 
-        const rc = rough.svg(svg);
+        // const rc = rough.svg(svg);
 
        var createElements = function (svg, radius, nodes, elementRadius) {
        	   svg
@@ -1511,11 +1487,6 @@ function scrollTo(img){
 		  // behavior:'smooth'
 		});
 	}
-	if(target.offsetLeft >= window.innerWidth/2){
-		animatethis($('.page'),90000);
-	} else {
-	}
-
 }
 
 //calculate which measure each beat falls under
