@@ -113,6 +113,7 @@ body, html {
 	margin:0;
 	padding:0;
 	display:block;
+	cursor:help;
 }
 .label0{
 	background-color:#D9AC9B;
