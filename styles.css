@@ -1060,8 +1060,14 @@ svg {
 	}
 }
 @media screen and (max-width:767px){
+	svg {
+	 box-shadow:none;
+	}
 	#start-message h1 {
-		font-size:5em;
+		font-size:3em;
+	}
+	#start-message p {
+		display:none;
 	}
 	#reactions .item {
 		display:block;
@@ -1088,6 +1094,24 @@ svg {
 		opacity:0.9;
 		border-radius:2em;
 		padding:2%;
+	}
+	.performer {
+		width:3em;
+		height:3em;
+	}
+	.member {
+		width:2.5em;
+		height:2.5em;
+	}
+	.backup {
+		width:3em;
+		height:3em;
+	}
+	.tooltip {
+		width:50%;
+	}
+	.profile {
+		width:100%;
 	}
 }
 @media screen and (max-width:530px){
