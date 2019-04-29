@@ -392,7 +392,7 @@ function designByCluster(data){
 	// clear previous svg
 	// if cluster 2, turn disc dark
 	if(label==2){
-		svg.style.backgroundColor="#D8A693"
+		svg.style.backgroundColor="#F15A24"
 	} else {
 		svg.style.backgroundColor="transparent"
 	}
@@ -1008,8 +1008,7 @@ function updatePaths(){
 				.attr('d', updated_curve)
 				.transition()
 				.ease(d3.easeLinear)
-				.duration(1000)
-				;
+				.duration(1000);
 		}
 
 }
@@ -1032,8 +1031,8 @@ function updateSvg(width,height){
              i;
          for (i=0; i<numNodes; i++) {
           angle = (i / (numNodes/2)) * Math.PI;
-          x = (radius * Math.cos(angle)) + (width/2); // Calculate the x position of the element.
-          y = (radius * Math.sin(angle)) + (width/2); // Calculate the y position of the element.
+          x = (radius * Math.cos(angle)) + (width/2); 
+          y = (radius * Math.sin(angle)) + (width/2);
           nodes.push({'id': i+1, 'x': x, 'y': y});
          }
          return nodes;
