@@ -48,16 +48,39 @@ h1 {
 
 </body>
 <script>
+
+timecodes = [];
+
 d3.csv('data/cluster_results.csv')
 .then(function(data) {
 	console.log(data)
-	showClusters(data);
+	showClusters(data)
+	getTimeCodes(data)
 })
 .catch(function(error){
 })
 
 descriptions = [{0:"Theme: Characterized by triplets played in legato in the middle C to A range in tonality for both treble and bass parts"},{0:"Magic: Characterized by triplets in legato in the middle C to A range for the treble, supported by half or whole note chord progressions in the bass, as well as gentle crescendos and descrescendos climaxing at whole notes"}, {0: "Building: Characterized by triplets played in legato modified with sharps and flats outside of the key supported by mostly quarter notes on the bass clef in later parts of the piece"}, {0: "Emerging: Characterized by triplets played in legato modified with sharps and flats outside of the key and supported by triplets, half or whole notes in crescendo or descrendo in earlier parts of the piece, and/or parts demarcated with forte or fortepiano"}, {0:"Drama: Characterized by eighth note progressions in the treble clef with half and eight note progressions in the bass clef, eighth rests, and sharp accents"}]
 console.log(descriptions[0])
+
+function getTimeCodes(data){
+	formatTime = d3.format(",.2f");
+	for(i=0;i<data.length;i++){
+		measure = data[i]['measure']
+		beat = data[i]['beat']
+		start = data[i]['timestamp']
+		end =data[i+1]['timestamp']
+		start = parseFloat(formatTime(start))
+		end = parseFloat(formatTime(end-0.01))
+		console.log(measure,beat,start,end)
+		timecodes.push({
+			measure: measure,
+			beat: beat,
+			start: start,
+			end: end
+		})
+	}
+}
 
 function showClusters(data){
 	cluster0 = data.filter(function(d){return d.labels==0})

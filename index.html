@@ -43,7 +43,8 @@
 		<option id="backup" value="cellist">Cellist Only</option>
 	</div>
 </div>
-	<input value="10"></input>
+	<input id="ref" value="10"></input>
+	<input id="svg-load" value="0"></input>
 
 
 <!-- vis perspective -->
@@ -207,7 +208,7 @@ var view;
 var audio;
 var measure;
 var beat;
-var ref = document.querySelector('input');
+var ref = document.querySelector('#ref');
 var watch = "same";
 var time_option;
 var zoom_option;
@@ -265,17 +266,45 @@ drawCircles(14);
 getPeopleStyles();
 getAllSignatures();
 
+// svg watcher
+svg_x = {
+  aInternal: 0,
+  aListener: function(val) {},
+  set a(val) {
+    this.aInternal = val;
+    this.aListener(val);
+  },
+  get a() {
+    return this.aInternal;
+  },
+  registerListener: function(listener) {
+    this.aListener = listener;
+  }
+}
+
 // get all signatures
 function getAllSignatures() {
 	console.log("get signatures")
 	window.addEventListener('DOMContentLoaded', (event) => {
+
+		el=document.querySelector('svg')
+		checkSvg = setInterval(function() {
+				if(el.clientHeight!=0){
+					svg_x.a = 1;
+					clearInterval(checkSvg);
+				}
+			},0)
+		
 		d3.json('https://raw.githubusercontent.com/3milychu/music-vis/master/data/moment_all2.json')
-		.then(function(data){	
-			for(i=0;i<data.length;i++){
-				info = data[i];
-				role = info['role']
-				getSignature(info, role)
-			}
+		.then(function(data){
+			svg_x.registerListener(function(val) {
+				for(i=0;i<data.length;i++){
+					info = data[i];
+					role = info['role']
+						console.log("changed")
+					  getSignature(info, role)
+				}
+			});
 		})
 		.catch(function(error){
 		})
@@ -915,16 +944,9 @@ function drawPath(point1_id, point2_id, sig_class) {
 
             // center of svg
             el=document.querySelector('svg')
-           	this_h=el.clientHeight;
-       		c1x =this_h/2;
-        	c1y=this_h/2;
-           	console.log(c1x,c1y)
-           	if(c1x==0){
-           		alt=document.querySelector('.view')
-           		alt_h=alt.clientHeight;
-           		c1x =alt_h/2-100;
-        		c1y=alt_h/2-100;
-           	}
+            this_h=el.clientHeight;
+   			c1x =this_h/2;
+    		c1y=this_h/2;
 
            // const rc = rough.svg(svg);
 
@@ -938,6 +960,7 @@ function drawPath(point1_id, point2_id, sig_class) {
 
             path = d3.select('svg')
               .append('path')
+              .attr("id", point1_id + "_"+ point2_id)
               .attr("class","curve "+sig_class)
               .attr('d', curve);
 
@@ -948,6 +971,48 @@ function drawPath(point1_id, point2_id, sig_class) {
               .duration(1000)
               .ease(d3.easeLinear)
         }
+function updatePaths(){
+		path_data = [];
+		paths = document.querySelectorAll('.curve')
+		for(i=0;i<paths.length;i++){
+			id = paths[i].id
+			console.log(paths[i])
+			console.log(id)
+			split = id.split("_")
+			point1 = split[0]
+			point2 = split[1]
+			var p1x = parseFloat(document.getElementById(point1).getAttribute("cx"));
+		    var p1y = parseFloat(document.getElementById(point1).getAttribute("cy"));
+		    var p2x = parseFloat(document.getElementById(point2).getAttribute("cx"));
+		    var p2y = parseFloat(document.getElementById(point2).getAttribute("cy"));
+			path_data.push({
+				id: id,
+				p1x: p1x,
+				p1y: p1y,
+				p2x: p2x,
+				p2y: p2y
+			})
+		}
+
+		console.log(path_data)
+
+		// center of svg
+	    el=document.querySelector('svg')
+	    this_h=el.clientHeight;
+		c1x =this_h/2;
+		c1y=this_h/2;
+
+		for(i=0;i<path_data.length;i++){
+			updated_curve = "M" + path_data[i]['p1x'] + " " + path_data[i]['p1y'] + " Q " + c1x + " " + c1y + " " + path_data[i]['p2x'] + " " + path_data[i]['p2y'];
+			d3.selectAll('#'+path_data[i]['id'])
+				.attr('d', updated_curve)
+				.transition()
+				.ease(d3.easeLinear)
+				.duration(1000)
+				;
+		}
+
+}
 
 function updateSvg(width,height){
 
@@ -1539,10 +1604,12 @@ function resizeInterface() {
 	svg_w = view.offsetWidth;
 	svg_h = view.offsetHeight;
 	updateSvg(svg_h/1.7, svg_h/1.7);
-
-	curves = d3.selectAll('curve')
-		.transition()
-		.duration(100)
+	svg = document.querySelector('svg');
+	if(svg!=null){
+		setTimeout(function() {
+			updatePaths();
+		},1000)
+	}
 }
 
 function toggleScore(view, view_height) {
