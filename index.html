@@ -378,8 +378,18 @@ function getMusic(data) {
 	}
 }
 
-// design record based on cluster by score image of that beat
+// go to cluster analysis when click on cluster labels
+function goToAnalysis() {
+	targets = document.querySelectorAll('.clusterlabel')
+	for(i=0;i<targets.length;i++){
+		targets[i].onclick=function() {
+			var analysis = window.open('cluster-analysis.html', '_blank');
+			analysis.focus();
+		}
+	}
+}
 
+// design record based on cluster by score image of that beat
 function designByCluster(data){
 	target = document.querySelector('#record');
 	svg = document.querySelector('svg');
@@ -701,17 +711,18 @@ function addComments(add) {
 // draw signatures
 function getSignature(data, role){
 	sentiment = data['sentiment'];
+	comment = data['MOM1CHAR']
 	var point1 = getGraphableId(role);
 	var point2 = getGraphableId(data['rater1'])
 	var point3 = getGraphableId(data['rater2'])
 	
 	if(data['rater1_reassigned']>=3){
 		if(sentiment == "pos"){
-			drawPath(point1, point2, "sig_pos");
+			drawPath(point1, point2, "sig_pos", comment);
 		} else if( sentiment == "neg") {
-			drawPath(point1, point2, "sig_neg");
+			drawPath(point1, point2, "sig_neg", comment);
 		} else {
-			drawPath(point1, point2, "sig_mixed")
+			drawPath(point1, point2, "sig_mixed", comment)
 		}
 	} else {
 		if(sentiment == "pos"){
@@ -722,11 +733,11 @@ function getSignature(data, role){
 	}
 	if(data['rater2_reassigned']>=3){
 		if(sentiment == "pos"){
-			drawPath(point1, point3, "sig_pos");
+			drawPath(point1, point3, "sig_pos", comment);
 		} else if(sentiment == "neg") {
-			drawPath(point1, point3, "sig_neg");
+			drawPath(point1, point3, "sig_neg", comment);
 		} else {
-			drawPath(point1, point3, "sig_mixed")
+			drawPath(point1, point3, "sig_mixed", comment)
 		}
 	} else {
 		if(sentiment == "pos"){
@@ -931,7 +942,7 @@ function drawCircles(num_circles){
         })
 }
 // draw shared network for signature view
-function drawPath(point1_id, point2_id, sig_class) {
+function drawPath(point1_id, point2_id, sig_class, comment) {
 
             var p1x = parseFloat(document.getElementById(point1_id).getAttribute("cx"));
             var p1y = parseFloat(document.getElementById(point1_id).getAttribute("cy"));
@@ -958,18 +969,30 @@ function drawPath(point1_id, point2_id, sig_class) {
    			//  curve.setAttribute("class","curve "+sig_class)
    			//  console.log(curve);
 
+   			tooltip = document.querySelector('.tooltip')
+
             path = d3.select('svg')
               .append('path')
               .attr("id", point1_id + "_"+ point2_id)
               .attr("class","curve "+sig_class)
-              .attr('d', curve);
+              .attr('d', curve)
+              .on("mouseover", function(){
+              	getpos()
+              	tooltip.innerHTML=comment
+              	tooltip.style.display="block"
+              	tooltip.style.opacity="1"
+              	tooltip.style.left=x
+              	tooltip.style.top=y
+              	tooltip.style.width="10em"
+              })
+              .on("mouseout", function(){
+              	tooltip.innerHTML=""
+              	tooltip.style.display="none"
+              	tooltip.style.opacity="0"
+              	tooltip.style.width="auto"
+              });
 
             // svg.appendChild(curve);
-
-            path
-              .transition()        
-              .duration(1000)
-              .ease(d3.easeLinear)
         }
 function updatePaths(){
 		path_data = [];
@@ -1008,7 +1031,7 @@ function updatePaths(){
 				.attr('d', updated_curve)
 				.transition()
 				.ease(d3.easeLinear)
-				.duration(1000);
+				.duration(0);
 		}
 
 }
@@ -1568,12 +1591,13 @@ d3.csv('data/cluster_results.csv')
 		target.style.height=height/8+"px";
 		cluster = document.createElement('div');
 		label = data[i-1]['labels'];
-		cluster.setAttribute("class", "label"+label)
+		cluster.setAttribute("class", "label"+label + " clusterlabel")
 		div.appendChild(img);
 		div.appendChild(overlay);
 		div.appendChild(cluster);
 		target.appendChild(div);
 		}
+	goToAnalysis();
 		})
 	.catch(function(error){
 	})
