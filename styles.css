@@ -847,6 +847,7 @@ div[value=neg]{
 	z-index:100;
 	transition:0.1s all ease-in-out;
 	animation:0.1s fadeIn ease-in-out;
+	pointer-events:none;
 }
 
 
