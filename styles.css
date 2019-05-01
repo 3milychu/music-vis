@@ -7,6 +7,41 @@ body, html {
 	overflow-x:hidden;
 	overflow-y:hidden;
 	position:relative;
+	animation:1s fadeIn ease-in-out;
+}
+.onboarding {
+	position:absolute;
+	z-index:1000;
+	width:100%;
+	height:100vh;
+	display:none;
+	background-color:white;
+	opacity:0.98;
+	animation: 0.25s fadeIn ease-in-out;
+}
+.close {
+	position:fixed;
+	right:0;
+	top:0;
+	margin:2%;
+	padding:1%;
+	font-size:1em;
+	border:0.05em solid #1d1d1d;
+	color:#1d1d1d;
+	transition:0.25s all ease-in-out;
+	cursor:pointer;
+}
+.close:hover {
+	background-color: #1d1d1d;
+	color:white;
+}
+.onboarding img {
+	width:100%;
+	object-fit:fill;
+}
+.onboarding iframe {
+	width:100%;
+	height:100%;
 }
 .fill {
 	position:absolute;
