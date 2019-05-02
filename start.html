@@ -91,7 +91,7 @@ body, html {
 
 element=document.querySelector('#scene')
 getAnim(1,true);
-animation.setSpeed(0.5);
+animation.setSpeed(0.8);
 
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 	controls = document.querySelector('.progress')
@@ -113,7 +113,7 @@ animation.setSpeed(0.5);
 		grey();
 		document.querySelector('#l4').style.backgroundColor="#666666";
 		getAnim(1, true);
-		animation.setSpeed(0.5);
+		animation.setSpeed(0.8);
 	} 
 	});
 	document.addEventListener('swiped-right', function(e) {
@@ -123,12 +123,12 @@ animation.setSpeed(0.5);
 		grey();
 		document.querySelector('#l1').style.backgroundColor="#666666";
 		getAnim(1, true);
-		animation.setSpeed(0.5);
+		animation.setSpeed(0.8);
 	} else if (animation.path=="assets/onboarding/data/2/"){
 		grey();
 		document.querySelector('#l1').style.backgroundColor="#666666";
 		getAnim(1, false);
-		animation.setSpeed(0.5);
+		animation.setSpeed(0.8);
 	} else if (animation.path=="assets/onboarding/data/3/"){
 		grey();
 		document.querySelector('#l2').style.backgroundColor="#666666";
@@ -155,7 +155,7 @@ element.onclick=function() {
 		grey();
 		document.querySelector('#l1').style.backgroundColor="#666666";
 		getAnim(1, true);
-		animation.setSpeed(0.5);
+		animation.setSpeed(0.8);
 	}
 }
 
@@ -183,7 +183,7 @@ for(i=0;i<controls.length;i++){
 		console.log(id);
 		if(id=="l1"){
 			getAnim(1, true)
-			animation.setSpeed(0.5);
+			animation.setSpeed(0.8);
 		} else if (id=="l2"){
 			getAnim(2, true)
 			animation.setSpeed(1);
@@ -195,6 +195,7 @@ for(i=0;i<controls.length;i++){
 }
 
 function getAnim(number, autoplay_value){
+	if(number==3){
 	animation= lottie.loadAnimation({
 		  container: element, // the dom element that will contain the animation
 		  renderer: 'svg',
@@ -203,6 +204,16 @@ function getAnim(number, autoplay_value){
 		  autoloadSegments: false,
 		  path: "assets/onboarding/data/"+number+"/data.json" // the path to the animation json
 		});
+	} else {
+	animation= lottie.loadAnimation({
+		  container: element, // the dom element that will contain the animation
+		  renderer: 'svg',
+		  loop: true,
+		  autoplay: autoplay_value,
+		  autoloadSegments: false,
+		  path: "assets/onboarding/data/"+number+"/data.json" // the path to the animation json
+		});	}
+
 
 	if(autoplay_value == false ){
 		console.log("reverse")
