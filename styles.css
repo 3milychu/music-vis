@@ -24,15 +24,16 @@ body, html {
 	right:0;
 	top:0;
 	margin:2%;
-	padding:1%;
+	padding:0.5% 1%;
 	font-size:1em;
-	border:0.05em solid #1d1d1d;
-	color:#1d1d1d;
+	border:0.05em solid #666666;
+	color:#666666;
 	transition:0.25s all ease-in-out;
 	cursor:pointer;
+	border-radius:0.5em;
 }
 .close:hover {
-	background-color: #1d1d1d;
+	background-color: #D8A693;
 	color:white;
 }
 .onboarding img {
