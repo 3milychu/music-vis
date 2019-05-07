@@ -18,7 +18,7 @@ Neta Spiro, Research Fellow in Performance Science at the Royal College of Music
 
 **Music**<br>
 Fantasiestücke, Op.73 (Schumann, Robert)<br>
-Three Fantasy Pieces (Drei Fantasiestücke) for clarinet and piano, Op. 73, were written in 1849 by Robert Schumann.[1] Though they were originally intended for clarinet and piano, Schumann indicated that the clarinet part could be also performed on viola or cello.
+Three Fantasy Pieces (Drei Fantasiestücke) for clarinet and piano, Op. 73, were written in 1849 by Robert Schumann. Though they were originally intended for clarinet and piano, Schumann indicated that the clarinet part could be also performed on viola or cello.
 
 **Data collection**<br>
 Data collected from the ensemble class at Mannes School of Music in New York, NY.
