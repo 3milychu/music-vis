@@ -15,3 +15,9 @@ Mentor: Aaron Hill, MS Data Visualization Program Director, Parsons School of De
 Data sources graciously provided from proprietary research conducted by:
 Michael Schober, Professor of Psychology at the New School for Social Research and Associate Provost for Research
 Neta Spiro, Research Fellow in Performance Science at the Royal College of Music and an honorary Research Fellow at Imperial College London.
+
+Music
+Fantasiestücke, Op.73 (Schumann, Robert)
+
+Data collection
+Data collected from the ensemble class at Mannes School of Music
