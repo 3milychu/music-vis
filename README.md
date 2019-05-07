@@ -1,5 +1,5 @@
 # Notes on Perspective
-## A digital musical interface that invites you into the lived experience of audience reactions by sentiment occuring during a classical music performance in real-time
+## An embodied digital musical interface that invites you into the lived experience of audience reactions by sentiment felt during a classical music performance in real-time
 
 ## Single page application
 3milychu.github.io/music-vis
