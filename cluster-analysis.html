@@ -216,6 +216,11 @@ h1 {
 <script>
 
 timecodes = [];
+melody = [];
+magic = [];
+building = [];
+emerging = [];
+drama = [];
 
 d3.csv('data/cluster_results.csv')
 .then(function(data) {
@@ -284,6 +289,48 @@ function playAudioSprite(){
 		}
 		holders[i].onmouseout=function() {
 			hideTooltip();
+		}
+	}
+}
+
+function playClusterScore() {
+	plays = document.querySelectorAll('.play')
+	for(i=0;i<plays.length;i++){
+		parent = plays[i].parentElement.parentElement
+		content = parent.querySelector('.content')
+		beats = content.querySelectorAll('div');
+		for (j=0;j<beats.length;j++){
+			id = beats[j].id
+			console.log(id)
+			segment = timecodes.filter(function(d){return d.id==id})
+			console.log(segment)
+			src = 'assets/music.wav#t='+ segment[0]['start'] + "," + segment[0]['end']
+			// if(i==0){
+			// 	melody.push({
+			// 		id:id,
+			// 		src: src
+			// 	})
+			// } else if (i==1){
+			// 	magic.push({
+			// 		id:id,
+			// 		src: src
+			// 	})
+			// } else if (i==2){
+			// 	building.push({
+			// 		id:id,
+			// 		src: src
+			// 	})
+			// } else if (i==3){
+			// 	emerging.push({
+			// 		id:id,
+			// 		src: src
+			// 	})
+			// } else if (i==4){
+			// 	drama.push({
+			// 		id:id,
+			// 		src: src
+			// 	})
+			// }
 		}
 	}
 }
@@ -374,6 +421,7 @@ function showClusters(data){
 		target.appendChild(div)
 	}
 	playAudioSprite();
+	playClusterScore();
 	
 }
 </script>
