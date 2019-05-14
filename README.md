@@ -2,7 +2,7 @@
 ## An application that visually reconstructs the thoughts and feelings which occurred during a musical performance
 
 ## Single page application
-3milychu.github.io/music-vis
+3milychu.github.io/notesonperspective
 
 ## Project Abstract
 Notes on Perspective experiments with making visually tangible and beautiful the thoughts and feelings that occured during a musical performance. It is a single page application (SPA) with three states. Each state visually experiments with binding data to an abstraction of embodied experience: 1) situatedness, 2) activity and 3) perception. 
