@@ -525,12 +525,6 @@ option:hover {
 	padding:2%;
 	font-size:0.8em;
 	vertical-align: top;
-
-	margin-right:15%;
-	margin-bottom:15%;
-	width:25%;
-	transform-origin: 0 0;
-	transform:scale(1.5);
 }
 .new {
 	animation: 0.5s fadeUp ease-in-out;
@@ -1177,11 +1171,11 @@ svg {
 		width:100%;
 	}
 }
-@media screen and (min-width:1920px){
+/*@media screen and (min-width:1920px){
 	#reactions .item{
 		margin-right:15%;
 		width:25%;
 		transform-origin: 0 0;
 		transform:scale(1.5);
 	}
-}
+}*/
