@@ -6,17 +6,17 @@ animation.setSpeed(0.8);
 	document.addEventListener('swiped-left', function(e) {
 	element.innerHTML="";
 	console.log(animation.path)
-	if(animation.path=="../assets/onboarding/data/1/"){
+	if(animation.path=="https://raw.githubusercontent.com/3milychu/notesonperspective/master/assets/onboarding/data/1/"){
 		grey();
 		document.querySelector('#l2').style.backgroundColor="#D8A693";
 		getAnim(2,true);
 		animation.setSpeed(1);
-	} else if (animation.path=="../assets/onboarding/data/2/"){
+	} else if (animation.path=="https://raw.githubusercontent.com/3milychu/notesonperspective/master/assets/onboarding/data/2/"){
 		grey();
 		document.querySelector('#l3').style.backgroundColor="#D8A693";
 		getAnim(3, true);
 		animation.setSpeed(1);
-	} else if (animation.path=="../assets/onboarding/data/3/"){
+	} else if (animation.path=="https://raw.githubusercontent.com/3milychu/notesonperspective/master/assets/onboarding/data/3/"){
 		grey();
 		document.querySelector('#l4').style.backgroundColor="#D8A693";
 		getAnim(1, true);
@@ -26,17 +26,17 @@ animation.setSpeed(0.8);
 	document.addEventListener('swiped-right', function(e) {
 	element.innerHTML="";
 	console.log(animation.path)
-	if(animation.path=="../assets/onboarding/data/1/"){
+	if(animation.path=="https://raw.githubusercontent.com/3milychu/notesonperspective/master/assets/onboarding/data/1/"){
 		grey();
 		document.querySelector('#l1').style.backgroundColor="#D8A693";
 		getAnim(1, true);
 		animation.setSpeed(0.8);
-	} else if (animation.path=="../assets/onboarding/data/2/"){
+	} else if (animation.path=="https://raw.githubusercontent.com/3milychu/notesonperspective/master/assets/onboarding/data/2/"){
 		grey();
 		document.querySelector('#l1').style.backgroundColor="#D8A693";
 		getAnim(1, false);
 		animation.setSpeed(0.8);
-	} else if (animation.path=="../assets/onboarding/data/3/"){
+	} else if (animation.path=="https://raw.githubusercontent.com/3milychu/notesonperspective/master/assets/onboarding/data/3/"){
 		grey();
 		document.querySelector('#l2').style.backgroundColor="#D8A693";
 		getAnim(2, true);
@@ -48,17 +48,17 @@ animation.setSpeed(0.8);
 element.onclick=function() {
 	element.innerHTML="";
 	console.log(animation.path)
-	if(animation.path=="../assets/onboarding/data/1/"){
+	if(animation.path=="https://raw.githubusercontent.com/3milychu/notesonperspective/master/assets/onboarding/data/1/"){
 		grey();
 		document.querySelector('#l2').style.backgroundColor="#D8A693";
 		getAnim(2, true);
 		animation.setSpeed(1);
-	} else if (animation.path=="../assets/onboarding/data/2/"){
+	} else if (animation.path=="https://raw.githubusercontent.com/3milychu/notesonperspective/master/assets/onboarding/data/2/"){
 		grey();
 		document.querySelector('#l3').style.backgroundColor="#D8A693";
 		getAnim(3, true);
 		animation.setSpeed(1);
-	} else if (animation.path=="../assets/onboarding/data/3/"){
+	} else if (animation.path=="https://raw.githubusercontent.com/3milychu/notesonperspective/master/assets/onboarding/data/3/"){
 		grey();
 		document.querySelector('#l1').style.backgroundColor="#D8A693";
 		getAnim(1, true);
