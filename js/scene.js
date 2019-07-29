@@ -109,7 +109,7 @@ function getAnim(number, autoplay_value){
 		  loop: false,
 		  autoplay: autoplay_value,
 		  autoloadSegments: false,
-		  path: "../assets/onboarding/data/"+number+"/data.json" // the path to the animation json
+		  path: "https://raw.githubusercontent.com/3milychu/notesonperspective/master/assets/onboarding/data/"+number+"/data.json" // the path to the animation json
 		});
 	} else {
 	animation= lottie.loadAnimation({
@@ -118,7 +118,7 @@ function getAnim(number, autoplay_value){
 		  loop: true,
 		  autoplay: autoplay_value,
 		  autoloadSegments: false,
-		  path: "../assets/onboarding/data/"+number+"/data.json" // the path to the animation json
+		  path: "https://raw.githubusercontent.com/3milychu/notesonperspective/master/assets/onboarding/data/"+number+"/data.json" // the path to the animation json
 		});	}
 
 
@@ -155,7 +155,7 @@ function getAnim(number, autoplay_value){
 	target.appendChild(container)
 
 
-	d3.csv('../assets/onboarding/data/text.csv')
+	d3.csv('https://raw.githubusercontent.com/3milychu/notesonperspective/master/assets/onboarding/data/text.csv')
 		.then(function(data){
 			console.log(data);
 			filter = data.filter(function(d){return d.scene == number})
