@@ -27,8 +27,9 @@ body, html {
 	display:none;
 	background-color:white;
 	opacity:0.98;
-	overflow:hidden;
 	animation: 0.25s fadeIn ease-in-out;
+	overflow:hidden;
+	overflow-y:scroll;
 }
 .close {
 	position:fixed;
@@ -727,6 +728,7 @@ input {
 #play {
 	color:#CCCCCC;
 	border:0.05em solid #CCCCCC;
+	z-index:200;
 }
 #reactions3 a {
 	display:block;
