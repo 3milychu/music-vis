@@ -33,7 +33,7 @@ d3.csv('data/cluster_results.csv')
 	.catch(function(error){
 	})
 function loadReactions() {
-	d3.json('https://raw.githubusercontent.com/3milychu/music-vis/master/data/moment_all2.json')
+	d3.json('data/new_moment_all.json')
 	.then(function(data){
 		console.log(data);
 		getReactions(data);
@@ -84,7 +84,7 @@ function getAllSignatures() {
 				}
 			},0)
 		
-		d3.json('https://raw.githubusercontent.com/3milychu/music-vis/master/data/moment_all2.json')
+		d3.json('data/new_moment_all.json')
 		.then(function(data){
 			svg_x.registerListener(function(val) {
 				for(i=0;i<data.length;i++){
@@ -390,7 +390,7 @@ function getView(view){
 		view_container.style.backgroundColor="transparent";
 		if(start_message!=null){
 			for(i=0;i<labels.length;i++){
-				labels[i].style.color="#F2F2F2";
+				labels[i].style.color="#666666";
 			}
 		}
 	}
@@ -464,6 +464,7 @@ function updateData(data){
 		console.log(data1, data2, data3)
 		data4 = data1.concat(data2);
 		data = data3.concat(data4);
+		data = data.reverse();
 	}
 	return data;
 }
@@ -586,7 +587,7 @@ function createComment(data, id, role){
 	div.setAttribute("class","item")
 	div.setAttribute('id',id);
 	h3 = document.createElement('h3');
-	h3.innerHTML=role;
+	h3.innerHTML=data['role2'];
 	p = document.createElement('p');
 	p.innerHTML="'"+comment+"'";
 	label = document.createElement('label');
@@ -713,9 +714,11 @@ function drawPath(point1_id, point2_id, sig_class, comment) {
             this_h=el.clientHeight;
    			c1x =this_h/2;
     		c1y=this_h/2;
+    		offset = Math.floor(Math.random()*100)+(0)
+    		offset *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
            // const rc = rough.svg(svg);
             // construct the command to draw a quadratic curve
-            var curve = "M" + p1x + " " + p1y + " Q " + c1x + " " + c1y + " " + p2x + " " + p2y;
+            var curve = "M" + p1x + " " + p1y + " Q " + (c1x+offset) + " " + (c1y+offset) + " " + p2x + " " + p2y;
    			// curve = rc.path("M" + p1x + " " + p1y + " Q " + c1x + " " + c1y + " " + p2x + " " + p2y, {
 			//   stroke: 'inherit', strokeWidth: 5
 			// });
@@ -840,25 +843,46 @@ function showSigPpl() {
 			if(text=="person11" || text=="person12" || text=="person13" || text=="person14"){
 				
 				if(text=="person11"){
-					text= "Performing pianist";
+					text= "B Performing pianist";
 				}
 				if(text=="person12"){
-					text= "Performing cellist";
+					text= "A Performing cellist";
 				}
 				if(text=="person13"){
-					text= "Non-performing pianist";
+					text= "Prepared pianist";
 				}
 				if(text=="person14"){
-					text="Non-performing cellist";
+					text="Prepared cellist";
 				}
 			} else {
 				test = Number.isInteger(parseInt(text.slice(-2)));
 				if(test==true){
 					ending = parseInt(text.slice(-2));
-					text = "Class member "+ ending;
+					if(ending==10){
+						text ='E String listener, played it'
+					}
+
 				} else if (test==false) {
 					ending = parseInt(text.slice(-1));
-					text = "Class member "+ ending;
+					if(ending==1){
+						text ='G String listener, unfamiliar'
+					}else if (ending==2){
+						text ='H String listener, unfamiliar'
+					}else if(ending==3){
+						text ='F String listener, heard it'
+					}else if (ending==4){
+						text ='I Pianist listener, played it'
+					}else if (ending==5){
+						text ='J Pianist listener, played item'
+					}else if (ending==6){
+						text ='K Pianist listener, played it'
+					}else if (ending==7){
+						text ='N Pianist listener, unfamiliar'
+					}else if (ending==8){
+						text ='L Pianist listener, played it'
+					}else if (ending==9){
+						text ='M Pianist listener, heard it'
+					}
 				}
 				
 			}
@@ -942,15 +966,15 @@ function getDetails(data, target, pic, role){
 	random = (Math.floor(Math.random() * 3) + 1).toString()
 	random = "summary" + random;
 	profile_pic = "<div class='profile-pic "+ pic + "'></div>"
-	target.innerHTML+= "<div class=top>" + profile_pic + "<h2>"+ role + "</h2></div>"
-	target.innerHTML+="<h2>Random Thought</h2><p>"+ data[0][random] + "</p>"
+	target.innerHTML+= "<div class=top>" + profile_pic + "<h2>"+ data[0]['role2'] + "</h2></div>"
+	target.innerHTML+="<h2>Example General Comment</h2><p>"+ data[0][random] + "</p>"
 	target.innerHTML+="<h2>Familiarity with Piece</h2>"
-	if(data[0]['played']!="no" || data[0]['heard']!="no"){
-		if(data[0]['played']!="no"){
+	if(data[0]['played']!="No" || data[0]['heard']!="No"){
+		if(data[0]['played']!="No"){
 			text = data[0]['played'].split("Yes, ");
 			target.innerHTML+="<p>"+text[1]+"</p>"
 		}
-		if(data[0]['heard']!="no"){
+		if(data[0]['heard']!="No"){
 			text2 = data[0]['heard'].split("Yes, ");
 			target.innerHTML+="<p>"+text2[1]+"</p>"
 		}
@@ -984,7 +1008,7 @@ function spatial() {
 			getpos();
 			role= this.id;
 			// get bio info
-			d3.csv('data/bio.csv')
+			d3.csv('data/new_bio.csv')
 				.then (function(data){
 					getProfileData(data, role)
 				})
@@ -1094,7 +1118,7 @@ function alignScoreView(comments_count){
 		// if (comments_count<1){
 		// 	score_view.style.height=(height-audio_container_h)+"px";
 		// } else if (comments_count>=1){
-			score_view.style.height=height/8+"px";
+			score_view.style.height=height/6+"px";
 		// };
 	} else if (card_pos=="up"){
 		console.log("up")
@@ -1218,11 +1242,15 @@ function endorsementsDetail(data) {
 // each reaction's category by sentiment
 function displayTags(data, comment_id){
 	tags = []
-	categories=['dynamics', 'dyn_bal', 'balance', 'tempo', 'timing', 'character','rhythmic_motion', 'synchronization', 'communication', 'matching_musical_idea', 'expressivity', 'tone_quality', 'ending'];
+	categories=['DYNAMICS', 'BALANCE (NEW)', 'TEMPO', 'TIMING/RHYTHMIC MOTION', 'SYNCHRONIZATION', 'COMMUNICATION', 'EXPRESSIVITY', 'TONE QUALITY', 'OTHER'];
 	for(i=0;i<categories.length;i++){
 		category = categories[i];
 		if(data[category]!=undefined && data[category]!= ""){
+			if(category=='BALANCE (NEW)'){
+				category=='BALANCE'
+			}
 			category2 = category.replace(/_/g, " ")
+			category2 = category2.toLowerCase();
 			tags.push({
 				tag: category2,
 				sentiment:data[category]
@@ -1298,7 +1326,7 @@ d3.csv('data/cluster_results.csv')
 		overlay.setAttribute("class","overlay");
 		img = document.createElement('img');
 		img.src="assets/cropped/500w/"+i+".png";
-		target.style.height=height/8+"px";
+		target.style.height=height/6+"px";
 		cluster = document.createElement('div');
 		label = data[i-1]['labels'];
 		cluster.setAttribute("class", "label"+label + " clusterlabel")
@@ -1349,7 +1377,7 @@ function toggleScore(view, view_height) {
 	view3 = document.querySelector('#reactions3');
 	return_2 = view2.offsetHeight;
 	return_3 = view3.offsetHeight;
-	return_h = window.innerHeight/8;
+	return_h = window.innerHeight/6;
 	var toggle = function (a, b) {
 	    var togg = false;
 	    return function () {
